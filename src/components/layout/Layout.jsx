@@ -5,7 +5,6 @@ import Footer from "../footer/Footer";
 import { CssBaseline, Divider } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import getLPTheme from "../header/getLPTheme";
-import Hero from "../hero/Hero";
 
 export default function Layout() {
   const [mode, setMode] = React.useState("light");
@@ -21,7 +20,7 @@ export default function Layout() {
       <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
         <CssBaseline />
         <Header mode={mode} toggleColorMode={toggleColorMode} />
-        <Hero />
+
         <Outlet />
 
         <Divider />

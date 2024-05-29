@@ -74,7 +74,10 @@ export default function Footer() {
               </Typography>
               <Typography color="text.secondary">
                 Email:
-                <span style={{ fontWeight: "bold" }}>acesuportw@gmail.com</span>
+                <span style={{ fontWeight: "bold" }}>
+                  {" "}
+                  acesuportw@gmail.com
+                </span>
               </Typography>
             </Stack>
           </Box>

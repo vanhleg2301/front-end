@@ -40,7 +40,7 @@ const data = [
   {
     id: 3,
     title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/ngan-hang-tmcp-viet-nam-thinh-vuong-vpbank-63e1cb5539e62.jpg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Hue",
@@ -48,7 +48,7 @@ const data = [
   {
     id: 4,
     title: "Company 3",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Da Nang",
@@ -56,7 +56,7 @@ const data = [
   {
     id: 5,
     title: "Company 3",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Nam Dinh",
@@ -64,7 +64,7 @@ const data = [
   {
     id: 6,
     title: "Company 3",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Hoan Kiem",
@@ -72,7 +72,7 @@ const data = [
   {
     id: 7,
     title: "Company 3",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Ba Dinh",
@@ -80,7 +80,7 @@ const data = [
   {
     id: 8,
     title: "Company 3",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "welcome",
     salary: "12000000",
     location: "Cau Giay",
@@ -88,7 +88,7 @@ const data = [
   {
     id: 9,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Dong",
@@ -96,7 +96,7 @@ const data = [
   {
     id: 10,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Thanh Xuan",
@@ -104,7 +104,7 @@ const data = [
   {
     id: 11,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Dong Da",
@@ -112,7 +112,7 @@ const data = [
   {
     id: 12,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Noi",
@@ -120,7 +120,7 @@ const data = [
   {
     id: 13,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Noi",
@@ -128,7 +128,7 @@ const data = [
   {
     id: 14,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Noi",
@@ -136,7 +136,7 @@ const data = [
   {
     id: 15,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Noi",
@@ -144,7 +144,7 @@ const data = [
   {
     id: 16,
     title: "Company 1",
-    logo: "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg",
+    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
     text: "hi",
     salary: "12000000",
     location: "Ha Noi",
@@ -356,7 +356,7 @@ export default function Job() {
             >
               <Box
                 component={Link}
-                to="/apply"
+                to="/jobs/:id"
                 sx={{ display: "flex", width: "30%", height: "auto" }}
               >
                 <img
@@ -382,7 +382,7 @@ export default function Job() {
                   <Box
                     sx={{ textDecoration: "none" }}
                     component={Link}
-                    to="/apply"
+                    to="/jobs/:id"
                   >
                     <Typography
                       variant="body2"
@@ -396,7 +396,7 @@ export default function Job() {
                     variant="body2"
                     color="text.secondary"
                     component={Link}
-                    to="/companies"
+                    to="/companies/:id"
                     sx={{ textDecoration: "none" }}
                   >
                     {item.text}

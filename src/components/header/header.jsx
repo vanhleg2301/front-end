@@ -15,7 +15,7 @@ import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
 
 const logoStyle = {
-  width: "70px",
+  width: "30px",
   height: "auto",
   cursor: "pointer",
 };
@@ -85,10 +85,11 @@ function Header({ mode, toggleColorMode }) {
               }}
             >
               <img
-                src={"/public/tải xuống.png"}
+                src={"mon.png"}
                 style={logoStyle}
-                alt="logo of sitemark"
+                alt="logo of ace interview"
               />
+              {/* Header top */}
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <MenuItem
                   onClick={() => scrollToSection("features")}
@@ -139,13 +140,14 @@ function Header({ mode, toggleColorMode }) {
                 alignItems: "center",
               }}
             >
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+              {/*<ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />*/}
+
               <Button
                 color="primary"
                 variant="text"
                 size="small"
                 component={Link}
-                to="/#"
+                to="/login"
               >
                 Sign in
               </Button>
@@ -154,11 +156,12 @@ function Header({ mode, toggleColorMode }) {
                 variant="contained"
                 size="small"
                 component={Link}
-                to="/#"
+                to="/register"
               >
                 Sign up
               </Button>
             </Box>
+            {/* Header right */}
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
                 variant="text"
@@ -192,13 +195,13 @@ function Header({ mode, toggleColorMode }) {
                     />
                   </Box>
                   <MenuItem onClick={() => scrollToSection("features")}>
-                    Features
+                    Jobs
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection("testimonials")}>
-                    Testimonials
+                    Profile & CV
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection("highlights")}>
-                    Highlights
+                    Companies
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection("pricing")}>
                     Pricing
@@ -211,9 +214,8 @@ function Header({ mode, toggleColorMode }) {
                     <Button
                       color="primary"
                       variant="contained"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
-                      target="_blank"
+                      component={Link}
+                      to="/register"
                       sx={{ width: "100%" }}
                     >
                       Sign up
@@ -223,9 +225,8 @@ function Header({ mode, toggleColorMode }) {
                     <Button
                       color="primary"
                       variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      target="_blank"
+                      component={Link}
+                      to="/login"
                       sx={{ width: "100%" }}
                     >
                       Sign in
