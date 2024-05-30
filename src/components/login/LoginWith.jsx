@@ -2,10 +2,10 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Button } from "@mui/material";
-
+import "./LoginWith.css";
 export default function LoginWith() {
   return (
-    <div>
+    <>
       <Button
         variant="light"
         type="submit"
@@ -78,6 +78,6 @@ export default function LoginWith() {
         </svg>
         Login with Apple
       </Button>
-    </div>
+    </>
   );
 }

@@ -178,7 +178,7 @@ export default function Job() {
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [currentPageLocation, setCurrentPageLocation] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(1);
 
   // Heart
   const [isFavoriteList, setIsFavoriteList] = useState(

@@ -13,6 +13,7 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
+import "./header.css";
 
 const logoStyle = {
   width: "30px",
@@ -63,16 +64,16 @@ function Header({ mode, toggleColorMode }) {
               borderRadius: "999px",
               backgroundColor:
                 theme.palette.mode === "light"
-                  ? "rgba(255, 255, 255, 0.4)"
-                  : "rgba(0, 0, 0, 0.4)",
-              backdropFilter: "blur(24px)",
+                  ? "rgba(240, 248, 255, 10)" // AliceBlue for light mode
+                  : "rgba(25, 25, 112, 0.9)", // MidnightBlue for dark mode
+              backdropFilter: "blur(20px)",
               maxHeight: 40,
               border: "1px solid",
               borderColor: "divider",
               boxShadow:
                 theme.palette.mode === "light"
-                  ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
-                  : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
+                  ? `0 0 1px rgba(0, 0, 0, 0.1), 1px 1.5px 2px -1px rgba(0, 0, 0, 0.15), 4px 4px 12px -2.5px rgba(0, 0, 0, 0.15)`
+                  : "0 0 1px rgba(255, 255, 255, 0.1), 1px 1.5px 2px -1px rgba(255, 255, 255, 0.15), 4px 4px 12px -2.5px rgba(255, 255, 255, 0.15)",
             })}
           >
             <Box
@@ -84,16 +85,20 @@ function Header({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <img
-                src={"mon.png"}
-                style={logoStyle}
-                alt="logo of ace interview"
-              />
+              <Box sx={{ ml: 2 }}>
+                <img
+                  src={"mon.png"}
+                  style={logoStyle}
+                  alt="logo of ace interview"
+                />
+              </Box>
+
               {/* Header top */}
-              <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
                 <MenuItem
                   onClick={() => scrollToSection("features")}
                   sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
                 >
                   <Typography variant="body2" color="text.primary">
                     Jobs
@@ -102,6 +107,7 @@ function Header({ mode, toggleColorMode }) {
                 <MenuItem
                   onClick={() => scrollToSection("testimonials")}
                   sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
                 >
                   <Typography variant="body2" color="text.primary">
                     Profile & CV
@@ -110,6 +116,7 @@ function Header({ mode, toggleColorMode }) {
                 <MenuItem
                   onClick={() => scrollToSection("highlights")}
                   sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
                 >
                   <Typography variant="body2" color="text.primary">
                     Companies
@@ -118,6 +125,7 @@ function Header({ mode, toggleColorMode }) {
                 <MenuItem
                   onClick={() => scrollToSection("pricing")}
                   sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
                 >
                   <Typography variant="body2" color="text.primary">
                     Pricing
@@ -125,7 +133,7 @@ function Header({ mode, toggleColorMode }) {
                 </MenuItem>
                 <MenuItem
                   onClick={() => scrollToSection("faq")}
-                  sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
                 >
                   <Typography variant="body2" color="text.primary">
                     FAQ
@@ -152,7 +160,7 @@ function Header({ mode, toggleColorMode }) {
                 Sign in
               </Button>
               <Button
-                color="primary"
+                color="info"
                 variant="contained"
                 size="small"
                 component={Link}
@@ -212,7 +220,7 @@ function Header({ mode, toggleColorMode }) {
                   <Divider />
                   <MenuItem>
                     <Button
-                      color="primary"
+                      color="info"
                       variant="contained"
                       component={Link}
                       to="/register"
