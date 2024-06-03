@@ -19,6 +19,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 export default function Act() {
   const [searchValue, setSearchValue] = useState("");
@@ -114,7 +115,7 @@ export default function Act() {
                   <OutlinedInput
                     startAdornment={
                       <InputAdornment position="start">
-                        <AttachMoneyIcon /> Exp:
+                        <HourglassEmptyIcon /> Exp:
                       </InputAdornment>
                     }
                   />

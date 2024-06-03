@@ -6,6 +6,7 @@
   }
   
   .menu-item:hover {
+    border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.1); /* Change this to the desired hover background color */
     color: var(--color-primary-main); /* Adjust the color as needed */
     transform: scale(1.05); /* Slightly scale up the item */

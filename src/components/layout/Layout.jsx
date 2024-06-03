@@ -17,7 +17,7 @@ export default function Layout() {
   };
   return (
     <>
-      <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
+      <ThemeProvider theme={showCustomTheme ? defaultTheme : LPtheme}>
         <CssBaseline />
         <Header mode={mode} toggleColorMode={toggleColorMode} />
 

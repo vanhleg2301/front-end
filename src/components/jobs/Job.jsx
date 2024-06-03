@@ -20,7 +20,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Paginations from "../paginations/Paginations";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-const data = [
+import { ENDPOINT } from "../../util/constants";
+const jobs = [
   {
     id: 1,
     title: "Company 1",
@@ -175,14 +176,22 @@ const itemsPerPage = 9;
 
 const locationPerPage = 4;
 export default function Job() {
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const [jobs, setJobs] = useState([]);
+  const totalPages = Math.ceil(jobs.length / itemsPerPage);
   const [currentPageLocation, setCurrentPageLocation] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(1);
 
+  useEffect(() => {
+    fetch(`${ENDPOINT}/job`)
+      .then((response) => response.json())
+      .then((jobs) => setJobs(jobs))
+      .catch((error) => console.error("Error fetching jobs:", error));
+  }, []);
+
   // Heart
   const [isFavoriteList, setIsFavoriteList] = useState(
-    Array(data.length).fill(false)
+    Array(jobs.length).fill(false)
   );
 
   const toggleFavorite = (index) => {
@@ -197,13 +206,13 @@ export default function Job() {
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex);
+    return jobs.slice(startIndex, endIndex);
   };
 
   // location
   const getUniqueLocations = () => {
     // reduce - trích xuất các location duy nhất
-    const locations = data.reduce((acc, curr) => {
+    const locations = jobs.reduce((acc, curr) => {
       const locationArr = curr.location.split(",");
       locationArr.forEach((loc) => {
         if (!acc.includes(loc.trim())) {
@@ -352,6 +361,12 @@ export default function Job() {
                 justifyContent: "space-between",
                 flexGrow: 1,
                 p: 1,
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: 6,
+                  border: "1px solid gray",
+                },
               }}
             >
               <Box

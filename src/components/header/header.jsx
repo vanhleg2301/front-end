@@ -99,6 +99,8 @@ function Header({ mode, toggleColorMode }) {
                   onClick={() => scrollToSection("features")}
                   sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
+                  component={Link}
+                  to="/jobs/all"
                 >
                   <Typography variant="body2" color="text.primary">
                     Jobs
