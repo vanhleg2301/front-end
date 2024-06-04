@@ -44,14 +44,21 @@ function Header({ mode, toggleColorMode }) {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCv, setIsOpenCv] = React.useState(false);
+  const [isOpenCompany, setIsOpenCompany] = React.useState(false);
 
   const handleMouseEnter = (section) => {
     if (section === "jobs") {
       setIsOpen(true);
       setIsOpenCv(false);
+      setIsOpenCompany(false);
     } else if (section === "cv") {
-      setIsOpenCv(true);
       setIsOpen(false);
+      setIsOpenCv(true);
+      setIsOpenCompany(false);
+    } else if (section === "companies") {
+      setIsOpen(false);
+      setIsOpenCv(false);
+      setIsOpenCompany(true);
     }
   };
 
@@ -174,8 +181,10 @@ function Header({ mode, toggleColorMode }) {
                     </Box>
                   )}
                 </MenuItem>
+                {/*Companies*/}
                 <MenuItem
-                  onClick={() => scrollToSection("highlights")}
+                  onMouseEnter={() => handleMouseEnter("companies")}
+                  onMouseLeave={handleMouseLeave}
                   sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
                   component={Link}
@@ -184,6 +193,16 @@ function Header({ mode, toggleColorMode }) {
                   <Typography variant="body2" color="text.primary">
                     Companies
                   </Typography>
+                  {isOpenCompany && (
+                    <Box className="dropdown-content">
+                      <Link to="/companies/all" className="dropdown-item">
+                        Companies
+                      </Link>
+                      <Link to="/companies/all" className="dropdown-item">
+                        Companies
+                      </Link>
+                    </Box>
+                  )}
                 </MenuItem>
                 <MenuItem
                   onClick={() => scrollToSection("pricing")}
