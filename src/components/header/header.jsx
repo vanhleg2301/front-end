@@ -152,14 +152,14 @@ function Header({ mode, toggleColorMode }) {
                     variant="body2"
                     color="text.primary"
                     component={Link}
-                    to="/profile/info"
+                    to="/profile"
                     sx={{ textDecoration: "none" }}
                   >
                     CV
                   </Typography>
                   {isOpenCv && (
                     <Box className="dropdown-content">
-                      <Link to="/profile/info" className="dropdown-item">
+                      <Link to="/profile" className="dropdown-item">
                         profile
                       </Link>
                       <Link to="/profile/manager" className="dropdown-item">

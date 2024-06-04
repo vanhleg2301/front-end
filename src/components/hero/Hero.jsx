@@ -9,7 +9,18 @@ import Act from "../action/Act";
 
 export default function Hero() {
   return (
-    <>
+    <Box
+      id="hero"
+      sx={(theme) => ({
+        width: "100%",
+        backgroundImage:
+          theme.palette.mode === "light"
+            ? "linear-gradient(180deg, #E0F7FA, #FFFFFF)" // Light mode gradient: light blue to white
+            : `linear-gradient(180deg, #004D40, ${alpha("#004D40", 0.0)})`, // Dark mode gradient: dark teal to transparent
+        backgroundSize: "100% 20%",
+        backgroundRepeat: "no-repeat",
+      })}
+    >
       <Container
         sx={{
           display: "flex",
@@ -59,6 +70,6 @@ export default function Hero() {
           <Act />
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }

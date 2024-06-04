@@ -27,7 +27,7 @@ export default function publicRoutes() {
         path: "/profile",
         element: <ProfilePage />,
         children: [
-          { path: "info", element: <Info /> },
+          { index: true, element: <Info /> },
           { path: "manager", element: <ManagerCv /> },
           { path: "upload", element: <UploadCv /> },
         ],

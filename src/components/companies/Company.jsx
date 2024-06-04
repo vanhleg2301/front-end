@@ -50,31 +50,35 @@ export default function Company() {
         <Grid container spacing={3}>
           {companies.map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card
+              <Box
                 component={Link}
                 to="/companies/:id"
-                sx={{
-                  textDecoration: "none",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: 6,
-                    border: "1px solid blue",
-                  },
-                }}
+                sx={{ textDecoration: "none" }}
               >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={company.logo}
-                  alt={`${company.name} logo`}
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h6" component="div">
-                    {company.name}
-                  </Typography>
-                </CardContent>
-              </Card>
+                <Card
+                  sx={{
+                    textDecoration: "none",
+                    transition: "transform 0.3s, box-shadow 0.3s",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: 6,
+                      border: "1px solid blue",
+                    },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={company.logo}
+                    alt={`${company.name} logo`}
+                  />
+                  <CardContent sx={{ textAlign: "center" }}>
+                    <Typography variant="h6" component="div">
+                      {company.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           ))}
         </Grid>

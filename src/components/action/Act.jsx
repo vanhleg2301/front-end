@@ -30,7 +30,7 @@ export default function Act() {
   const [locationSearch, setLocationSearch] = useState("");
   const [locations, setLocations] = useState([
     "Hanoi",
-    "Ho Chi Minh City",
+    "Ho Chi Minh",
     "Da Nang",
     "Hai Phong",
   ]);
