@@ -7,6 +7,11 @@ import CompanyList from "../components/companies/CompanyList";
 import JobList from "../components/jobs/JobList";
 import JobPage from "../pages/JobPage";
 import Job from "../components/jobs/Job";
+import CompanyPage from "../pages/CompanyPage";
+import ProfilePage from "../pages/ProfilePage";
+import ManagerCv from "../components/profile.jsx/ManagerCv";
+import UploadCv from "../components/profile.jsx/UploadCv";
+import Info from "../components/profile.jsx/Info";
 
 export default function publicRoutes() {
   return {
@@ -18,14 +23,31 @@ export default function publicRoutes() {
     ),
     children: [
       { index: true, element: <Home /> },
-      { path: "/companies/", element: <CompanyList /> },
-      { path: "/companies/:id", element: <CompanyDetail /> },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+        children: [
+          { path: "info", element: <Info /> },
+          { path: "manager", element: <ManagerCv /> },
+          { path: "upload", element: <UploadCv /> },
+        ],
+      },
+      {
+        path: "/companies",
+        element: <CompanyPage />,
+        children: [
+          { path: "all", element: <CompanyList /> },
+          { path: ":id", element: <CompanyDetail /> },
+        ],
+      },
+
       {
         path: "/jobs",
         element: <JobPage />,
         children: [
-          { path: "all", element: <Job /> },
+          { index: true, element: <Job /> },
           { path: ":id", element: <JobDetail /> },
+          { path: "table", element: <JobList /> },
         ],
       },
     ],

@@ -42,6 +42,24 @@ function Header({ mode, toggleColorMode }) {
     }
   };
 
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpenCv, setIsOpenCv] = React.useState(false);
+
+  const handleMouseEnter = (section) => {
+    if (section === "jobs") {
+      setIsOpen(true);
+      setIsOpenCv(false);
+    } else if (section === "cv") {
+      setIsOpenCv(true);
+      setIsOpen(false);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsOpen(false);
+    setIsOpenCv(false);
+  };
+
   return (
     <div>
       <AppBar
@@ -85,7 +103,11 @@ function Header({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <Box sx={{ ml: 2 }}>
+              <Box
+                sx={{ ml: 2, textDecoration: "none" }}
+                component={Link}
+                to="/"
+              >
                 <img
                   src={"mon.png"}
                   style={logoStyle}
@@ -95,30 +117,69 @@ function Header({ mode, toggleColorMode }) {
 
               {/* Header top */}
               <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
+                {/*Job*/}
                 <MenuItem
-                  onClick={() => scrollToSection("features")}
-                  sx={{ py: "6px", px: "12px" }}
+                  onMouseEnter={() => handleMouseEnter("jobs")}
+                  onMouseLeave={handleMouseLeave}
+                  sx={{ py: "6px", px: "12px", textDecoration: "none" }}
                   className="menu-item"
-                  component={Link}
-                  to="/jobs/all"
                 >
-                  <Typography variant="body2" color="text.primary">
+                  <Typography
+                    variant="body2"
+                    color="text.primary"
+                    component={Link}
+                    to="/jobs"
+                    sx={{ textDecoration: "none" }}
+                  >
                     Jobs
                   </Typography>
+                  {isOpen && (
+                    <Box className="dropdown-content">
+                      <Link to="/jobs/job1" className="dropdown-item">
+                        Find job
+                      </Link>
+                      <Link to="/jobs/job2" className="dropdown-item">
+                        Job saved
+                      </Link>
+                      <Link to="/jobs/job3" className="dropdown-item">
+                        Job 3
+                      </Link>
+                    </Box>
+                  )}
                 </MenuItem>
+                {/*Cv*/}
                 <MenuItem
-                  onClick={() => scrollToSection("testimonials")}
-                  sx={{ py: "6px", px: "12px" }}
+                  onMouseEnter={() => handleMouseEnter("cv")}
+                  onMouseLeave={handleMouseLeave}
+                  sx={{ py: "6px", px: "12px", textDecoration: "none" }}
                   className="menu-item"
                 >
-                  <Typography variant="body2" color="text.primary">
-                    Profile & CV
+                  <Typography
+                    variant="body2"
+                    color="text.primary"
+                    component={Link}
+                    to="/profile/info"
+                    sx={{ textDecoration: "none" }}
+                  >
+                    CV
                   </Typography>
+                  {isOpenCv && (
+                    <Box className="dropdown-content">
+                      <Link to="/profile/manager" className="dropdown-item">
+                        Manager CV
+                      </Link>
+                      <Link to="/profile/upload" className="dropdown-item">
+                        Upload CV
+                      </Link>
+                    </Box>
+                  )}
                 </MenuItem>
                 <MenuItem
                   onClick={() => scrollToSection("highlights")}
                   sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
+                  component={Link}
+                  to="/companies/all"
                 >
                   <Typography variant="body2" color="text.primary">
                     Companies
@@ -208,7 +269,7 @@ function Header({ mode, toggleColorMode }) {
                     Jobs
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection("testimonials")}>
-                    Profile & CV
+                    CV
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection("highlights")}>
                     Companies

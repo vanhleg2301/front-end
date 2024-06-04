@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
-import { CssBaseline, Divider } from "@mui/material";
+import { Box, CssBaseline, Divider } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import getLPTheme from "../header/getLPTheme";
 
@@ -20,9 +20,19 @@ export default function Layout() {
       <ThemeProvider theme={showCustomTheme ? defaultTheme : LPtheme}>
         <CssBaseline />
         <Header mode={mode} toggleColorMode={toggleColorMode} />
-
-        <Outlet />
-
+        <Box
+          sx={(theme) => ({
+            width: "100%",
+            backgroundImage:
+              theme.palette.mode === "light"
+                ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+                : `linear-gradient(#02294F, ${alpha("#090E10", 0.0)})`,
+            backgroundSize: "100% 20%",
+            backgroundRepeat: "no-repeat",
+          })}
+        >
+          <Outlet />
+        </Box>
         <Divider />
         <Footer />
       </ThemeProvider>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Box,
   Container,
@@ -21,185 +22,48 @@ import Paginations from "../paginations/Paginations";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { ENDPOINT } from "../../util/constants";
-const jobs = [
-  {
-    id: 1,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-  {
-    id: 2,
-    title: "Company 2",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hello",
-    salary: "12000000",
-    location: "Ho Chi Minh",
-  },
-  {
-    id: 3,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Hue",
-  },
-  {
-    id: 4,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Da Nang",
-  },
-  {
-    id: 5,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Nam Dinh",
-  },
-  {
-    id: 6,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Hoan Kiem",
-  },
-  {
-    id: 7,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Ba Dinh",
-  },
-  {
-    id: 8,
-    title: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "welcome",
-    salary: "12000000",
-    location: "Cau Giay",
-  },
-  {
-    id: 9,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Dong",
-  },
-  {
-    id: 10,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Thanh Xuan",
-  },
-  {
-    id: 11,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Dong Da",
-  },
-  {
-    id: 12,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-  {
-    id: 13,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-  {
-    id: 14,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-  {
-    id: 15,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-  {
-    id: 16,
-    title: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/N7Cyu93fFe7J5NpFyKgIohep1TOBqzOn_1695110290____4b7dabf325927ea8303f627f31c956ad.jpg",
-    text: "hi",
-    salary: "12000000",
-    location: "Ha Noi",
-  },
-];
-
-// format salary
-const formatSalary = (salary) => {
-  if (isNaN(salary)) {
-    return salary;
-  } else {
-    const millionSalary = salary / 1000000;
-    return `${millionSalary} - triệu`;
-  }
-};
-
-// format location
-const formatLocation = (location) => {
-  const locations = location.split(",");
-  if (locations.length > 1) {
-    return `${locations[0]}, ...`;
-  } else {
-    return location;
-  }
-};
+import {
+  formatDescription,
+  formatLocation,
+  formatSalary,
+} from "../../util/formatHelpers";
+import JobWish from "../profile.jsx/JobWish";
 
 const itemsPerPage = 9;
 
 const locationPerPage = 4;
+
 export default function Job() {
   const [jobs, setJobs] = useState([]);
   const totalPages = Math.ceil(jobs.length / itemsPerPage);
   const [currentPageLocation, setCurrentPageLocation] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(1);
+  const [favoriteJobs, setFavoriteJobs] = useState([]);
 
   useEffect(() => {
-    fetch(`${ENDPOINT}/job`)
-      .then((response) => response.json())
-      .then((jobs) => setJobs(jobs))
+    axios
+      .get(`${ENDPOINT}/job`)
+      .then((response) => setJobs(response.data))
       .catch((error) => console.error("Error fetching jobs:", error));
-  }, []);
+  }, [jobs]);
 
   // Heart
-  const [isFavoriteList, setIsFavoriteList] = useState(
-    Array(jobs.length).fill(false)
-  );
+  const [isFavoriteList, setIsFavoriteList] = useState({});
 
-  const toggleFavorite = (index) => {
+  const toggleFavorite = (jobId, job) => {
+    // Modified toggleFavorite function
     setIsFavoriteList((prev) => {
-      const newList = [...prev];
-      newList[index] = !newList[index];
+      const newList = { ...prev };
+      newList[jobId] = !newList[jobId];
       return newList;
     });
+
+    if (isFavoriteList[jobId]) {
+      setFavoriteJobs((prev) => prev.filter((item) => item._id !== jobId)); // Remove job from favorite list
+    } else {
+      setFavoriteJobs((prev) => [...prev, job]); // Add job to favorite list
+    }
   };
 
   // Paginated
@@ -211,20 +75,9 @@ export default function Job() {
 
   // location
   const getUniqueLocations = () => {
-    // reduce - trích xuất các location duy nhất
-    const locations = jobs.reduce((acc, curr) => {
-      const locationArr = curr.location.split(",");
-      locationArr.forEach((loc) => {
-        if (!acc.includes(loc.trim())) {
-          acc.push(loc.trim());
-        }
-      });
-      return acc;
-    }, []);
-
-    return locations;
+    const locations = jobs.map((job) => job.location.city);
+    return [...new Set(locations)];
   };
-
   const uniqueLocations = getUniqueLocations();
 
   const getPaginatedLocation = () => {
@@ -238,12 +91,13 @@ export default function Job() {
   );
 
   const handlePageLocation = (direction) => {
-    if (direction === "prev") {
-      setCurrentPageLocation((prevPage) => Math.max(prevPage - 1, 1));
-    } else if (direction === "next") {
-      setCurrentPageLocation((prevPage) =>
-        Math.min(prevPage + 1, totalPagesLocation)
-      );
+    if (direction === "prev" && currentPageLocation > 1) {
+      setCurrentPageLocation((prev) => prev - 1);
+    } else if (
+      direction === "next" &&
+      currentPageLocation < totalPagesLocation
+    ) {
+      setCurrentPageLocation((prev) => prev + 1);
     }
   };
 
@@ -266,6 +120,7 @@ export default function Job() {
 
   return (
     <Container sx={{ mt: 2, mb: 2 }}>
+      {/*Filter*/}
       <Box
         sx={{
           width: { sm: "left", md: "left" },
@@ -318,7 +173,7 @@ export default function Job() {
                   <IconButton onClick={() => handlePageLocation("prev")}>
                     <ArrowBackIosIcon />
                   </IconButton>
-                  {getPaginatedLocation().map((location, index) => (
+                  {getPaginatedLocation().map((city, index) => (
                     <Button
                       color="error"
                       key={index}
@@ -328,7 +183,7 @@ export default function Job() {
                         backgroundColor: "#f4f5f5",
                       }}
                     >
-                      {location}
+                      {city}
                     </Button>
                   ))}
                   <IconButton onClick={() => handlePageLocation("next")}>
@@ -344,6 +199,7 @@ export default function Job() {
           </Box>
         </Box>
       </Box>
+      {/* content list job */}
       <Grid container spacing={2}>
         {getPaginatedData().map((item, index) => (
           <Grid
@@ -352,7 +208,7 @@ export default function Job() {
             sm={6}
             md={4}
             sx={{ display: "flex" }}
-            key={item.id}
+            key={item._id}
           >
             <Card
               sx={{
@@ -371,7 +227,7 @@ export default function Job() {
             >
               <Box
                 component={Link}
-                to="/jobs/:id"
+                to={`/jobs/${item._id}`}
                 sx={{ display: "flex", width: "30%", height: "auto" }}
               >
                 <img
@@ -397,24 +253,24 @@ export default function Job() {
                   <Box
                     sx={{ textDecoration: "none" }}
                     component={Link}
-                    to="/jobs/:id"
+                    to={`/jobs/${item._id}`}
                   >
                     <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ fontWeight: "bold" }}
                     >
-                      {item.title}
+                      {formatDescription(item.desciprtion)}
                     </Typography>
                   </Box>
                   <Typography
                     variant="body2"
                     color="text.secondary"
                     component={Link}
-                    to="/companies/:id"
+                    to={`/companies/${item._id}`}
                     sx={{ textDecoration: "none" }}
                   >
-                    {item.text}
+                    {item.title}
                   </Typography>
                 </CardContent>
                 <Box
@@ -459,16 +315,16 @@ export default function Job() {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {formatLocation(item.location)}
+                      {formatLocation(item.location.city)}
                     </Box>
                   </Box>
 
                   <Box className="icon">
                     <IconButton
                       aria-label="favorite"
-                      onClick={() => toggleFavorite(index)}
+                      onClick={() => toggleFavorite(item._id, item)}
                     >
-                      {isFavoriteList[index] ? (
+                      {isFavoriteList[item._id] ? (
                         <FavoriteIcon />
                       ) : (
                         <FavoriteBorderIcon />
@@ -481,12 +337,14 @@ export default function Job() {
           </Grid>
         ))}
       </Grid>
-
+      {/* pagination */}
       <Paginations
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={(page) => setCurrentPage(page)}
       />
+      {/* Render JobWish component */}
+      <JobWish favoriteJobs={favoriteJobs} />
     </Container>
   );
 }

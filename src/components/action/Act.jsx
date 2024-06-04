@@ -10,11 +10,8 @@ import {
   OutlinedInput,
   Button,
   Grid,
-  Paper,
-  Popover,
-  List,
-  ListItem,
-  ListItemText,
+  IconButton,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -22,24 +19,62 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 export default function Act() {
+  //Search bar
   const [searchValue, setSearchValue] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [suggestions, setSuggestions] = useState([
-    "Engineer",
-    "Developer",
-    "Designer",
-  ]); // Danh sách từ khóa gợi ý
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
-    setAnchorEl(event.currentTarget); // Hiển thị thanh từ khóa gợi ý khi người dùng bắt đầu nhập
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    setSearchValue(suggestion);
-    setAnchorEl(null); // Ẩn thanh từ khóa gợi ý khi người dùng chọn một từ khóa
+  //Location
+  const [locationSearch, setLocationSearch] = useState("");
+  const [locations, setLocations] = useState([
+    "Hanoi",
+    "Ho Chi Minh City",
+    "Da Nang",
+    "Hai Phong",
+  ]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
   };
 
+  const handleSearchInLocation = (event) => {
+    setLocationSearch(event.target.value);
+  };
+
+  // Lọc các vị trí dựa trên giá trị tìm kiếm
+  const filteredLocations = locations.filter((location) =>
+    location.toLowerCase().includes(locationSearch.toLowerCase())
+  );
+
+  // salary
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [customRanges, setCustomRanges] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [errorColor, setErrorColor] = useState(false);
+
+  const handleAddRange = () => {
+    if (from && to) {
+      if (Number(to) > Number(from)) {
+        setCustomRanges([...customRanges, `${from} - ${to}`]);
+        setFrom("");
+        setTo("");
+        setErrorColor(false);
+        setSelectedValue("");
+      } else {
+        setErrorColor(true);
+      }
+    }
+  };
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+  // submit all
   const handleSubmit = (event) => {
     event.preventDefault(); // Ngăn chặn hành động mặc định của form
     console.log("Form submitted!");
@@ -49,8 +84,8 @@ export default function Act() {
     <Container maxWidth={"lg"} sx={{ mt: 4 }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
+          {/* Search*/}
           <Grid item xs={12} md={12}>
-            {/* Search*/}
             <TextField
               variant="outlined"
               value={searchValue}
@@ -65,28 +100,13 @@ export default function Act() {
               placeholder="Recruitment position"
               fullWidth
             />
-            {/* Thanh từ khóa gợi ý */}
-            <Popover
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              onClose={() => setAnchorEl(null)}
-            >
-              <List>
-                {suggestions.map((suggestion, index) => (
-                  <ListItem
-                    button
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <ListItemText primary={suggestion} />
-                  </ListItem>
-                ))}
-              </List>
-            </Popover>
           </Grid>
+          {/* Location*/}
           <Grid item xs={12} md={3}>
             <FormControl variant="outlined" fullWidth>
               <Select
+                value={selectedLocation}
+                onChange={handleLocationChange}
                 input={
                   <OutlinedInput
                     startAdornment={
@@ -97,17 +117,29 @@ export default function Act() {
                   />
                 }
               >
-                <Box>
-                  <TextField placeholder="Typing location" />
+                <Box
+                  sx={{ display: "flex", alignItems: "center", padding: "8px" }}
+                >
+                  <TextField
+                    placeholder="Search location"
+                    value={locationSearch}
+                    size="small"
+                    onChange={handleSearchInLocation}
+                    fullWidth
+                  />
                 </Box>
 
+                <MenuItem value="" hidden></MenuItem>
                 <MenuItem value="all">All</MenuItem>
-                <MenuItem value="location1">Location 1</MenuItem>
-                <MenuItem value="location2">Location 2</MenuItem>
-                <MenuItem value="location3">Location 3</MenuItem>
+                {filteredLocations.map((item, index) => (
+                  <MenuItem key={index} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
+          {/* EXP*/}
           <Grid item xs={12} md={3}>
             <FormControl variant="outlined" fullWidth>
               <Select
@@ -127,9 +159,12 @@ export default function Act() {
               </Select>
             </FormControl>
           </Grid>
+          {/* Salary*/}
           <Grid item xs={12} md={3}>
             <FormControl variant="outlined" fullWidth>
               <Select
+                value={selectedValue}
+                onChange={handleChange}
                 input={
                   <OutlinedInput
                     startAdornment={
@@ -140,18 +175,47 @@ export default function Act() {
                   />
                 }
               >
-                <Box>
-                  <TextField placeholder="from" />
-                  <TextField placeholder="to" />
+                <Box
+                  sx={{ display: "flex", alignItems: "center", padding: "8px" }}
+                >
+                  <TextField
+                    error={errorColor}
+                    placeholder="from"
+                    value={from}
+                    onChange={(e) => setFrom(e.target.value)}
+                    size="small"
+                    sx={{ marginRight: "8px" }}
+                  />
+                  <TextField
+                    error={errorColor}
+                    placeholder="to"
+                    value={to}
+                    onChange={(e) => setTo(e.target.value)}
+                    size="small"
+                    sx={{ marginRight: "8px" }}
+                  />
+                  <IconButton onClick={handleAddRange} color="primary">
+                    <AttachMoneyIcon />
+                  </IconButton>
                 </Box>
 
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="range1">11 - 12</MenuItem>
+                {customRanges.map((range, index) => (
+                  <MenuItem key={index} value={range}>
+                    {range}
+                  </MenuItem>
+                ))}
+
+                <MenuItem value=""></MenuItem>
+                <MenuItem value="deal">Deal</MenuItem>
+                <MenuItem value="15 - 20">15 - 20</MenuItem>
+                <MenuItem value="20 - 25">20 - 25</MenuItem>
+                <MenuItem value="25 - 30">25 - 30</MenuItem>
+                <MenuItem value="30 - 50">30 - 50</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>
           </Grid>
-          {/* Search*/}
+          {/* Find*/}
           <Grid item xs={12} md={3}>
             <Button
               type="submit"

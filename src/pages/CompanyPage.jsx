@@ -1,11 +1,9 @@
-import { Box, Container } from "@mui/material";
 import React from "react";
-import Act from "../components/action/Act";
-import JobDetail from "../components/jobs/JobDetail";
-import JobList from "../components/jobs/JobList";
+import ActCompany from "../components/action/ActCompany";
+import { Box, Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
-export default function JobPage() {
+export default function CompanyPage() {
   return (
     <>
       <Container
@@ -17,7 +15,7 @@ export default function JobPage() {
         }}
       >
         <Box sx={{ width: "100%" }}>
-          <Act />
+          <ActCompany />
         </Box>
       </Container>
       <Outlet />

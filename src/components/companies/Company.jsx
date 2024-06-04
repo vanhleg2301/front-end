@@ -8,11 +8,12 @@ import {
   CardMedia,
 } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const companies = [
   {
     name: "Company 1",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg",
+    logo: "https://www.topcv.vn/v4/image/normal-company/logo_default.png",
   },
   {
     name: "Company 2",
@@ -50,7 +51,10 @@ export default function Company() {
           {companies.map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Card
+                component={Link}
+                to="/companies/:id"
                 sx={{
+                  textDecoration: "none",
                   transition: "transform 0.3s, box-shadow 0.3s",
                   "&:hover": {
                     transform: "scale(1.05)",
