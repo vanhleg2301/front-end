@@ -28,20 +28,6 @@ function Header({ mode, toggleColorMode }) {
     setOpen(newOpen);
   };
 
-  const scrollToSection = (sectionId) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: "smooth" });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
-      });
-      setOpen(false);
-    }
-  };
-
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCv, setIsOpenCv] = React.useState(false);
   const [isOpenCompany, setIsOpenCompany] = React.useState(false);
@@ -65,6 +51,7 @@ function Header({ mode, toggleColorMode }) {
   const handleMouseLeave = () => {
     setIsOpen(false);
     setIsOpenCv(false);
+    setIsOpenCompany(false);
   };
 
   return (
@@ -142,14 +129,14 @@ function Header({ mode, toggleColorMode }) {
                   </Typography>
                   {isOpen && (
                     <Box className="dropdown-content">
-                      <Link to="/jobs/job1" className="dropdown-item">
+                      <Link to="/jobs" className="dropdown-item">
                         Find job
                       </Link>
-                      <Link to="/jobs/job2" className="dropdown-item">
-                        Job saved
+                      <Link to="/jobs" className="dropdown-item">
+                        Job applied
                       </Link>
-                      <Link to="/jobs/job3" className="dropdown-item">
-                        Job 3
+                      <Link to="/jobs" className="dropdown-item">
+                        Job saved
                       </Link>
                     </Box>
                   )}
@@ -172,6 +159,9 @@ function Header({ mode, toggleColorMode }) {
                   </Typography>
                   {isOpenCv && (
                     <Box className="dropdown-content">
+                      <Link to="/profile/info" className="dropdown-item">
+                        profile
+                      </Link>
                       <Link to="/profile/manager" className="dropdown-item">
                         Manager CV
                       </Link>
@@ -199,24 +189,19 @@ function Header({ mode, toggleColorMode }) {
                         Companies
                       </Link>
                       <Link to="/companies/all" className="dropdown-item">
-                        Companies
+                        Top Company
                       </Link>
                     </Box>
                   )}
                 </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection("pricing")}
-                  sx={{ py: "6px", px: "12px" }}
-                  className="menu-item"
-                >
+                {/*pricing*/}
+                <MenuItem sx={{ py: "6px", px: "12px" }} className="menu-item">
                   <Typography variant="body2" color="text.primary">
                     Pricing
                   </Typography>
                 </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection("faq")}
-                  className="menu-item"
-                >
+                {/*Faq*/}
+                <MenuItem className="menu-item">
                   <Typography variant="body2" color="text.primary">
                     FAQ
                   </Typography>
@@ -271,34 +256,11 @@ function Header({ mode, toggleColorMode }) {
                     flexGrow: 1,
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "end",
-                      flexGrow: 1,
-                    }}
-                  >
-                    <ToggleColorMode
-                      mode={mode}
-                      toggleColorMode={toggleColorMode}
-                    />
-                  </Box>
-                  <MenuItem onClick={() => scrollToSection("features")}>
-                    Jobs
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("testimonials")}>
-                    CV
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("highlights")}>
-                    Companies
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("pricing")}>
-                    Pricing
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("faq")}>
-                    FAQ
-                  </MenuItem>
+                  <MenuItem>Jobs</MenuItem>
+                  <MenuItem>CV</MenuItem>
+                  <MenuItem>Companies</MenuItem>
+                  <MenuItem>Pricing</MenuItem>
+                  <MenuItem>FAQ</MenuItem>
                   <Divider />
                   <MenuItem>
                     <Button
