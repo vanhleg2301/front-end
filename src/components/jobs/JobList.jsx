@@ -16,7 +16,7 @@ export default function JobList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/job")
+      .get("http://localhost:9999/jobs")
       .then((response) => setJobs(response.data))
       .catch((error) => console.error("Error fetching jobs:", error));
   }, []);

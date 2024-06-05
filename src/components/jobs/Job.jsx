@@ -43,7 +43,7 @@ export default function Job() {
 
   useEffect(() => {
     axios
-      .get(`${ENDPOINT}/job`)
+      .get(`${ENDPOINT}/jobs`)
       .then((response) => setJobs(response.data))
       .catch((error) => console.error("Error fetching jobs:", error));
   }, [jobs]);
