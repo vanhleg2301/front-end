@@ -12,6 +12,8 @@ import ProfilePage from "../pages/ProfilePage";
 import ManagerCv from "../components/profile.jsx/ManagerCv";
 import UploadCv from "../components/profile.jsx/UploadCv";
 import Info from "../components/profile.jsx/Info";
+import RulePage from "../pages/RulePage";
+import PaymentPage from "../pages/PaymentPage";
 
 export default function publicRoutes() {
   return {
@@ -23,6 +25,8 @@ export default function publicRoutes() {
     ),
     children: [
       { index: true, element: <Home /> },
+      { path: "/rules", element: <RulePage /> },
+      { path: "/payment", element: <PaymentPage /> },
       {
         path: "/profile",
         element: <ProfilePage />,

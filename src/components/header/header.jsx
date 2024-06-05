@@ -14,6 +14,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
 import "./header.css";
+import { IconButton, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import PublishOutlinedIcon from "@mui/icons-material/PublishOutlined";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import Avatar from "@mui/material/Avatar";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const logoStyle = {
   width: "30px",
@@ -22,29 +34,38 @@ const logoStyle = {
 };
 
 function Header({ mode, toggleColorMode }) {
+  // Open
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCv, setIsOpenCv] = React.useState(false);
   const [isOpenCompany, setIsOpenCompany] = React.useState(false);
+  const [isOpenProfile, setIsOpenProfile] = React.useState(false);
 
   const handleMouseEnter = (section) => {
     if (section === "jobs") {
       setIsOpen(true);
       setIsOpenCv(false);
       setIsOpenCompany(false);
+      setIsOpenProfile(false);
     } else if (section === "cv") {
       setIsOpen(false);
       setIsOpenCv(true);
       setIsOpenCompany(false);
+      setIsOpenProfile(false);
     } else if (section === "companies") {
       setIsOpen(false);
       setIsOpenCv(false);
       setIsOpenCompany(true);
+      setIsOpenProfile(false);
+    } else if (section === "info") {
+      setIsOpen(false);
+      setIsOpenCv(false);
+      setIsOpenCompany(false);
+      setIsOpenProfile(true);
     }
   };
 
@@ -52,10 +73,34 @@ function Header({ mode, toggleColorMode }) {
     setIsOpen(false);
     setIsOpenCv(false);
     setIsOpenCompany(false);
+    setIsOpenProfile(false);
+  };
+
+  //logged
+  const accessToken = "vanhvanh";
+
+  // Kiểm tra xem cookie accessToken có tồn tại hay không
+  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+  const isLogged = cookies.some((cookie) => cookie.startsWith("accessToken="));
+
+  // Sử dụng React.useState để thiết lập trạng thái logged
+  const [logged, setLogged] = React.useState(isLogged);
+
+  const handleLogged = () => {
+    // Thiết lập cookie accessToken
+    document.cookie = `accessToken=${accessToken}; path=/`;
+    // Thiết lập state logged khi đăng nhập thành công
+    setLogged(true);
+  };
+
+  const handleLogout = () => {
+    document.cookie =
+      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setLogged(false); // Đặt state logged về false sau khi đăng xuất
   };
 
   return (
-    <div>
+    <Box>
       <AppBar
         position="fixed"
         sx={{
@@ -88,6 +133,7 @@ function Header({ mode, toggleColorMode }) {
                   : "0 0 1px rgba(255, 255, 255, 0.1), 1px 1.5px 2px -1px rgba(255, 255, 255, 0.15), 4px 4px 12px -2.5px rgba(255, 255, 255, 0.15)",
             })}
           >
+            {/* Header top */}
             <Box
               sx={{
                 flexGrow: 1,
@@ -97,11 +143,7 @@ function Header({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <Box
-                sx={{ ml: 2, textDecoration: "none" }}
-                component={Link}
-                to="/"
-              >
+              <Box sx={{ ml: 2 }}>
                 <img
                   src={"mon.png"}
                   style={logoStyle}
@@ -109,33 +151,35 @@ function Header({ mode, toggleColorMode }) {
                 />
               </Box>
 
-              {/* Header top */}
               <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
                 {/*Job*/}
                 <MenuItem
                   onMouseEnter={() => handleMouseEnter("jobs")}
                   onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px", textDecoration: "none" }}
+                  sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
                 >
-                  <Typography
-                    variant="body2"
-                    color="text.primary"
-                    component={Link}
-                    to="/jobs"
-                    sx={{ textDecoration: "none" }}
-                  >
+                  <Typography variant="body2" color="text.primary">
                     Jobs
                   </Typography>
                   {isOpen && (
                     <Box className="dropdown-content">
                       <Link to="/jobs" className="dropdown-item">
+                        <IconButton disabled>
+                          <SearchIcon />
+                        </IconButton>
                         Find job
                       </Link>
-                      <Link to="/jobs" className="dropdown-item">
+                      <Link to="/jobs/applied" className="dropdown-item">
+                        <IconButton disabled>
+                          <WorkOutlineIcon />
+                        </IconButton>
                         Job applied
                       </Link>
-                      <Link to="/jobs" className="dropdown-item">
+                      <Link to="/jobs/saved" className="dropdown-item">
+                        <IconButton disabled>
+                          <FavoriteBorderIcon />
+                        </IconButton>
                         Job saved
                       </Link>
                     </Box>
@@ -145,27 +189,24 @@ function Header({ mode, toggleColorMode }) {
                 <MenuItem
                   onMouseEnter={() => handleMouseEnter("cv")}
                   onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px", textDecoration: "none" }}
+                  sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
                 >
-                  <Typography
-                    variant="body2"
-                    color="text.primary"
-                    component={Link}
-                    to="/profile"
-                    sx={{ textDecoration: "none" }}
-                  >
+                  <Typography variant="body2" color="text.primary">
                     CV
                   </Typography>
                   {isOpenCv && (
                     <Box className="dropdown-content">
-                      <Link to="/profile" className="dropdown-item">
-                        profile
-                      </Link>
                       <Link to="/profile/manager" className="dropdown-item">
+                        <IconButton disabled>
+                          <ContentPasteIcon />
+                        </IconButton>
                         Manager CV
                       </Link>
                       <Link to="/profile/upload" className="dropdown-item">
+                        <IconButton disabled>
+                          <PublishOutlinedIcon />
+                        </IconButton>
                         Upload CV
                       </Link>
                     </Box>
@@ -177,8 +218,6 @@ function Header({ mode, toggleColorMode }) {
                   onMouseLeave={handleMouseLeave}
                   sx={{ py: "6px", px: "12px" }}
                   className="menu-item"
-                  component={Link}
-                  to="/companies/all"
                 >
                   <Typography variant="body2" color="text.primary">
                     Companies
@@ -186,9 +225,15 @@ function Header({ mode, toggleColorMode }) {
                   {isOpenCompany && (
                     <Box className="dropdown-content">
                       <Link to="/companies/all" className="dropdown-item">
+                        <IconButton disabled>
+                          <EmojiTransportationIcon />
+                        </IconButton>
                         Companies
                       </Link>
                       <Link to="/companies/all" className="dropdown-item">
+                        <IconButton disabled>
+                          <AutoAwesomeOutlinedIcon />
+                        </IconButton>
                         Top Company
                       </Link>
                     </Box>
@@ -216,25 +261,69 @@ function Header({ mode, toggleColorMode }) {
               }}
             >
               {/*<ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />*/}
-
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component={Link}
-                to="/login"
-              >
-                Sign in
-              </Button>
-              <Button
-                color="info"
-                variant="contained"
-                size="small"
-                component={Link}
-                to="/register"
-              >
-                Sign up
-              </Button>
+              {logged ? (
+                <MenuItem
+                  sx={{
+                    py: "6px",
+                    px: "12px",
+                  }}
+                  onMouseEnter={() => handleMouseEnter("info")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Avatar alt="User Avatar" src="" />
+                  {isOpenProfile && (
+                    <Box
+                      className="dropdown-content"
+                      sx={{
+                        top: "100%",
+                        left: "50%",
+                        transform: "translateX(-85%)",
+                      }}
+                    >
+                      <Link to="/profile" className="dropdown-item">
+                        <IconButton disabled>
+                          <ManageAccountsIcon />
+                        </IconButton>
+                        Information
+                      </Link>
+                      <Link to="/" className="dropdown-item">
+                        <IconButton disabled>
+                          <MailOutlineIcon />
+                        </IconButton>
+                        Setting notification
+                      </Link>
+                      <Box className="dropdown-item" onClick={handleLogout}>
+                        <IconButton disabled>
+                          <LogoutIcon />
+                        </IconButton>
+                        Logout
+                      </Box>
+                    </Box>
+                  )}
+                </MenuItem>
+              ) : (
+                <Box>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                    // component={Link}
+                    // to="/login"
+                    onClick={handleLogged}
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    color="info"
+                    variant="contained"
+                    size="small"
+                    component={Link}
+                    to="/register"
+                  >
+                    Sign up
+                  </Button>
+                </Box>
+              )}
             </Box>
             {/* Header right */}
             <Box sx={{ display: { sm: "", md: "none" } }}>
@@ -290,7 +379,7 @@ function Header({ mode, toggleColorMode }) {
           </Toolbar>
         </Container>
       </AppBar>
-    </div>
+    </Box>
   );
 }
 
