@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ENDPOINT } from "../../util/constants";
 import "./Act.css";
+import { RequestGet } from "../../util/request";
 
 export default function Action({ onSearch }) {
   const [value, setValue] = useState("");
   const [jobs, setJobs] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedJobs, setSelectedJobs] = useState([]); // Keep track of selected jobs
 
   const onChange = (event) => {
     const searchTerm = event.target.value;
     setValue(searchTerm);
     setShowDropdown(true);
-    onSearch(searchTerm); // Call the search handler from parent component
   };
 
   useEffect(() => {
@@ -25,12 +26,31 @@ export default function Action({ onSearch }) {
   const handleDropdownClick = (searchTerm) => {
     setValue(searchTerm);
     setShowDropdown(false);
-    onSearch(searchTerm); // Call the search handler from parent component
+
+    setSelectedJobs([...selectedJobs, searchTerm]); // Add selected job to list
   };
 
+  // search
+  const [afterSearch, setAfterSearch] = useState([]);
+
+  useEffect(() => {
+    const fetchFind = async () => {
+      try {
+        const data = await RequestGet(`jobs/find?title=${value}`);
+        setAfterSearch(data);
+      } catch (error) {
+        console.error("Error fetching find job:", error);
+      }
+    };
+    fetchFind();
+  }, [value]);
+
+  const handleAfterSearch = () => {
+    onSearch(afterSearch);
+  };
   return (
     <div className="search-container">
-      <h1>Search</h1>
+      <h1>Search by title</h1>
       <div className="search-inner">
         <input
           type="text"
@@ -38,7 +58,7 @@ export default function Action({ onSearch }) {
           onChange={onChange}
           placeholder="Enter search term..."
         />
-        <button onClick={() => handleDropdownClick(value)}>Search</button>
+        <button onClick={handleAfterSearch}>Search</button>
       </div>
       {showDropdown && (
         <div className="dropdown">
@@ -47,8 +67,12 @@ export default function Action({ onSearch }) {
               const searchTerm = value.toLowerCase();
               const des = item.title.toLowerCase();
 
+              // Exclude selected jobs from dropdown
               return (
-                searchTerm && des.includes(searchTerm) && des !== searchTerm
+                searchTerm &&
+                des.includes(searchTerm) &&
+                des !== searchTerm &&
+                !selectedJobs.includes(item.title)
               );
             })
             .slice(0, 6)

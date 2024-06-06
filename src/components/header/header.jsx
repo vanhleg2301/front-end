@@ -186,32 +186,35 @@ function Header({ mode, toggleColorMode }) {
                   )}
                 </MenuItem>
                 {/*Cv*/}
-                <MenuItem
-                  onMouseEnter={() => handleMouseEnter("cv")}
-                  onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px" }}
-                  className="menu-item"
-                >
-                  <Typography variant="body2" color="text.primary">
-                    CV
-                  </Typography>
-                  {isOpenCv && (
-                    <Box className="dropdown-content">
-                      <Link to="/profile/manager" className="dropdown-item">
-                        <IconButton disabled>
-                          <ContentPasteIcon />
-                        </IconButton>
-                        Manager CV
-                      </Link>
-                      <Link to="/profile/upload" className="dropdown-item">
-                        <IconButton disabled>
-                          <PublishOutlinedIcon />
-                        </IconButton>
-                        Upload CV
-                      </Link>
-                    </Box>
-                  )}
-                </MenuItem>
+                {logged ? (
+                  <MenuItem
+                    onMouseEnter={() => handleMouseEnter("cv")}
+                    onMouseLeave={handleMouseLeave}
+                    sx={{ py: "6px", px: "12px" }}
+                    className="menu-item"
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      CV
+                    </Typography>
+                    {isOpenCv && (
+                      <Box className="dropdown-content">
+                        <Link to="/profile/manager" className="dropdown-item">
+                          <IconButton disabled>
+                            <ContentPasteIcon />
+                          </IconButton>
+                          Manager CV
+                        </Link>
+                        <Link to="/profile/upload" className="dropdown-item">
+                          <IconButton disabled>
+                            <PublishOutlinedIcon />
+                          </IconButton>
+                          Upload CV
+                        </Link>
+                      </Box>
+                    )}
+                  </MenuItem>
+                ) : null}
+
                 {/*Companies*/}
                 <MenuItem
                   onMouseEnter={() => handleMouseEnter("companies")}

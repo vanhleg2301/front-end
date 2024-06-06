@@ -28,6 +28,7 @@ import {
   formatSalary,
 } from "../../util/formatHelpers";
 import JobWish from "../profile.jsx/JobWish";
+import { RequestGet } from "../../util/request";
 
 const itemsPerPage = 9;
 
@@ -42,10 +43,15 @@ export default function Job() {
   const [favoriteJobs, setFavoriteJobs] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${ENDPOINT}/jobs`)
-      .then((response) => setJobs(response.data))
-      .catch((error) => console.error("Error fetching jobs:", error));
+    const fetchJob = async () => {
+      try {
+        const response = await RequestGet(`jobs`);
+        setJobs(response);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+    fetchJob();
   }, [jobs]);
 
   // Heart

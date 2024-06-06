@@ -9,17 +9,44 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
-import Act from "../action/Act";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Image } from "@mui/icons-material";
 import ScaleIcon from "@mui/icons-material/Scale";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import CircularProgress from "@mui/material/CircularProgress";
+import { RequestGet } from "../../util/request";
 
 export default function JobDetail() {
+  // Job detail
+  const { jobId } = useParams();
+  const [jobDetail, setJobDetail] = useState();
+  useEffect(() => {
+    const fetchJobDetail = async () => {
+      try {
+        const response = await RequestGet(`jobs/${jobId}`);
+        setJobDetail(response);
+        console.table(response);
+      } catch (error) {
+        console.error("Error fetching job detail:", error);
+      }
+    };
+    fetchJobDetail();
+  }, [jobId]);
+
+  if (!jobDetail) {
+    return (
+      <Box>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  // Company in jobDetail
+
   return (
     <Container>
       <Grid container spacing={0} sx={{ mb: 5 }}>
@@ -28,10 +55,7 @@ export default function JobDetail() {
           <Box sx={{ width: "100%" }}>
             <Card sx={{ p: 3 }}>
               <Box sx={{ textAlign: "center" }}>
-                <Typography>
-                  Nhân Viên Kiến Trúc, Tư Vấn, Thiết Kế - Thu Nhập Từ 10-30
-                  Triệu
-                </Typography>
+                <Typography>{jobDetail.title}</Typography>
               </Box>
               <Box display="flex" justifyContent="center">
                 <Grid container spacing={0} alignItems={"center"}>
@@ -46,7 +70,7 @@ export default function JobDetail() {
                       <AttachMoneyIcon />
                       <Typography variant="body1">Salary</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                        12m
+                        {jobDetail.salary}
                       </Typography>
                     </IconButton>
                   </Grid>
@@ -61,7 +85,7 @@ export default function JobDetail() {
                       <LocationSearchingIcon />
                       <Typography variant="body1">Location</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                        Ha Noi, Ho Chi Minh
+                        {jobDetail.location.city}, {jobDetail.location.province}
                       </Typography>
                     </IconButton>
                   </Grid>
@@ -76,7 +100,7 @@ export default function JobDetail() {
                       <HourglassEmptyIcon />
                       <Typography variant="body1">Exp</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                        1-2 year
+                        {jobDetail.experience} years
                       </Typography>
                     </IconButton>
                   </Grid>
@@ -88,8 +112,10 @@ export default function JobDetail() {
                   <IconButton>
                     <AccessTimeIcon />
                     <Typography>
-                      Hạn nộp:
-                      <span style={{ color: "black" }}>12-10-2002</span>
+                      deadline for submission:
+                      <span style={{ color: "black" }}>
+                        {new Date(jobDetail.deadline).toLocaleDateString()}
+                      </span>
                     </Typography>
                   </IconButton>
                 </Grid>
@@ -217,24 +243,7 @@ export default function JobDetail() {
                     Job description
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
-                    - Tìm kiếm mới khách hàng doanh nghiệp (Khách hàng B2B) là
-                    các công ty, tổ chức có chế độ khám sức khỏe hàng năm cho
-                    Cán bộ nhân viên
-                    <br />
-                    - Tư vấn, ký kết các hợp đồng với KH doanh nghiệp về dịch vụ
-                    khám sức khỏe
-                    <br />
-                    - Chăm sóc các khách hàng cũ để tái ký hợp đồng, chăm sóc
-                    các khách hàng từ Ban lãnh đạo đưa về
-                    <br />
-                    - Liên tục mở rộng mạng lưới khách hàng của các nguồn khách
-                    hàng khác nhau
-                    <br />
-                    - Tham gia các khóa đào tạo, trao đổi kiến thức, phát triển
-                    nâng cao chuyên môn
-                    <br />
-                    - Thực hiện các công việc khác theo sự phân công của cấp
-                    trên
+                    {jobDetail.desciprtion}
                     <br />
                   </Typography>
 

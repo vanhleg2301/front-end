@@ -14,6 +14,8 @@ import UploadCv from "../components/profile.jsx/UploadCv";
 import Info from "../components/profile.jsx/Info";
 import RulePage from "../pages/RulePage";
 import PaymentPage from "../pages/PaymentPage";
+import JobApplied from "../components/jobs/JobApplied";
+import JobSaved from "../components/jobs/JobSaved";
 
 export default function publicRoutes() {
   return {
@@ -41,7 +43,7 @@ export default function publicRoutes() {
         element: <CompanyPage />,
         children: [
           { path: "all", element: <CompanyList /> },
-          { path: "/companies/:id", element: <CompanyDetail /> },
+          { path: ":id", element: <CompanyDetail /> },
         ],
       },
 
@@ -50,7 +52,9 @@ export default function publicRoutes() {
         element: <JobPage />,
         children: [
           { index: true, element: <Job /> },
-          { path: ":id", element: <JobDetail /> },
+          { path: ":jobId", element: <JobDetail /> },
+          { path: "applied", element: <JobApplied /> },
+          { path: "saved", element: <JobSaved /> },
           { path: "table", element: <JobList /> },
         ],
       },
