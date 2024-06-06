@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ENDPOINT } from "../../util/constants";
-import "./Act.css";
+import "./Action.css";
 import { RequestGet } from "../../util/request";
+import { Box } from "@mui/material";
 
 export default function Action({ onSearch }) {
   const [value, setValue] = useState("");
@@ -38,6 +39,7 @@ export default function Action({ onSearch }) {
       try {
         const data = await RequestGet(`jobs/find?title=${value}`);
         setAfterSearch(data);
+        console.log(afterSearch);
       } catch (error) {
         console.error("Error fetching find job:", error);
       }
@@ -47,11 +49,12 @@ export default function Action({ onSearch }) {
 
   const handleAfterSearch = () => {
     onSearch(afterSearch);
+    console.log(afterSearch);
   };
   return (
-    <div className="search-container">
+    <Box className="search-container">
       <h1>Search by title</h1>
-      <div className="search-inner">
+      <Box className="search-inner">
         <input
           type="text"
           value={value}
@@ -59,9 +62,9 @@ export default function Action({ onSearch }) {
           placeholder="Enter search term..."
         />
         <button onClick={handleAfterSearch}>Search</button>
-      </div>
+      </Box>
       {showDropdown && (
-        <div className="dropdown">
+        <Box className="dropdown">
           {jobs
             .filter((item) => {
               const searchTerm = value.toLowerCase();
@@ -77,16 +80,16 @@ export default function Action({ onSearch }) {
             })
             .slice(0, 6)
             .map((item) => (
-              <div
+              <Box
                 onClick={() => handleDropdownClick(item.title)}
                 className="dropdown-row"
                 key={item._id}
               >
                 {item.title}
-              </div>
+              </Box>
             ))}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

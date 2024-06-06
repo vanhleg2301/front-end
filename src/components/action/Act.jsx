@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -11,22 +11,75 @@ import {
   Button,
   Grid,
   IconButton,
-  Typography,
+  Autocomplete,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import { RequestGet } from "../../util/request";
 
-export default function Act() {
+export default function Act({ onSearch }) {
   //Search bar
   const [searchValue, setSearchValue] = useState("");
+  const [jobs, setJobs] = useState([]);
+  const [selectedJobs, setSelectedJobs] = useState([]); // Keep track of selected jobs
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
+  // search
+  const [afterSearch, setAfterSearch] = useState("");
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await RequestGet(`jobs`);
+        setJobs(response);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+    fetchJob();
+  }, []);
+
+  const onChange = (event) => {
+    const searchTerm = event.target.value;
+    setSearchValue(searchTerm);
   };
 
-  //Location
+  const handleDropdownClick = async (event, searchTerm) => {
+    if (typeof searchTerm === "string") {
+      setSearchValue(searchTerm);
+      setSelectedJobs([...selectedJobs, searchTerm]);
+      try {
+        const data = await RequestGet(`jobs/find?title=${searchTerm}`);
+        setAfterSearch(data);
+      } catch (error) {
+        console.error("Error fetching find job:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchFind = async () => {
+      try {
+        const data = await RequestGet(`jobs/find?title=${searchValue}`);
+        setAfterSearch(data);
+        console.log("from fetch: ", afterSearch);
+      } catch (error) {
+        console.error("Error fetching find job:", error);
+      }
+    };
+    fetchFind();
+  }, [searchValue]);
+
+  // submit all
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Ngăn chặn hành động mặc định của form
+    onSearch(afterSearch);
+    console.log("from search: ", afterSearch);
+    console.log("Form submitted!");
+  };
+
+  // location
   const [locationSearch, setLocationSearch] = useState("");
   const [locations, setLocations] = useState([
     "Hanoi",
@@ -44,7 +97,7 @@ export default function Act() {
     setLocationSearch(event.target.value);
   };
 
-  // Lọc các vị trí dựa trên giá trị tìm kiếm
+  // Lọc location dựa trên giá trị tìm kiếm
   const filteredLocations = locations.filter((location) =>
     location.toLowerCase().includes(locationSearch.toLowerCase())
   );
@@ -74,32 +127,37 @@ export default function Act() {
     setSelectedValue(event.target.value);
   };
 
-  // submit all
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của form
-    console.log("Form submitted!");
-  };
-
   return (
     <Container maxWidth={"lg"} sx={{ mt: 4 }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {/* Search*/}
           <Grid item xs={12} md={12}>
-            <TextField
-              variant="outlined"
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              placeholder="Recruitment position"
-              fullWidth
-            />
+            <Box>
+              <Autocomplete
+                freeSolo
+                options={jobs.map((job) => job.title)}
+                onChange={handleDropdownClick}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    value={searchValue}
+                    onChange={onChange}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Recruitment position"
+                    fullWidth
+                  />
+                )}
+              />
+            </Box>
           </Grid>
           {/* Location*/}
           <Grid item xs={12} md={3}>
@@ -129,7 +187,9 @@ export default function Act() {
                   />
                 </Box>
 
-                <MenuItem value="" hidden></MenuItem>
+                <MenuItem value="" hidden>
+                  ---
+                </MenuItem>
                 <MenuItem value="all">All</MenuItem>
                 {filteredLocations.map((item, index) => (
                   <MenuItem key={index} value={item}>
@@ -143,6 +203,7 @@ export default function Act() {
           <Grid item xs={12} md={3}>
             <FormControl variant="outlined" fullWidth>
               <Select
+                value={""}
                 input={
                   <OutlinedInput
                     startAdornment={
@@ -153,8 +214,9 @@ export default function Act() {
                   />
                 }
               >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="range1">1 year</MenuItem>
+                <MenuItem value="">---</MenuItem>
+                <MenuItem value="y">All</MenuItem>
+                <MenuItem value="1">1 year</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>
@@ -205,12 +267,14 @@ export default function Act() {
                   </MenuItem>
                 ))}
 
-                <MenuItem value=""></MenuItem>
+                <MenuItem value="" hidden>
+                  ---
+                </MenuItem>
                 <MenuItem value="deal">Deal</MenuItem>
-                <MenuItem value="15 - 20">15 - 20</MenuItem>
-                <MenuItem value="20 - 25">20 - 25</MenuItem>
-                <MenuItem value="25 - 30">25 - 30</MenuItem>
-                <MenuItem value="30 - 50">30 - 50</MenuItem>
+                <MenuItem value="15-20">15 - 20</MenuItem>
+                <MenuItem value="20-25">20 - 25</MenuItem>
+                <MenuItem value="25-30">25 - 30</MenuItem>
+                <MenuItem value="30-50">30 - 50</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>
