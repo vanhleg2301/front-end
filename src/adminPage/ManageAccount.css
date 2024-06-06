@@ -10,3 +10,15 @@
 .bg-green {
   background-color: lightgreen;
 }
+.button:active {
+  background-color: blue;
+}
+.displaynone {
+  display: none;
+}
+.margin-right10px {
+  margin-right: 10px;
+}
+.width30 {
+  width: 30%;
+}

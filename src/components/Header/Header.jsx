@@ -1,6 +1,5 @@
 import {} from "react";
-import {} from "react-bootstrap";
-import "./Header.css";
+
 const Header = () => {
   return (
     <>

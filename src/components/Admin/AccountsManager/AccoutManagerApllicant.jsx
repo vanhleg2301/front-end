@@ -1,4 +1,4 @@
-import {} from "react";
+import { useState } from "react";
 import {
   Button,
   TableBody,
@@ -7,13 +7,28 @@ import {
   TableRow,
   TableContainer,
   Container,
+  Table,
+  Link,
+  Grid,
+  TextField,
 } from "@mui/material";
 import {} from "@mui/icons-material";
-import "./AccountsManagerApplicant.css";
+
 const AccountsManagerApplicant = () => {
-  returṇ̣̣(
+  const [applicants, setApplicants] = useState([]);
+  return (
     <Container className="text-align-center">
-      <h2>Applicant Account</h2>
+      <Grid container justifyContent={"end"} paddingTop={2}>
+        <Grid item xs={4}>
+          <TextField
+            variant="outlined"
+            label="Search Account by Name"
+            fullWidth
+            size="small"
+          />
+        </Grid>
+      </Grid>
+      <h3>Applicant</h3>
       <TableContainer>
         <Table>
           <TableHead>
@@ -36,7 +51,9 @@ const AccountsManagerApplicant = () => {
               <TableCell>abc@gmail.com</TableCell>
               <TableCell>012345678</TableCell>
               <TableCell>
-                <Button className="bg-red text-white">BAN</Button>
+                <Button color="error" variant="contained">
+                  Deactive
+                </Button>
               </TableCell>
             </TableRow>
           </TableBody>

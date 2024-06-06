@@ -8,13 +8,27 @@ import {
   TableRow,
   Container,
   Table,
+  Link,
+  Select,
+  MenuItem,
+  Grid,
+  TextField,
 } from "@mui/material";
 import {} from "@mui/icons-material";
-import "./AccountManagerRecuiter.css";
-const AccountManagerRecuiter = () => {
+const CompanyManager = () => {
   const [account, setAccount] = useState([]);
   return (
     <Container className="text-align-center">
+      <Grid container justifyContent={"end"}>
+        <Grid item xs={4}>
+          <TextField
+            variant="outlined"
+            label="Search Company by Name"
+            fullWidth
+            size="small"
+          />
+        </Grid>
+      </Grid>
       <h2>Companies</h2>
       <TableContainer>
         <Table>
@@ -23,14 +37,15 @@ const AccountManagerRecuiter = () => {
               <TableCell>Company ID</TableCell>
               <TableCell>Company Name</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell colSpan={2} align="center" className="width30">
+                Action
+              </TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>
-                <Link href="#">1234567</Link>
-              </TableCell>
+              <TableCell>1234567</TableCell>
               <TableCell>Company A</TableCell>
               <TableCell>
                 <Select>
@@ -41,8 +56,15 @@ const AccountManagerRecuiter = () => {
                   <MenuItem value={"Diamond"}>Diamond</MenuItem>
                 </Select>
               </TableCell>
-              <TableCell>
-                <Button className="bg-red text-white">BAN</Button>
+              <TableCell align="right">
+                <Button variant="contained" color="info">
+                  See Detail
+                </Button>
+              </TableCell>
+              <TableCell align="left">
+                <Button variant="contained" color="error">
+                  Deactive
+                </Button>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -52,4 +74,4 @@ const AccountManagerRecuiter = () => {
   );
 };
 
-export default AccountManagerRecuiter;
+export default CompanyManager;
