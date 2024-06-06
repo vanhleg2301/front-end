@@ -43,7 +43,7 @@ export default function JobSaved() {
                 />
               </Box>
             </Grid>
-            <Grid item md={7}>
+            <Grid item md={5}>
               <Box sx={{ marginTop: 2 }}>
                 <Typography variant="h5" component="h2">
                   Title
@@ -57,7 +57,7 @@ export default function JobSaved() {
                 <Box
                   sx={{
                     marginTop: 1,
-                    width: "12%",
+                    width: "70px",
                     paddingLeft: "10px",
                     paddingRight: "10px",
                     backgroundColor: "#f4f5f5",
@@ -72,7 +72,7 @@ export default function JobSaved() {
                 </Box>
               </Box>
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={4}>
               <Box
                 sx={{
                   display: "flex",
@@ -82,13 +82,16 @@ export default function JobSaved() {
                   height: "100%",
                 }}
               >
-                <IconButton variant="contained" onClick={handleApply}>
+                <Button variant="contained" onClick={handleApply}>
                   <Typography>Apply</Typography>
-                </IconButton>
-                <IconButton sx={{ bgcolor: "#4caf50" }}>
-                  <Delete />
-                  <Typography>Un save</Typography>
-                </IconButton>
+                </Button>
+                <Button
+                  variant="contained"
+                  startIcon={<Delete />}
+                  sx={{ whiteSpace: "nowrap", ml: 2 }}
+                >
+                  <Typography> Un save</Typography>
+                </Button>
               </Box>
             </Grid>
           </Grid>

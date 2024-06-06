@@ -12,6 +12,7 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 export default function JobSavedChild({ open, handleClose }) {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
+  const [textDes, setTextDes] = React.useState("");
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -19,11 +20,16 @@ export default function JobSavedChild({ open, handleClose }) {
     setFileName(file.name);
   };
 
-  const handleUpload = () => {
+  const handleDes = async (e) => {
+    setTextDes(event.target.value);
+  };
+
+  const handleUpload = async () => {
     if (selectedFile) {
       // Gửi tệp tin được chọn lên máy chủ
       // Ở đây bạn có thể sử dụng các thư viện như axios để gửi dữ liệu
       console.log("Uploading file:", selectedFile);
+      console.log("description", textDes);
     } else {
       console.log("No file selected.");
     }
@@ -84,6 +90,8 @@ export default function JobSavedChild({ open, handleClose }) {
                   <TextareaAutosize
                     id="introduction"
                     aria-label="Introduction"
+                    value={textDes}
+                    onChange={handleDes}
                     minRows={7}
                     placeholder="Write your introduction here..."
                     style={{ width: "100%", resize: "vertical" }}

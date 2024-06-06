@@ -16,6 +16,8 @@ import RulePage from "../pages/RulePage";
 import PaymentPage from "../pages/PaymentPage";
 import JobApplied from "../components/jobs/JobApplied";
 import JobSaved from "../components/jobs/JobSaved";
+import MeetingPage from "../pages/MeetingPage";
+import HomeMeeting from "../components/meeting/HomeMeeting";
 
 export default function publicRoutes() {
   return {
@@ -29,6 +31,12 @@ export default function publicRoutes() {
       { index: true, element: <Home /> },
       { path: "/rules", element: <RulePage /> },
       { path: "/payment", element: <PaymentPage /> },
+      {
+        path: "/meeting",
+        element: <MeetingPage />,
+        children: [{ index: true, element: <HomeMeeting /> }],
+      },
+
       {
         path: "/profile",
         element: <ProfilePage />,

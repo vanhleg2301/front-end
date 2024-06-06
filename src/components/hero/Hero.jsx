@@ -5,7 +5,6 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import Act from "../action/Act";
 
 export default function Hero() {
   return (
@@ -66,9 +65,7 @@ export default function Hero() {
             enhance your career journey.
           </Typography>
         </Stack>
-        <Box>
-          <Act />
-        </Box>
+        <Box></Box>
       </Container>
     </Box>
   );

@@ -1,17 +1,13 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
-import Drawer from "@mui/material/Drawer";
-import MenuIcon from "@mui/icons-material/Menu";
-import ToggleColorMode from "./ToggleColorMode";
+// import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
 import "./header.css";
 import { IconButton, InputAdornment } from "@mui/material";
@@ -26,6 +22,8 @@ import Avatar from "@mui/material/Avatar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
+import BuildCircleIcon from "@mui/icons-material/BuildCircle";
+import HeaderRight from "./HeaderRight";
 
 const logoStyle = {
   width: "30px",
@@ -35,15 +33,11 @@ const logoStyle = {
 
 function Header({ mode, toggleColorMode }) {
   // Open
-  const [open, setOpen] = React.useState(false);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCv, setIsOpenCv] = React.useState(false);
   const [isOpenCompany, setIsOpenCompany] = React.useState(false);
   const [isOpenProfile, setIsOpenProfile] = React.useState(false);
+  const [isOpenTools, setIsOpenTools] = React.useState(false);
 
   const handleMouseEnter = (section) => {
     if (section === "jobs") {
@@ -51,21 +45,31 @@ function Header({ mode, toggleColorMode }) {
       setIsOpenCv(false);
       setIsOpenCompany(false);
       setIsOpenProfile(false);
+      setIsOpenTools(false);
     } else if (section === "cv") {
       setIsOpen(false);
       setIsOpenCv(true);
       setIsOpenCompany(false);
       setIsOpenProfile(false);
+      setIsOpenTools(false);
     } else if (section === "companies") {
       setIsOpen(false);
       setIsOpenCv(false);
       setIsOpenCompany(true);
       setIsOpenProfile(false);
+      setIsOpenTools(false);
     } else if (section === "info") {
       setIsOpen(false);
       setIsOpenCv(false);
       setIsOpenCompany(false);
       setIsOpenProfile(true);
+      setIsOpenTools(false);
+    } else if (section === "tools") {
+      setIsOpen(false);
+      setIsOpenCv(false);
+      setIsOpenCompany(false);
+      setIsOpenProfile(false);
+      setIsOpenTools(true);
     }
   };
 
@@ -74,6 +78,7 @@ function Header({ mode, toggleColorMode }) {
     setIsOpenCv(false);
     setIsOpenCompany(false);
     setIsOpenProfile(false);
+    setIsOpenTools(false);
   };
 
   //logged
@@ -242,11 +247,32 @@ function Header({ mode, toggleColorMode }) {
                     </Box>
                   )}
                 </MenuItem>
-                {/*pricing*/}
-                <MenuItem sx={{ py: "6px", px: "12px" }} className="menu-item">
+                {/*Tools*/}
+                <MenuItem
+                  onMouseEnter={() => handleMouseEnter("tools")}
+                  onMouseLeave={handleMouseLeave}
+                  sx={{ py: "6px", px: "12px" }}
+                  className="menu-item"
+                >
                   <Typography variant="body2" color="text.primary">
-                    Pricing
+                    Tools
                   </Typography>
+                  {isOpenTools && (
+                    <Box className="dropdown-content">
+                      <Link to="/" className="dropdown-item">
+                        <IconButton disabled>
+                          <BuildCircleIcon />
+                        </IconButton>
+                        MBTI test
+                      </Link>
+                      <Link to="/" className="dropdown-item">
+                        <IconButton disabled>
+                          <BuildCircleIcon />
+                        </IconButton>
+                        MI test
+                      </Link>
+                    </Box>
+                  )}
                 </MenuItem>
                 {/*Faq*/}
                 <MenuItem className="menu-item">
@@ -329,56 +355,7 @@ function Header({ mode, toggleColorMode }) {
               )}
             </Box>
             {/* Header right */}
-            <Box sx={{ display: { sm: "", md: "none" } }}>
-              <Button
-                variant="text"
-                color="primary"
-                aria-label="menu"
-                onClick={toggleDrawer(true)}
-                sx={{ minWidth: "30px", p: "4px" }}
-              >
-                <MenuIcon />
-              </Button>
-              <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-                <Box
-                  sx={{
-                    minWidth: "60dvw",
-                    p: 2,
-                    backgroundColor: "background.paper",
-                    flexGrow: 1,
-                  }}
-                >
-                  <MenuItem>Jobs</MenuItem>
-                  <MenuItem>CV</MenuItem>
-                  <MenuItem>Companies</MenuItem>
-                  <MenuItem>Pricing</MenuItem>
-                  <MenuItem>FAQ</MenuItem>
-                  <Divider />
-                  <MenuItem>
-                    <Button
-                      color="info"
-                      variant="contained"
-                      component={Link}
-                      to="/register"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component={Link}
-                      to="/login"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
-                </Box>
-              </Drawer>
-            </Box>
+            <HeaderRight />
           </Toolbar>
         </Container>
       </AppBar>
