@@ -19,7 +19,7 @@ import {
   formatLocation,
   formatSalary,
 } from "../../util/formatHelpers";
-import JobWish from "../profile.jsx/JobWish";
+import JobWish from "../profile/JobWish";
 import { RequestGet } from "../../util/request";
 import Act from "../action/Act";
 import FilterJob from "./FilterJob";

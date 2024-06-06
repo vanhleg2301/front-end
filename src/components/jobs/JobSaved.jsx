@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Container, Grid, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import JobSavedChild from "./JobSavedChild";
 
-export default function JobSaved({}) {
-  const apply = false;
+export default function JobSaved() {
+  const [openDialog, setOpenDialog] = useState(false); // State to control dialog
+
   const handleApply = async () => {
-    apply = true;
-    console.log(apply);
+    setOpenDialog(true); // Open the dialog
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
   };
   return (
     <Container maxWidth={"lg"}>
@@ -89,6 +94,7 @@ export default function JobSaved({}) {
           </Grid>
         </CardContent>
       </Card>
+      <JobSavedChild open={openDialog} handleClose={handleCloseDialog} />
     </Container>
   );
 }

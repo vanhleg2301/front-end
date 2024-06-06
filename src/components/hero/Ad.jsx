@@ -1,12 +1,4 @@
-import Slide from "@material-ui/core/Slide";
-import React, { Component } from "react";
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@material-ui/core";
+import React from "react";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { Carousel, CarouselSlide } from "material-ui-carousel";

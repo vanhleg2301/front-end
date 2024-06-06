@@ -6,7 +6,6 @@ import {
   Container,
   Grid,
   IconButton,
-  Stack,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -19,23 +18,38 @@ import ScaleIcon from "@mui/icons-material/Scale";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CircularProgress from "@mui/material/CircularProgress";
 import { RequestGet } from "../../util/request";
+import JobSavedChild from "./JobSavedChild";
 
 export default function JobDetail() {
   // Job detail
   const { jobId } = useParams();
   const [jobDetail, setJobDetail] = useState();
+
   useEffect(() => {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`jobs/${jobId}`);
         setJobDetail(response);
-        console.table(response);
+        console.log(response);
       } catch (error) {
         console.error("Error fetching job detail:", error);
       }
     };
     fetchJobDetail();
   }, [jobId]);
+
+  // Company in jobDetail
+
+  // apply here
+  const [openDialog, setOpenDialog] = useState(false); // State to control dialog
+
+  const handleApply = async () => {
+    setOpenDialog(true); // Open the dialog
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog
+  };
 
   if (!jobDetail) {
     return (
@@ -44,9 +58,6 @@ export default function JobDetail() {
       </Box>
     );
   }
-
-  // Company in jobDetail
-
   return (
     <Container>
       <Grid container spacing={0} sx={{ mb: 5 }}>
@@ -125,8 +136,9 @@ export default function JobDetail() {
                 <Grid item md={9}>
                   <Button
                     sx={{ width: "90%", mr: 1 }}
-                    color="secondary"
+                    color="primary"
                     variant="contained"
+                    onClick={handleApply}
                   >
                     Apply
                   </Button>
@@ -134,7 +146,7 @@ export default function JobDetail() {
                 <Grid item md={3}>
                   <Button
                     sx={{ width: "80%", mr: 1 }}
-                    color="secondary"
+                    color="primary"
                     variant="outlined"
                     startIcon={<FavoriteBorderIcon />}
                   >
@@ -482,6 +494,7 @@ export default function JobDetail() {
           </Grid>
         </Grid>
       </Grid>
+      <JobSavedChild open={openDialog} handleClose={handleCloseDialog} />
     </Container>
   );
 }
