@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 // import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
 import "./header.css";
-import { IconButton, InputAdornment } from "@mui/material";
+import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
@@ -24,6 +24,9 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 import HeaderRight from "./HeaderRight";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const logoStyle = {
   width: "30px",
@@ -148,12 +151,12 @@ function Header({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <Box sx={{ ml: 2 }}>
-                <img
-                  src={"mon.png"}
-                  style={logoStyle}
-                  alt="logo of ace interview"
-                />
+              <Box
+                sx={{ ml: 2, textDecoration: "none", color: "blue" }}
+                component={Link}
+                to="/"
+              >
+                <img src={"mon.png"} style={logoStyle} alt="logo" />
               </Box>
 
               <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
@@ -291,45 +294,75 @@ function Header({ mode, toggleColorMode }) {
             >
               {/*<ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />*/}
               {logged ? (
-                <MenuItem
+                <Box
                   sx={{
-                    py: "6px",
-                    px: "12px",
+                    display: { xs: "none", md: "flex" },
                   }}
-                  onMouseEnter={() => handleMouseEnter("info")}
-                  onMouseLeave={handleMouseLeave}
                 >
-                  <Avatar alt="User Avatar" src="" />
-                  {isOpenProfile && (
-                    <Box
-                      className="dropdown-content"
-                      sx={{
-                        top: "100%",
-                        left: "50%",
-                        transform: "translateX(-85%)",
-                      }}
-                    >
-                      <Link to="/profile" className="dropdown-item">
-                        <IconButton disabled>
-                          <ManageAccountsIcon />
-                        </IconButton>
-                        Information
-                      </Link>
-                      <Link to="/" className="dropdown-item">
-                        <IconButton disabled>
-                          <MailOutlineIcon />
-                        </IconButton>
-                        Setting notification
-                      </Link>
-                      <Box className="dropdown-item" onClick={handleLogout}>
-                        <IconButton disabled>
-                          <LogoutIcon />
-                        </IconButton>
-                        Logout
+                  <MenuItem
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: "inherit", // Keeps the background color unchanged
+                      },
+                    }}
+                  >
+                    <Badge badgeContent={5} color="primary">
+                      <MailIcon color="action" />
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: "inherit", // Keeps the background color unchanged
+                      },
+                    }}
+                  >
+                    <Badge badgeContent={4} color="primary">
+                      <NotificationsIcon color="action" />
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      py: "6px",
+                      px: "12px",
+                    }}
+                    onMouseEnter={() => handleMouseEnter("info")}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Avatar alt="User Avatar" src="" />
+                    {isOpenProfile && (
+                      <Box
+                        className="dropdown-content"
+                        sx={{
+                          top: "100%",
+                          left: "50%",
+                          transform: "translateX(-85%)",
+                        }}
+                      >
+                        <Link to="/profile" className="dropdown-item">
+                          <IconButton disabled>
+                            <ManageAccountsIcon />
+                          </IconButton>
+                          Information
+                        </Link>
+                        <Link to="/" className="dropdown-item">
+                          <IconButton disabled>
+                            <MailOutlineIcon />
+                          </IconButton>
+                          Setting notification
+                        </Link>
+                        <Box className="dropdown-item" onClick={handleLogout}>
+                          <IconButton disabled>
+                            <LogoutIcon />
+                          </IconButton>
+                          Logout
+                        </Box>
                       </Box>
-                    </Box>
-                  )}
-                </MenuItem>
+                    )}
+                  </MenuItem>
+                </Box>
               ) : (
                 <Box>
                   <Button

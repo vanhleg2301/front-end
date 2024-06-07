@@ -3,7 +3,9 @@ import { Outlet } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { Box, CssBaseline, Divider } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+
 import getLPTheme from "../header/getLPTheme";
 
 export default function Layout() {

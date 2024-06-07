@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoginWith from "../login/LoginWith";
 import { Divider } from "@mui/material";
+import { Request } from "../../util/request";
 
 function Copyright(props) {
   return (
@@ -31,14 +32,48 @@ function Copyright(props) {
 }
 
 export default function Register() {
-  const handleSubmit = (event) => {
+  const [user, setUser] = React.useState([]);
+  const [selectedButton, setSelectedButton] = React.useState(1);
+  const [errors, setErrors] = React.useState("");
+
+  const handleButtonClick = (button) => {
+    setSelectedButton(button);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const payload = {
+      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      fullName: data.get("fullName"),
+      roleID: selectedButton === 1 ? 1 : 2,
+    };
+    console.log("Payload:", payload); // Log the payload for debugging
+
+    try {
+      const user = await Request("auth/register", payload);
+      if (user) {
+        setUser(user);
+        console.log(user);
+      } else {
+        console.error("Failed to register user. User data is null.");
+      }
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data.message);
+        console.error("Error response:", errors);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+        setErrors({ message: "Network error. Please try again later." });
+      } else {
+        console.error("Error message:", error.message);
+        setErrors({ message: error.message });
+      }
+    }
   };
+
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
@@ -58,27 +93,40 @@ export default function Register() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
+            {/*User name*/}
+
+            {/* Display error messages */}
+            {errors && (
+              <Grid item xs={12}>
+                <Typography color="error" variant="body2">
+                  {errors}
+                </Typography>
+              </Grid>
+            )}
+
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="username"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="username"
+                label="User Name"
                 autoFocus
               />
             </Grid>
+            {/*Full name*/}
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
+                id="fullName"
+                label="Full Name"
+                name="fullName"
                 autoComplete="family-name"
               />
             </Grid>
+            {/*Email*/}
             <Grid item xs={12}>
               <TextField
                 required
@@ -89,6 +137,7 @@ export default function Register() {
                 autoComplete="email"
               />
             </Grid>
+            {/*Password*/}
             <Grid item xs={12}>
               <TextField
                 required
@@ -99,6 +148,34 @@ export default function Register() {
                 id="password"
                 autoComplete="new-password"
               />
+            </Grid>
+            <input
+              type="hidden"
+              name="roleID"
+              value={selectedButton === 1 ? "applicant" : "recruiter"}
+            />
+            <Grid container sx={{ textAlign: "center" }}>
+              <Grid item xs={6}>
+                <Button
+                  name="roleID"
+                  variant={selectedButton === 1 ? "contained" : "outlined"}
+                  sx={{ mt: 3, mb: 2, width: "80%" }}
+                  onClick={() => handleButtonClick(1)}
+                >
+                  applicant
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  name="roleID"
+                  fullWidth
+                  variant={selectedButton === 2 ? "contained" : "outlined"}
+                  sx={{ mt: 3, mb: 2, width: "80%" }}
+                  onClick={() => handleButtonClick(2)}
+                >
+                  Recruiter
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
           <Button

@@ -1,15 +1,32 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 import publicRoutes from "./public.route";
-import Login from "../components/login/Login";
-import Register from "../components/register/Register";
+import { AuthProvider } from "../context/AuthProvider";
+import ErrorPage from "../pages/ErrorPage";
+import ProtectedRoute from "./ProtectedRoute";
+import Admin from "../admin/Admin";
 
-const AuthLayout = () => {};
+const AuthLayout = () => {
+  // return (
+  //   <AuthProvider>
+  //     <Outlet />
+  //   </AuthProvider>
+  // );
+};
 
 export default createBrowserRouter([
-  { element: <Home />, path: "/" },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
+  // {
+  //   element: <AuthLayout />,
+  //   errorElement: <ErrorPage />,
+  //   children: [
+  //     {
+  //       element: <ProtectedRoute />,
+  //       children: [
+  { path: "/admin", element: <Admin /> },
+  //       ],
+  //     },
+  //   ],
+  // },
+
   publicRoutes(),
 ]);

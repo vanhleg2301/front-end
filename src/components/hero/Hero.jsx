@@ -65,7 +65,7 @@ export default function Hero() {
             enhance your career journey.
           </Typography>
         </Stack>
-        <Box></Box>
+        <Box>carousel </Box>
       </Container>
     </Box>
   );

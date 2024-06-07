@@ -18,6 +18,9 @@ import JobApplied from "../components/jobs/JobApplied";
 import JobSaved from "../components/jobs/JobSaved";
 import MeetingPage from "../pages/MeetingPage";
 import HomeMeeting from "../components/meeting/HomeMeeting";
+import Login from "../components/login/Login";
+import Register from "../components/register/Register";
+import ForgotPassword from "../components/forgotPassword/ForgotPassword";
 
 export default function publicRoutes() {
   return {
@@ -29,8 +32,12 @@ export default function publicRoutes() {
     ),
     children: [
       { index: true, element: <Home /> },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
+      { path: "/forgot", element: <ForgotPassword /> },
       { path: "/rules", element: <RulePage /> },
       { path: "/payment", element: <PaymentPage /> },
+
       {
         path: "/meeting",
         element: <MeetingPage />,

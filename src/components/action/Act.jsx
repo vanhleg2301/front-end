@@ -22,11 +22,27 @@ import { RequestGet } from "../../util/request";
 export default function Act({ onSearch }) {
   //Search bar
   const [searchValue, setSearchValue] = useState("");
+
   const [jobs, setJobs] = useState([]);
   const [selectedJobs, setSelectedJobs] = useState([]); // Keep track of selected jobs
 
   // search
   const [afterSearch, setAfterSearch] = useState("");
+
+  // location
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [locationSearch, setLocationSearch] = useState("");
+  const [locations, setLocations] = useState([]);
+
+  // salary
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [customRanges, setCustomRanges] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [errorColor, setErrorColor] = useState(false);
+
+  // EXP
+  const [selectedExp, setSelectedExp] = useState("");
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -61,7 +77,13 @@ export default function Act({ onSearch }) {
   useEffect(() => {
     const fetchFind = async () => {
       try {
-        const data = await RequestGet(`jobs/find?title=${searchValue}`);
+        const query = new URLSearchParams({
+          title: searchValue,
+          location: selectedLocation,
+          experience: selectedExp,
+          salary: selectedValue,
+        }).toString();
+        const data = await RequestGet(`jobs/find?${query}`);
         setAfterSearch(data);
         console.log("from fetch: ", afterSearch);
       } catch (error) {
@@ -75,19 +97,24 @@ export default function Act({ onSearch }) {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Ngăn chặn hành động mặc định của form
     onSearch(afterSearch);
-    console.log("from search: ", afterSearch);
-    console.log("Form submitted!");
+    // console.log("from search: ", afterSearch);
+    console.log("Form submitted!: ", [
+      searchValue,
+      selectedLocation,
+      selectedExp,
+      selectedValue,
+    ]);
   };
 
   // location
-  const [locationSearch, setLocationSearch] = useState("");
-  const [locations, setLocations] = useState([
-    "Hanoi",
-    "Ho Chi Minh",
-    "Da Nang",
-    "Hai Phong",
-  ]);
-  const [selectedLocation, setSelectedLocation] = useState("");
+  useEffect(() => {
+    if (jobs && jobs.length > 0) {
+      const uniqueLocations = [
+        ...new Set(jobs.map((job) => job.location.city)),
+      ];
+      setLocations(uniqueLocations);
+    }
+  }, [jobs]);
 
   const handleLocationChange = (event) => {
     setSelectedLocation(event.target.value);
@@ -103,11 +130,6 @@ export default function Act({ onSearch }) {
   );
 
   // salary
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [customRanges, setCustomRanges] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [errorColor, setErrorColor] = useState(false);
 
   const handleAddRange = () => {
     if (from && to) {
@@ -125,6 +147,11 @@ export default function Act({ onSearch }) {
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+  };
+
+  // EXP
+  const handleExp = (event) => {
+    setSelectedExp(event.target.value);
   };
 
   return (
@@ -203,7 +230,8 @@ export default function Act({ onSearch }) {
           <Grid item xs={12} md={3}>
             <FormControl variant="outlined" fullWidth>
               <Select
-                value={""}
+                value={selectedExp}
+                onChange={handleExp}
                 input={
                   <OutlinedInput
                     startAdornment={
@@ -216,7 +244,13 @@ export default function Act({ onSearch }) {
               >
                 <MenuItem value="">---</MenuItem>
                 <MenuItem value="y">All</MenuItem>
+                <MenuItem value="0">Less than 1 year</MenuItem>
                 <MenuItem value="1">1 year</MenuItem>
+                <MenuItem value="2">2 year</MenuItem>
+                <MenuItem value="3">3 year</MenuItem>
+                <MenuItem value="4">4 year</MenuItem>
+                <MenuItem value="5">5 year</MenuItem>
+                <MenuItem value="5">More than 5 year</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>

@@ -4,16 +4,13 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import LoginWith from "./LoginWith";
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Request } from "../../util/request";
 
 function Copyright(props) {
   return (
@@ -33,45 +30,10 @@ function Copyright(props) {
   );
 }
 
-export default function Login() {
-  const [errors, setErrors] = React.useState({ email: "", password: "" });
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-
-    if (!email) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "Email is required",
-      }));
-      return;
-    }
-    if (!password) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: "Password is required",
-      }));
-      return;
-    }
-
-    try {
-      const response = await Request("auth/login", { email, password });
-
-      if (response) {
-        console.log(response);
-      } else {
-        // Handle login failure (e.g., show error message)
-        console.error("Login failed: Unauthorized");
-      }
-    } catch (error) {
-      // Handle request errors (e.g., network issues)
-      console.error("Error in login request:", error);
-    }
+export default function ForgotPassword() {
+  const handleSubmit = () => {
+    console.log("send");
   };
-
   return (
     <Grid container>
       <Grid item md={12}>
@@ -90,41 +52,23 @@ export default function Login() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Forgot Password
             </Typography>
             <Box
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              sx={{ mt: 1 }}
+              sx={{ mt: 1, width: "80%" }}
             >
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
                 name="email"
-                autoComplete="email"
-                autoFocus
-                error={!!errors.email}
-                helperText={errors.email}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                error={!!errors.password}
-                helperText={errors.password}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="Email"
+                type="email"
+                id="email"
+                autoComplete="current-email"
               />
               <Button
                 type="submit"
@@ -132,26 +76,23 @@ export default function Login() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Send
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {""}
+                  <Link to="/login" variant="body2">
+                    Sign In
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link to="/forgot" variant="body2">
-                    Forgot password?
+                  <Link to="/register" variant="body2">
+                    Sign Up
                   </Link>
                 </Grid>
               </Grid>
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", m: 1 }}>
-            <LoginWith />
-          </Box>
           <Divider />
           <Copyright sx={{ mt: 4, mb: 4 }} />
           <Grid container sx={{ mb: 6 }}>
