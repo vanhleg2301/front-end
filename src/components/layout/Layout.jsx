@@ -4,23 +4,23 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { Box, CssBaseline, Divider } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
-import getLPTheme from "../header/getLPTheme";
 
 export default function Layout() {
-  const [mode, setMode] = React.useState("light");
-  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
-  const LPtheme = createTheme(getLPTheme(mode));
-  const defaultTheme = createTheme({ palette: { mode } });
+  // const [mode, setMode] = React.useState("light");
+  // const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+  // const LPtheme = createTheme(getLPTheme(mode));
+  // const defaultTheme = createTheme({ palette: { mode } });
 
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === "dark" ? "light" : "dark"));
-  };
-
+  // const toggleColorMode = () => {
+  //   setMode((prev) => (prev === "dark" ? "light" : "dark"));
+  // };
+  // theme={showCustomTheme ? defaultTheme : LPtheme}
+  // mode={mode} toggleColorMode={toggleColorMode}
   return (
     <>
-      <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
+      <ThemeProvider>
         <CssBaseline />
-        <Header mode={mode} toggleColorMode={toggleColorMode} />
+        <Header />
         <Box
           sx={(theme) => ({
             width: "100%",

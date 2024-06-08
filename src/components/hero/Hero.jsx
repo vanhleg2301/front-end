@@ -4,10 +4,26 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
-import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import Ad from "./Ad";
+
+const pictures = [
+  {
+    imagel: "link_to_image1",
+    title: "Image 1",
+  },
+  {
+    imagel: "link_to_image2",
+    title: "Image 2",
+  },
+  {
+    imagel: "link_to_image3",
+    title: "Image 2",
+  },
+  {
+    imagel: "link_to_image4",
+    title: "Image 2",
+  },
+];
 
 export default function Hero() {
   const settings = {
@@ -76,17 +92,7 @@ export default function Hero() {
           </Typography>
         </Stack>
         <Box sx={{ width: "100%", maxWidth: "800px", mt: 4 }}>
-          <Slider {...settings}>
-            <Box>
-              <img src="image1.jpg" alt="Slide 1" style={{ width: "100%" }} />
-            </Box>
-            <Box>
-              <img src="image2.jpg" alt="Slide 2" style={{ width: "100%" }} />
-            </Box>
-            <Box>
-              <img src="image3.jpg" alt="Slide 3" style={{ width: "100%" }} />
-            </Box>
-          </Slider>
+          <Ad pictures={pictures} />
         </Box>
       </Container>
     </Box>

@@ -1,43 +1,33 @@
 import React from "react";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import { Carousel, CarouselSlide } from "material-ui-carousel";
+import Grid from "@mui/material/Grid";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-export default function Ad() {
+export default function Ad({ pictures }) {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
-    <Carousel>
-      {this.pictures.map(({ imagel, imager, title }) => (
-        <CarouselSlide key={title}>
-          <GridList cellHeight={160} cols={2}>
-            <GridListTile key={title} style={{ height: "auto" }}>
-              <img src={imagel} alt={title} />
-            </GridListTile>
-          </GridList>
-          {/* <Card width="100%" key={title}>
-      <CardMedia
-        image={imagel}
-        title={title}
-        style={{
-        height: 0,
-        width: '50%',
-        paddingTop: '75%',
-        }}
-      />
-      <CardMedia
-        image={imager}
-        title={title}
-        style={{
-        height: 0,
-        width: '50%',
-        paddingTop: '75%',
-        }}
-      />
-      <CardContent>
-        <Typography>{title}</Typography>
-      </CardContent>
-    </Card> */}
-        </CarouselSlide>
+    <Slider {...settings}>
+      {pictures.map(({ imagel, title }, index) => (
+        <div key={index}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <img
+                src={imagel}
+                alt={title}
+                style={{ width: "100%", height: "auto" }}
+              />
+            </Grid>
+          </Grid>
+        </div>
       ))}
-    </Carousel>
+    </Slider>
   );
 }
