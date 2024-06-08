@@ -5,8 +5,18 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 export default function Hero() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
     <Box
       id="hero"
@@ -65,7 +75,19 @@ export default function Hero() {
             enhance your career journey.
           </Typography>
         </Stack>
-        <Box>carousel </Box>
+        <Box sx={{ width: "100%", maxWidth: "800px", mt: 4 }}>
+          <Slider {...settings}>
+            <Box>
+              <img src="image1.jpg" alt="Slide 1" style={{ width: "100%" }} />
+            </Box>
+            <Box>
+              <img src="image2.jpg" alt="Slide 2" style={{ width: "100%" }} />
+            </Box>
+            <Box>
+              <img src="image3.jpg" alt="Slide 3" style={{ width: "100%" }} />
+            </Box>
+          </Slider>
+        </Box>
       </Container>
     </Box>
   );

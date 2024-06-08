@@ -3,9 +3,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { Box, CssBaseline, Divider } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import { createTheme } from "@mui/material/styles";
-
+import { ThemeProvider } from "@mui/system";
 import getLPTheme from "../header/getLPTheme";
 
 export default function Layout() {
@@ -17,9 +15,10 @@ export default function Layout() {
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   };
+
   return (
     <>
-      <ThemeProvider theme={showCustomTheme ? defaultTheme : LPtheme}>
+      <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
         <CssBaseline />
         <Header mode={mode} toggleColorMode={toggleColorMode} />
         <Box
