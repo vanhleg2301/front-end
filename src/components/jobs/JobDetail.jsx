@@ -19,6 +19,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CircularProgress from "@mui/material/CircularProgress";
 import { RequestGet } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function JobDetail() {
   // Job detail
@@ -242,7 +243,7 @@ export default function JobDetail() {
           </Box>
         </Grid>
         <Grid container spacing={0}>
-          {/*right description*/}
+          {/*left description*/}
           <Grid item xs={12} md={8}>
             <Box sx={{ width: "100%" }}>
               <Card sx={{ width: "100%", p: 3, borderTop: "1px solid gray" }}>
@@ -255,69 +256,26 @@ export default function JobDetail() {
                     Job description
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
-                    {jobDetail.desciprtion}
+                    {jobDetail.description.JobDescription}
                     <br />
                   </Typography>
 
                   <Typography variant="h6" gutterBottom>
-                    Yêu cầu ứng viên
+                    Candidate Requirements
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
-                    - Tốt nghiệp Cao đẳng, Đại học trở lên chuyên ngành Kinh
-                    doanh, Tiếp thị, Thương mại, Y tế hoặc các ngành liên quan
-                    <br />
-                    - Thành thạo tin học văn phòng (Word, Excel, Powerpoint)
-                    <br />
-                    - Đã có từ 01 năm kinh nghiệm ở lĩnh vực khách hàng doanh
-                    nghiệp (B2B)
-                    <br />
-                    - Ưu tiên ứng viên có network với các bộ phận Mua hàng, HCNS
-                    tại các doanh nghiệp.
-                    <br />
-                    - Độ tuổi: 25-35 tuổi
-                    <br />
-                    - Kỹ năng:
-                    <br />
-                    + Kỹ năng quản lý công việc
-                    <br />
-                    + Kỹ năng lắng nghe, giao tiếp, đàm phán, thuyết phục
-                    <br />
-                    + Khả năng làm việc nhóm, làm việc độc lập
-                    <br />
+                    {jobDetail.description.CandidateRequirements}
                   </Typography>
 
                   <Typography variant="h6" gutterBottom>
-                    Quyền lợi
+                    Benefit
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
-                    - Lương cứng: 10.000.000 VNĐ - 15.000.000 VNĐ + thưởng KPI +
-                    thưởng hoa hồng kinh doanh; thu nhập không giới hạn
-                    <br />
-                    - Thưởng KPI hàng tháng, thưởng hoa hồng kinh doanh hàng
-                    tháng; thưởng hoa hồng kinh doanh năm.
-                    <br />
-                    - Chính sách phúc lợi rõ ràng, được tham gia bảo hiểm xã hội
-                    theo đúng quy định
-                    <br />
-                    - Chính sách khám sức khỏe cho bản thân và gia đình
-                    <br />
-                    - Chế độ thưởng các dịp Lễ (30/04 - 01/05, Quốc Khánh 02/09,
-                    Ngày thầy thuốc 27/02), Tết Dương lịch, Tết Âm lịch;
-                    <br />
-                    - Môi trường làm việc chuyên nghiệp, trẻ trung và năng động.
-                    <br />
-                    - Có cơ hội tham gia các khóa đào tạo để phát triển năng lực
-                    <br />
-                    - Được tham gia Teambuilding, year-end party, du lịch hàng
-                    năm theo quy định của Công ty
-                    <br />
-                    - Cung cấp đầy đủ trang thiết bị làm việc (laptop, điện
-                    thoại bàn,...)
-                    <br />
+                    {jobDetail.description.Benefit}
                   </Typography>
 
                   <Typography variant="h6" gutterBottom>
-                    Địa điểm làm việc
+                    Location working
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
                     - Hà Nội: PHÒNG KHÁM ĐA KHOA MIRAI: Tầng 2, Tòa 901B, Chung
@@ -326,7 +284,7 @@ export default function JobDetail() {
                   </Typography>
 
                   <Typography variant="h6" gutterBottom>
-                    Thời gian làm việc
+                    Working time
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
                     - Thứ 2 - Thứ 7 (từ 08:00 đến 17:00)
@@ -336,7 +294,7 @@ export default function JobDetail() {
                   </Typography>
 
                   <Typography variant="h6" gutterBottom>
-                    Cách thức ứng tuyển
+                    How to apply
                   </Typography>
                   <Typography variant="body2" component="div" gutterBottom>
                     - Ứng viên nộp hồ sơ trực tuyến bằng cách bấm Ứng tuyển ngay
@@ -347,14 +305,20 @@ export default function JobDetail() {
                   </Typography>
 
                   <Grid container justifyContent="left">
-                    <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                      Ứng tuyển ngay
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                      onClick={handleApply}
+                    >
+                      Apply now
                     </Button>
                     <Button
                       variant="contained"
                       color="primary"
                       sx={{ mt: 2, ml: 3 }}
                     >
+                      <FavoriteIcon />
                       Save
                     </Button>
                   </Grid>

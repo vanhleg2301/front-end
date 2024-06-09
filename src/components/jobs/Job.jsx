@@ -8,21 +8,21 @@ import {
   Typography,
   Card,
   CardContent,
+  Alert,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Paginations from "../paginations/Paginations";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
 import {
   formatDescription,
   formatLocation,
   formatSalary,
 } from "../../util/formatHelpers";
-import JobWish from "../profile/JobWish";
 import { RequestGet } from "../../util/request";
 import Act from "../action/Act";
 import FilterJob from "./FilterJob";
+import JobSaved from "./JobSaved";
 
 const itemsPerPage = 9;
 
@@ -38,7 +38,7 @@ export default function Job() {
 
   // favorite
   const [favoriteJobs, setFavoriteJobs] = useState([]);
-
+  const [alertMessage, setAlertMessage] = useState("");
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -54,8 +54,7 @@ export default function Job() {
   // Heart
   const [isFavoriteList, setIsFavoriteList] = useState({});
 
-  const toggleFavorite = (jobId, job) => {
-    // Modified toggleFavorite function
+  const toggleFavorite = async (jobId, job) => {
     setIsFavoriteList((prev) => {
       const newList = { ...prev };
       newList[jobId] = !newList[jobId];
@@ -63,11 +62,32 @@ export default function Job() {
     });
 
     if (isFavoriteList[jobId]) {
-      setFavoriteJobs((prev) => prev.filter((item) => item._id !== jobId)); // Remove job from favorite list
+      setFavoriteJobs((prev) => prev.filter((item) => item._id !== jobId));
     } else {
-      setFavoriteJobs((prev) => [...prev, job]); // Add job to favorite list
+      setFavoriteJobs((prev) => [...prev, job]);
+    }
+
+    try {
+      // Gửi yêu cầu HTTP để lưu công việc vào danh sách yêu thích ở đây
+      // Ví dụ:
+      // const response = await axios.post('api/save-job', { jobId: jobId });
+      // console.log(response.data); // In thông báo từ phản hồi từ máy chủ
+      setAlertMessage("Job saved successfully.");
+    } catch (error) {
+      console.error("Error saving job:", error);
+      setAlertMessage("Error saving job. Please try again later.");
     }
   };
+
+  useEffect(() => {
+    let timer;
+    if (alertMessage) {
+      timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000); // Thời gian đặt là 3 giây (3000 milliseconds)
+    }
+    return () => clearTimeout(timer);
+  }, [alertMessage]);
 
   // Paginated
   const getPaginatedData = (data) => {
@@ -97,6 +117,15 @@ export default function Job() {
           />
         </Box>
       </Container>
+      {alertMessage && (
+        <Alert
+          // variant="outlined"
+          severity="success"
+          sx={{ position: "fixed", bottom: "0", left: "0" }}
+        >
+          {alertMessage}
+        </Alert>
+      )}
 
       <Container sx={{ mt: 2, mb: 2 }}>
         {/*Filter*/}
@@ -152,88 +181,95 @@ export default function Job() {
                   }}
                 >
                   <CardContent>
-                    <Box
-                      sx={{ textDecoration: "none" }}
-                      component={Link}
-                      to={`/jobs/${item._id}`}
-                    >
+                    <Grid container>
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          sx={{ textDecoration: "none" }}
+                          component={Link}
+                          to={`/jobs/${item._id}`}
+                        >
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontWeight: "bold" }}
+                          >
+                            {item.title}
+                          </Typography>
+                        </Box>
+                      </Grid>
+
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        sx={{ fontWeight: "bold" }}
+                        component={Link}
+                        to={`/companies/${item._id}`}
+                        sx={{ textDecoration: "none" }}
                       >
-                        {formatDescription(item.desciprtion)}
+                        {formatDescription(item.description.JobDescription)}
                       </Typography>
-                    </Box>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      component={Link}
-                      to={`/companies/${item._id}`}
-                      sx={{ textDecoration: "none" }}
-                    >
-                      {item.title}
-                    </Typography>
-                  </CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box
-                      className="salaryLocation"
-                      sx={{
-                        display: "flex",
-                        height: "24px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          backgroundColor: "#f4f5f5",
-                          paddingLeft: "10px",
-                          paddingRight: "10px",
-                          mr: 1,
-                          display: "flex",
-                          alignItems: "center",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap", // co dãn ngang
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {formatSalary(item.salary)}
-                      </Box>
-                      <Box
-                        sx={{
-                          paddingLeft: "10px",
-                          paddingRight: "10px",
-                          backgroundColor: "#f4f5f5",
-                          display: "flex",
-                          alignItems: "center",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {formatLocation(item.location.city)}
-                      </Box>
-                    </Box>
 
-                    <Box className="icon">
-                      <IconButton
-                        aria-label="favorite"
-                        onClick={() => toggleFavorite(item._id, item)}
-                      >
-                        {isFavoriteList[item._id] ? (
-                          <FavoriteIcon />
-                        ) : (
-                          <FavoriteBorderIcon />
-                        )}
-                      </IconButton>
-                    </Box>
-                  </Box>
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            className="salaryLocation"
+                            sx={{
+                              display: "flex",
+                              height: "24px",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                backgroundColor: "#f4f5f5",
+                                paddingLeft: "10px",
+                                paddingRight: "10px",
+                                mr: 1,
+                                display: "flex",
+                                alignItems: "center",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap", // co dãn ngang
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {formatSalary(item.salary)}
+                            </Box>
+                            <Box
+                              sx={{
+                                paddingLeft: "10px",
+                                paddingRight: "10px",
+                                backgroundColor: "#f4f5f5",
+                                display: "flex",
+                                alignItems: "center",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {formatLocation(item.location.city)}
+                            </Box>
+                            <Box className="icon">
+                              <IconButton
+                                aria-label="favorite"
+                                onClick={() => toggleFavorite(item._id, item)}
+                              >
+                                {isFavoriteList[item._id] ? (
+                                  <FavoriteIcon />
+                                ) : (
+                                  <FavoriteBorderIcon />
+                                )}
+                              </IconButton>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
                 </Box>
               </Card>
             </Grid>
@@ -246,7 +282,7 @@ export default function Job() {
           onPageChange={(page) => setCurrentPage(page)}
         />
         {/* Render JobWish component */}
-        <JobWish favoriteJobs={favoriteJobs} />
+        <JobSaved favoriteJobs={favoriteJobs} />
       </Container>
     </>
   );
