@@ -1,0 +1,24 @@
+  //logged
+  const accessToken = "vanhvanh";
+
+  // Kiểm tra xem cookie accessToken có tồn tại hay không
+  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+  const isLogged = cookies.some((cookie) => cookie.startsWith("accessToken="));
+
+  // Sử dụng React.useState để thiết lập trạng thái logged
+  const [logged, setLogged] = React.useState(isLogged);
+
+  const handleLogged = () => {
+    // Thiết lập cookie accessToken
+    document.cookie = `accessToken=${accessToken}; path=/`;
+    // Thiết lập state logged khi đăng nhập thành công
+    setLogged(true);
+  };
+
+  const handleLogout = () => {
+    document.cookie =
+      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setLogged(false); // Đặt state logged về false sau khi đăng xuất
+  };
+
+

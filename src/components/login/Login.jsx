@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoginWith from "./LoginWith";
 import { Divider } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Request } from "../../util/request";
 
 function Copyright(props) {
@@ -34,7 +35,9 @@ function Copyright(props) {
 }
 
 export default function Login() {
-  const [errors, setErrors] = React.useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const { sethLogin, setUserLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -59,9 +62,11 @@ export default function Login() {
 
     try {
       const response = await Request("auth/login", { email, password });
-
       if (response) {
-        console.log(response);
+        sethLogin(true);
+        setUserLogin(response);
+        console.log("login successfully", "User: ", response);
+        navigate("/");
       } else {
         // Handle login failure (e.g., show error message)
         console.error("Login failed: Unauthorized");
@@ -136,9 +141,7 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {""}
-                  </Link>
+                  <Link href="#" variant="body2"></Link>
                 </Grid>
                 <Grid item>
                   <Link to="/forgot" variant="body2">

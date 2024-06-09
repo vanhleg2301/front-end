@@ -1,17 +1,21 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import React, { useEffect } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Divider,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import LoginWith from "../login/LoginWith";
-import { Divider } from "@mui/material";
 import { Request } from "../../util/request";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
+import { useNavigate, Link } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -22,9 +26,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Typography color="inherit" component={Link} to="/">
+      <Link color="inherit" to="/">
         Ace Interview
-      </Typography>
+      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -32,9 +36,49 @@ function Copyright(props) {
 }
 
 export default function Register() {
-  const [user, setUser] = React.useState([]);
+  const [user, setUser] = React.useState(null);
   const [selectedButton, setSelectedButton] = React.useState(1);
-  const [errors, setErrors] = React.useState("");
+  const [formData, setFormData] = React.useState({
+    username: "",
+    email: "",
+    password: "",
+    fullName: "",
+  });
+  const [errors, setErrors] = React.useState({
+    username: "",
+    email: "",
+    password: "",
+    fullName: "",
+  });
+
+  // alert
+  const [isRegistered, setIsRegistered] = React.useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let timer;
+    if (isRegistered) {
+      timer = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [isRegistered, navigate]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.fullName) newErrors.fullName = "Full name is required";
+    if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleButtonClick = (button) => {
     setSelectedButton(button);
@@ -42,28 +86,31 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    if (!validateForm()) return;
+
     const payload = {
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
-      fullName: data.get("fullName"),
+      ...formData,
       roleID: selectedButton === 1 ? 1 : 2,
     };
-    console.log("Payload:", payload); // Log the payload for debugging
 
     try {
-      const user = await Request("auth/register", payload);
-      if (user) {
-        setUser(user);
-        console.log(user);
-      } else {
-        console.error("Failed to register user. User data is null.");
-      }
+      const response = await Request("auth/register", payload);
+      setUser(response);
+      console.log("User registered successfully:", response);
+      setIsRegistered(true);
+
+      // Clear the form
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        fullName: "",
+      });
+      setSelectedButton(1); // Optionally reset the role selection
     } catch (error) {
       if (error.response) {
-        setErrors(error.response.data.message);
-        console.error("Error response:", errors);
+        console.error("Error response:", error.response.data);
+        setErrors(error.response.data.errors);
       } else if (error.request) {
         console.error("Error request:", error.request);
         setErrors({ message: "Network error. Please try again later." });
@@ -85,25 +132,21 @@ export default function Register() {
           alignItems: "center",
         }}
       >
+        {isRegistered && (
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+            Registration successful!
+          </Alert>
+        )}
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            {/*User name*/}
-
-            {/* Display error messages */}
-            {errors && (
-              <Grid item xs={12}>
-                <Typography color="error" variant="body2">
-                  {errors}
-                </Typography>
-              </Grid>
-            )}
-
+            {/* User name */}
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -113,9 +156,13 @@ export default function Register() {
                 id="username"
                 label="User Name"
                 autoFocus
+                value={formData.username}
+                onChange={handleInputChange}
+                error={!!errors.username}
+                helperText={errors.username}
               />
             </Grid>
-            {/*Full name*/}
+            {/* Full name */}
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -124,9 +171,13 @@ export default function Register() {
                 label="Full Name"
                 name="fullName"
                 autoComplete="family-name"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                error={!!errors.fullName}
+                helperText={errors.fullName}
               />
             </Grid>
-            {/*Email*/}
+            {/* Email */}
             <Grid item xs={12}>
               <TextField
                 required
@@ -135,9 +186,13 @@ export default function Register() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                error={!!errors.email}
+                helperText={errors.email}
               />
             </Grid>
-            {/*Password*/}
+            {/* Password */}
             <Grid item xs={12}>
               <TextField
                 required
@@ -147,13 +202,12 @@ export default function Register() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                value={formData.password}
+                onChange={handleInputChange}
+                error={!!errors.password}
+                helperText={errors.password}
               />
             </Grid>
-            <input
-              type="hidden"
-              name="roleID"
-              value={selectedButton === 1 ? "applicant" : "recruiter"}
-            />
             <Grid container sx={{ textAlign: "center" }}>
               <Grid item xs={6}>
                 <Button
@@ -162,13 +216,12 @@ export default function Register() {
                   sx={{ mt: 3, mb: 2, width: "80%" }}
                   onClick={() => handleButtonClick(1)}
                 >
-                  applicant
+                  Applicant
                 </Button>
               </Grid>
               <Grid item xs={6}>
                 <Button
                   name="roleID"
-                  fullWidth
                   variant={selectedButton === 2 ? "contained" : "outlined"}
                   sx={{ mt: 3, mb: 2, width: "80%" }}
                   onClick={() => handleButtonClick(2)}

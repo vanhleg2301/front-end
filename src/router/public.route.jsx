@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Layout from "../components/layout/Layout";
-import Home from "../pages/Home";
 import JobDetail from "../components/jobs/JobDetail";
 import CompanyDetail from "../components/companies/CompanyDetail";
 import CompanyList from "../components/companies/CompanyList";
@@ -12,15 +11,11 @@ import ProfilePage from "../pages/ProfilePage";
 import ManagerCv from "../components/profile/ManagerCv";
 import UploadCv from "../components/profile/UploadCv";
 import Info from "../components/profile/Info";
-import RulePage from "../pages/RulePage";
-import PaymentPage from "../pages/PaymentPage";
 import JobApplied from "../components/jobs/JobApplied";
 import JobSaved from "../components/jobs/JobSaved";
 import MeetingPage from "../pages/MeetingPage";
 import HomeMeeting from "../components/meeting/HomeMeeting";
-import Login from "../components/login/Login";
-import Register from "../components/register/Register";
-import ForgotPassword from "../components/forgotPassword/ForgotPassword";
+import Home from "../pages/Home";
 
 export default function publicRoutes() {
   return {
@@ -32,12 +27,6 @@ export default function publicRoutes() {
     ),
     children: [
       { index: true, element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/forgot", element: <ForgotPassword /> },
-      { path: "/rules", element: <RulePage /> },
-      { path: "/payment", element: <PaymentPage /> },
-
       {
         path: "/meeting",
         element: <MeetingPage />,

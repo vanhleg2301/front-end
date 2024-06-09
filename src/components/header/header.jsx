@@ -33,7 +33,7 @@ const logoStyle = {
   cursor: "pointer",
 };
 
-function Header({ mode, toggleColorMode }) {
+function Header() {
   // Open
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCv, setIsOpenCv] = React.useState(false);
