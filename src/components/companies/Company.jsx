@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
@@ -7,29 +8,26 @@ import {
   CardContent,
   CardMedia,
 } from "@mui/material";
-import React from "react";
 import { Link } from "react-router-dom";
-
-const companies = [
-  {
-    name: "Company 1",
-    logo: "https://www.topcv.vn/v4/image/normal-company/logo_default.png",
-  },
-  {
-    name: "Company 2",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg",
-  },
-  {
-    name: "Company 3",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg",
-  },
-  {
-    name: "Company 4",
-    logo: "https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg",
-  },
-];
+import axios from "axios";
+import { RequestGet } from "../../util/request";
 
 export default function Company() {
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await RequestGet(`companies`);
+        setCompanies(response);
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
   return (
     <Container>
       <Box
@@ -50,10 +48,9 @@ export default function Company() {
         <Grid container spacing={3}>
           {companies.map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <Box
-                component={Link}
-                to="/companies/:id"
-                sx={{ textDecoration: "none" }}
+              <Link
+                to={`/companies/${company.id}`}
+                style={{ textDecoration: "none" }}
               >
                 <Card
                   sx={{
@@ -78,7 +75,7 @@ export default function Company() {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Box>
+              </Link>
             </Grid>
           ))}
         </Grid>
