@@ -8,19 +8,15 @@ import Ad from "./Ad";
 
 const pictures = [
   {
-    imagel: "link_to_image1",
+    imagel: "https://static.topcv.vn/img/T1%201100x220.png",
     title: "Image 1",
   },
   {
-    imagel: "link_to_image2",
+    imagel: "https://static.topcv.vn/img/T1%201100x220.png",
     title: "Image 2",
   },
   {
-    imagel: "link_to_image3",
-    title: "Image 2",
-  },
-  {
-    imagel: "link_to_image4",
+    imagel: "https://static.topcv.vn/img/T1%201100x220.png",
     title: "Image 2",
   },
 ];
@@ -91,7 +87,7 @@ export default function Hero() {
             enhance your career journey.
           </Typography>
         </Stack>
-        <Box sx={{ width: "100%", maxWidth: "800px", mt: 4 }}>
+        <Box sx={{ width: "100%", mt: 4 }}>
           <Ad pictures={pictures} />
         </Box>
       </Container>
