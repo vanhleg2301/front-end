@@ -67,10 +67,12 @@ export default function Login() {
 
       if (response) {
         Cookies.set("accessToken", "vanhvanh");
+        const userData = JSON.stringify(response);
+        Cookies.set("user", userData);
         // Set access token in cookies
         sethLogin(true);
         setUserLogin(response);
-        // navigate("/"); // Navigate to the home page on successful login
+        navigate("/"); // Navigate to the home page on successful login
       } else {
         // Handle login failure (e.g., invalid credentials)
         setErrors((prevErrors) => ({

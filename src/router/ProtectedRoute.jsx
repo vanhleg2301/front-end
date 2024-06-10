@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import Cookies from "js-cookie";
 
 export default function ProtectedRoute() {
-  const accessToken = document.cookie
-    .split(";")
-    .some((item) => item.trim().startsWith("accessToken="));
-
+  const accessToken = Cookies.get("accessToken");
   const { login } = useContext(AuthContext);
-  // kiểm tra login có sai ko
+
   if (!login) {
     return <Navigate to="/login" />;
   }

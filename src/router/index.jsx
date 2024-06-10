@@ -28,12 +28,12 @@ export default createBrowserRouter([
         children: [
           { path: "/admin", element: <Admin /> },
           { path: "/payment", element: <PaymentPage /> },
+          LoggedRoute(),
         ],
       },
       authRoute(),
-      LoggedRoute(),
-      publicRoutes(),
       Public(),
+      publicRoutes(),
     ],
   },
 ]);

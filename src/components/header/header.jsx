@@ -89,6 +89,7 @@ function Header() {
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
+    Cookies.remove("user");
     sethLogin(false); // Đặt state logged về false sau khi đăng xuất
     window.location.href = "/";
   };

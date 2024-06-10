@@ -13,7 +13,9 @@ import { RequestPut } from "../../util/request"; // Assuming you have a Request 
 
 export default function Info() {
   const { userLogin } = useContext(AuthContext);
-  const [phone, setPhone] = useState(userLogin.user.phone);
+  const [phone, setPhone] = useState(userLogin.user.fullName);
+
+  console.log("From info - userLogin: ", userLogin);
 
   const handlePhone = async () => {
     try {
