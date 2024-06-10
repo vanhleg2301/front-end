@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import {} from "@mui/icons-material";
-const CompanyManager = () => {
+const ReportManager = () => {
   const [account, setAccount] = useState([]);
   return (
     <Container className="text-align-center">
@@ -29,14 +29,16 @@ const CompanyManager = () => {
           />
         </Grid>
       </Grid>
-      <h2>Companies</h2>
+      <h2>Reports</h2>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Company ID</TableCell>
-              <TableCell>Company Name</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Report ID</TableCell>
+              <TableCell>Report title</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Found by</TableCell>
+              <TableCell>Found date</TableCell>
               <TableCell colSpan={2} align="center" className="width30">
                 Action
               </TableCell>
@@ -46,16 +48,10 @@ const CompanyManager = () => {
           <TableBody>
             <TableRow>
               <TableCell>1234567</TableCell>
-              <TableCell>Company A</TableCell>
-              <TableCell>
-                <Select>
-                  <MenuItem value={"Bronze"}>Bronze</MenuItem>
-                  <MenuItem value={"Silver"}>Silver</MenuItem>
-                  <MenuItem value={"Gold"}>Gold</MenuItem>
-                  <MenuItem value={"Platinum"}>Platinum</MenuItem>
-                  <MenuItem value={"Diamond"}>Diamond</MenuItem>
-                </Select>
-              </TableCell>
+              <TableCell>Company have problem</TableCell>
+              <TableCell>Problem when company X had a fake job</TableCell>
+              <TableCell>Nguyen Anh B</TableCell>
+              <TableCell>6/6/2024</TableCell>
               <TableCell align="right">
                 <Button variant="contained" color="info">
                   View Detail
@@ -63,7 +59,7 @@ const CompanyManager = () => {
               </TableCell>
               <TableCell align="left">
                 <Button variant="contained" color="error">
-                  Deactive
+                  Remove
                 </Button>
               </TableCell>
             </TableRow>
@@ -74,4 +70,4 @@ const CompanyManager = () => {
   );
 };
 
-export default CompanyManager;
+export default ReportManager;
