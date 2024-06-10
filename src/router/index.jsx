@@ -6,7 +6,6 @@ import ErrorPage from "../pages/ErrorPage";
 import ProtectedRoute from "./ProtectedRoute";
 import Admin from "../admin/Admin";
 import Public from "./Public";
-import PaymentPage from "../pages/PaymentPage";
 import authRoute from "./auth.route";
 import LoggedRoute from "./LoggedRoute";
 
@@ -25,11 +24,7 @@ export default createBrowserRouter([
     children: [
       {
         element: <ProtectedRoute />,
-        children: [
-          { path: "/admin", element: <Admin /> },
-          { path: "/payment", element: <PaymentPage /> },
-          LoggedRoute(),
-        ],
+        children: [{ path: "/admin", element: <Admin /> }, LoggedRoute()],
       },
       authRoute(),
       Public(),

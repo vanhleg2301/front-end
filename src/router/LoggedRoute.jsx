@@ -5,6 +5,7 @@ import ProfilePage from "../pages/ProfilePage";
 import Info from "../components/profile/Info";
 import ManagerCv from "../components/profile/ManagerCv";
 import UploadCv from "../components/profile/UploadCv";
+import PaymentPage from "../pages/PaymentPage";
 
 export default function LoggedRoute() {
   return {
@@ -24,6 +25,7 @@ export default function LoggedRoute() {
           { path: "upload", element: <UploadCv /> },
         ],
       },
+      { path: "/payment", element: <PaymentPage /> },
     ],
   };
 }

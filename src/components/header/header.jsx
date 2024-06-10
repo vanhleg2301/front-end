@@ -26,6 +26,7 @@ import HeaderRight from "./HeaderRight";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import { AuthContext } from "../../context/AuthProvider";
 import Cookies from "js-cookie";
 
@@ -338,6 +339,12 @@ function Header() {
                             <MailOutlineIcon />
                           </IconButton>
                           Setting notification
+                        </Link>
+                        <Link to="/forgot" className="dropdown-item">
+                          <IconButton disabled>
+                            <QuestionMarkIcon />
+                          </IconButton>
+                          Forgot password
                         </Link>
                         <Box className="dropdown-item" onClick={handleLogout}>
                           <IconButton disabled>
