@@ -26,6 +26,8 @@ import HeaderRight from "./HeaderRight";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { AuthContext } from "../../context/AuthProvider";
+import Cookies from "js-cookie";
 
 const logoStyle = {
   width: "30px",
@@ -83,27 +85,12 @@ function Header() {
     setIsOpenTools(false);
   };
 
-  //logged
-  const accessToken = "vanhvanh";
-
-  // Kiểm tra xem cookie accessToken có tồn tại hay không
-  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-  const isLogged = cookies.some((cookie) => cookie.startsWith("accessToken="));
-
-  // Sử dụng React.useState để thiết lập trạng thái logged
-  const [logged, setLogged] = React.useState(isLogged);
-
-  const handleLogged = () => {
-    // Thiết lập cookie accessToken
-    document.cookie = `accessToken=${accessToken}; path=/`;
-    // Thiết lập state logged khi đăng nhập thành công
-    setLogged(true);
-  };
+  const { login, sethLogin } = React.useContext(AuthContext);
 
   const handleLogout = () => {
-    document.cookie =
-      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    setLogged(false); // Đặt state logged về false sau khi đăng xuất
+    Cookies.remove("accessToken");
+    sethLogin(false); // Đặt state logged về false sau khi đăng xuất
+    window.location.href = "/";
   };
 
   return (
@@ -193,7 +180,7 @@ function Header() {
                   )}
                 </MenuItem>
                 {/*Cv*/}
-                {logged ? (
+                {login ? (
                   <MenuItem
                     onMouseEnter={() => handleMouseEnter("cv")}
                     onMouseLeave={handleMouseLeave}
@@ -291,8 +278,7 @@ function Header() {
                 alignItems: "center",
               }}
             >
-              {/*<ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />*/}
-              {logged ? (
+              {login ? (
                 <Box
                   sx={{
                     display: { xs: "none", md: "flex" },
@@ -368,9 +354,8 @@ function Header() {
                     color="primary"
                     variant="text"
                     size="small"
-                    // component={Link}
-                    // to="/login"
-                    onClick={handleLogged}
+                    component={Link}
+                    to="/login"
                   >
                     Sign in
                   </Button>
@@ -394,10 +379,5 @@ function Header() {
     </Box>
   );
 }
-
-Header.propTypes = {
-  mode: PropTypes.oneOf(["dark", "light"]).isRequired,
-  toggleColorMode: PropTypes.func.isRequired,
-};
 
 export default Header;

@@ -7,9 +7,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import { RequestPut } from "../../util/request"; // Assuming you have a Request utility for making API calls
 
 export default function Info() {
+  const { userLogin } = useContext(AuthContext);
+  const [phone, setPhone] = useState(userLogin.user.phone);
+
+  const handlePhone = async () => {
+    try {
+      // Assuming you have an endpoint for updating user information
+      const response = await RequestPut("user/updatePhone", { phone });
+
+      if (response.success) {
+        alert("Phone number saved successfully");
+      } else {
+        alert("Failed to save phone number");
+      }
+    } catch (error) {
+      console.error("Error updating phone number:", error);
+      alert("An error occurred while saving the phone number");
+    }
+  };
+
   return (
     <Box>
       <Card>
@@ -21,24 +42,36 @@ export default function Info() {
             required
             fullWidth
             label="Full name"
-            defaultValue="Hoang Cao Viet Anh (K16_HL)"
+            defaultValue={userLogin.user.fullName}
             margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
           />
           <TextField
             fullWidth
             label="Phone number"
             placeholder="Phone number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             margin="normal"
           />
           <TextField
             fullWidth
             label="Email"
-            defaultValue="anhhcvhe161142@fpt.edu.vn"
+            defaultValue={userLogin.user.email}
             margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
           />
         </CardContent>
         <CardActions>
-          <Button variant="contained" sx={{ ml: 2, mb: 2 }}>
+          <Button
+            variant="contained"
+            sx={{ ml: 2, mb: 2 }}
+            onClick={handlePhone}
+          >
             Save
           </Button>
         </CardActions>

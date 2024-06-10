@@ -7,6 +7,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Admin from "../admin/Admin";
 import Public from "./Public";
 import PaymentPage from "../pages/PaymentPage";
+import authRoute from "./auth.route";
+import LoggedRoute from "./LoggedRoute";
 
 const AuthLayout = () => {
   return (
@@ -28,8 +30,10 @@ export default createBrowserRouter([
           { path: "/payment", element: <PaymentPage /> },
         ],
       },
+      authRoute(),
+      LoggedRoute(),
+      publicRoutes(),
+      Public(),
     ],
   },
-  publicRoutes(),
-  Public(),
 ]);

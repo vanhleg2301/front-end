@@ -7,10 +7,6 @@ import JobList from "../components/jobs/JobList";
 import JobPage from "../pages/JobPage";
 import Job from "../components/jobs/Job";
 import CompanyPage from "../pages/CompanyPage";
-import ProfilePage from "../pages/ProfilePage";
-import ManagerCv from "../components/profile/ManagerCv";
-import UploadCv from "../components/profile/UploadCv";
-import Info from "../components/profile/Info";
 import JobApplied from "../components/jobs/JobApplied";
 import JobSaved from "../components/jobs/JobSaved";
 import MeetingPage from "../pages/MeetingPage";
@@ -33,15 +29,6 @@ export default function publicRoutes() {
         children: [{ index: true, element: <HomeMeeting /> }],
       },
 
-      {
-        path: "/profile",
-        element: <ProfilePage />,
-        children: [
-          { index: true, element: <Info /> },
-          { path: "manager", element: <ManagerCv /> },
-          { path: "upload", element: <UploadCv /> },
-        ],
-      },
       {
         path: "/companies",
         element: <CompanyPage />,

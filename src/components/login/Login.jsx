@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthProvider";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,6 +14,8 @@ import LoginWith from "./LoginWith";
 import { Divider } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Request } from "../../util/request";
+import { AuthContext } from "../../context/AuthProvider";
+import Cookies from "js-cookie";
 
 function Copyright(props) {
   return (
@@ -36,7 +37,8 @@ function Copyright(props) {
 
 export default function Login() {
   const [errors, setErrors] = useState({ email: "", password: "" });
-  const { sethLogin, setUserLogin } = useContext(AuthContext);
+  const { sethLogin, setUserLogin, login, userLogin, user } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -62,20 +64,31 @@ export default function Login() {
 
     try {
       const response = await Request("auth/login", { email, password });
+
       if (response) {
+        Cookies.set("accessToken", "vanhvanh");
+        // Set access token in cookies
         sethLogin(true);
         setUserLogin(response);
-        console.log("login successfully", "User: ", response);
-        navigate("/");
+        // navigate("/"); // Navigate to the home page on successful login
       } else {
-        // Handle login failure (e.g., show error message)
-        console.error("Login failed: Unauthorized");
+        // Handle login failure (e.g., invalid credentials)
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: "Invalid email or password",
+        }));
       }
     } catch (error) {
-      // Handle request errors (e.g., network issues)
-      console.error("Error in login request:", error);
+      // Handle any other errors (e.g., network issues)
+      console.error("Login error", error);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "Login failed, please try again",
+      }));
     }
   };
+
+  console.log("From login page:", "login:", login, "userLogin: ", userLogin);
 
   return (
     <Grid container>

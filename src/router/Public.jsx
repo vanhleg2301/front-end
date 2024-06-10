@@ -9,7 +9,6 @@ export default function Public() {
   return {
     element: <Outlet />, // Render the Outlet component to render nested routes
     children: [
-      { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/forgot", element: <ForgotPassword /> },
       { path: "/rules", element: <RulePage /> },

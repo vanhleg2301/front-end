@@ -58,7 +58,7 @@ export const RequestGet = async (uri) => {
 };
 
 // PUT request function
-export const requestPut = async (uri, payload) => {
+export const RequestPut = async (uri, payload) => {
   try {
     const res = await axios.put(`${ENDPOINT}/${uri}`, JSON.stringify(payload), {
       headers: getHeaders(true),
@@ -71,7 +71,7 @@ export const requestPut = async (uri, payload) => {
 };
 
 // PATCH request function
-export const requestPatch = async (uri, payload) => {
+export const RequestPatch = async (uri, payload) => {
   try {
     const res = await axios.patch(
       `${ENDPOINT}/${uri}`,
