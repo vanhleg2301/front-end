@@ -72,7 +72,13 @@ export default function Login() {
         // Set access token in cookies
         sethLogin(true);
         setUserLogin(response);
-        navigate("/"); // Navigate to the home page on successful login
+        if (response.user.roleID === 1) {
+          navigate("/");
+        }
+        if (response.user.roleID === 2) {
+          navigate("/recruiter");
+        }
+        // Navigate to the home page on successful login
       } else {
         // Handle login failure (e.g., invalid credentials)
         setErrors((prevErrors) => ({
