@@ -4,10 +4,10 @@ import publicRoutes from "./public.route";
 import AuthProvider from "../context/AuthProvider";
 import ErrorPage from "../pages/ErrorPage";
 import ProtectedRoute from "./ProtectedRoute";
-import Admin from "../admin/Admin";
 import Public from "./Public";
 import authRoute from "./auth.route";
 import LoggedRoute from "./LoggedRoute";
+import ManageAccount from "../adminPage/Admin/ManageAccount";
 
 const AuthLayout = () => {
   return (
@@ -24,7 +24,10 @@ export default createBrowserRouter([
     children: [
       {
         element: <ProtectedRoute />,
-        children: [{ path: "/admin", element: <Admin /> }, LoggedRoute()],
+        children: [
+          { path: "/admin", element: <ManageAccount /> },
+          LoggedRoute(),
+        ],
       },
       authRoute(),
       Public(),

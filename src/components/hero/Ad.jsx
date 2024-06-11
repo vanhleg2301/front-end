@@ -76,7 +76,7 @@ export default function Ad({ pictures }) {
               <img
                 src={imagel}
                 alt={title}
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "200px" }}
               />
             </Grid>
           </Grid>

@@ -36,7 +36,7 @@ function Copyright(props) {
 }
 
 export default function Login() {
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ identifier: "", password: "" });
   const { sethLogin, setUserLogin, login, userLogin, user } =
     useContext(AuthContext);
   const navigate = useNavigate();
@@ -44,13 +44,13 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email");
+    const identifier = data.get("identifier");
     const password = data.get("password");
 
-    if (!email) {
+    if (!identifier) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        email: "Email is required",
+        identifier: "Identifier is required",
       }));
       return;
     }
@@ -63,10 +63,10 @@ export default function Login() {
     }
 
     try {
-      const response = await Request("auth/login", { email, password });
+      const response = await Request("auth/login", { identifier, password });
 
       if (response) {
-        Cookies.set("accessToken", "vanhvanh");
+        Cookies.set("accessToken", response.accessToken);
         const userData = JSON.stringify(response);
         Cookies.set("user", userData);
         // Set access token in cookies
@@ -77,7 +77,7 @@ export default function Login() {
         // Handle login failure (e.g., invalid credentials)
         setErrors((prevErrors) => ({
           ...prevErrors,
-          password: "Invalid email or password",
+          password: "Invalid identifier or password",
         }));
       }
     } catch (error) {
@@ -122,13 +122,13 @@ export default function Login() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="identifier"
+                label="Email or Username"
+                name="identifier"
+                autoComplete="identifier"
                 autoFocus
-                error={!!errors.email}
-                helperText={errors.email}
+                error={!!errors.identifier}
+                helperText={errors.identifier}
               />
               <TextField
                 margin="normal"

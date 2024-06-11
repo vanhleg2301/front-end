@@ -10,13 +10,15 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
   const [jobSearchEnabled, setJobSearchEnabled] = useState(false);
   const [profileSearchEnabled, setProfileSearchEnabled] = useState(false);
 
+  const { userLogin } = useContext(AuthContext);
   return (
     <Container
       sx={{
@@ -60,10 +62,7 @@ export default function ProfilePage() {
               </Box>
               <Box>
                 <Typography variant="body1" gutterBottom>
-                  Chào bạn trở lại, Hoang Cao Viet Anh (K16_HL)
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Tài khoản đã xác thực
+                  Chào {userLogin.user.fullName}
                 </Typography>
               </Box>
               <Box>
@@ -75,7 +74,7 @@ export default function ProfilePage() {
                       color="primary"
                     />
                   }
-                  label="Đang Tắt tìm việc"
+                  label="Finding job"
                   labelPlacement="end"
                   sx={{ display: "block", textAlign: "left", mb: 2 }}
                 />
@@ -89,7 +88,7 @@ export default function ProfilePage() {
                       color="primary"
                     />
                   }
-                  label="Cho phép NTD tìm kiếm hồ sơ"
+                  label="Recruiter find your CV"
                   labelPlacement="end"
                   sx={{ display: "block", textAlign: "left", mb: 2 }}
                 />
@@ -101,7 +100,7 @@ export default function ProfilePage() {
                   fullWidth
                   sx={{ mb: 2 }}
                 >
-                  Khởi tạo TopCV Profile
+                  ---
                 </Button>
               </Box>
             </CardContent>

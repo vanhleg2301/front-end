@@ -8,7 +8,7 @@ import Ad from "./Ad";
 
 const pictures = [
   {
-    imagel: "https://static.topcv.vn/img/T1%201100x220.png",
+    imagel: "./3D-Logo-Mockup-Design-Download.jpg",
     title: "Image 1",
   },
   {
