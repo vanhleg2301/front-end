@@ -94,7 +94,7 @@ export default function Register() {
     };
 
     try {
-      const response = await Request("auth/register", payload);
+      const response = await Request("user/register", payload);
       setUser(response);
       console.log("User registered successfully:", response);
       setIsRegistered(true);

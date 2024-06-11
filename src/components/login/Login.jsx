@@ -63,7 +63,7 @@ export default function Login() {
     }
 
     try {
-      const response = await Request("auth/login", { identifier, password });
+      const response = await Request("user/login", { identifier, password });
 
       if (response) {
         Cookies.set("accessToken", response.accessToken);

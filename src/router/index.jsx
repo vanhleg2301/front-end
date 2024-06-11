@@ -8,6 +8,7 @@ import Public from "./Public";
 import authRoute from "./auth.route";
 import LoggedRoute from "./LoggedRoute";
 import ManageAccount from "../adminPage/Admin/ManageAccount";
+import RecruiterRoutes from "./RecruiterRoutes";
 
 const AuthLayout = () => {
   return (
@@ -26,6 +27,7 @@ export default createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "/admin", element: <ManageAccount /> },
+          RecruiterRoutes(),
           LoggedRoute(),
         ],
       },

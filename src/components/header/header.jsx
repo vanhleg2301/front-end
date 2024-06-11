@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -96,295 +95,273 @@ function Header() {
   };
 
   return (
-    <Box>
-      <AppBar
-        position="fixed"
-        sx={{
-          boxShadow: 0,
-          backgroundColor: "transparent",
-          backgroundImage: "none",
-          mt: 2,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Toolbar
-            variant="regular"
-            sx={(theme) => ({
+    <AppBar
+      position="fixed"
+      sx={{
+        boxShadow: 0,
+        backgroundColor: "transparent",
+        backgroundImage: "none",
+      }}
+    >
+      <Container maxWidth={false} sx={{ width: "100%" }}>
+        <Toolbar
+          variant="regular"
+          sx={(theme) => ({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexShrink: 0,
+            backgroundColor:
+              theme.palette.mode === "light"
+                ? "rgba(240, 248, 255, 10)" // AliceBlue for light mode
+                : "rgba(25, 25, 112, 0.9)", // MidnightBlue for dark mode
+            backdropFilter: "blur(20px)",
+            maxHeight: 40,
+            border: "1px solid",
+            borderColor: "divider",
+            boxShadow:
+              theme.palette.mode === "light"
+                ? `0 0 1px rgba(0, 0, 0, 0.1), 1px 1.5px 2px -1px rgba(0, 0, 0, 0.15), 4px 4px 12px -2.5px rgba(0, 0, 0, 0.15)`
+                : "0 0 1px rgba(255, 255, 255, 0.1), 1px 1.5px 2px -1px rgba(255, 255, 255, 0.15), 4px 4px 12px -2.5px rgba(255, 255, 255, 0.15)",
+          })}
+        >
+          {/* Header top */}
+          <Box
+            sx={{
+              flexGrow: 1,
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              flexShrink: 0,
-              borderRadius: "999px",
-              backgroundColor:
-                theme.palette.mode === "light"
-                  ? "rgba(240, 248, 255, 10)" // AliceBlue for light mode
-                  : "rgba(25, 25, 112, 0.9)", // MidnightBlue for dark mode
-              backdropFilter: "blur(20px)",
-              maxHeight: 40,
-              border: "1px solid",
-              borderColor: "divider",
-              boxShadow:
-                theme.palette.mode === "light"
-                  ? `0 0 1px rgba(0, 0, 0, 0.1), 1px 1.5px 2px -1px rgba(0, 0, 0, 0.15), 4px 4px 12px -2.5px rgba(0, 0, 0, 0.15)`
-                  : "0 0 1px rgba(255, 255, 255, 0.1), 1px 1.5px 2px -1px rgba(255, 255, 255, 0.15), 4px 4px 12px -2.5px rgba(255, 255, 255, 0.15)",
-            })}
+              ml: "-18px",
+              px: 0,
+            }}
           >
-            {/* Header top */}
             <Box
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                alignItems: "center",
-                ml: "-18px",
-                px: 0,
-              }}
+              sx={{ ml: 2, textDecoration: "none", color: "blue" }}
+              component={Link}
+              to="/"
             >
-              <Box
-                sx={{ ml: 2, textDecoration: "none", color: "blue" }}
-                component={Link}
-                to="/"
-              >
-                <img src={"mon.png"} style={logoStyle} alt="logo" />
-              </Box>
-
-              <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
-                {/*Job*/}
-                <MenuItem
-                  onMouseEnter={() => handleMouseEnter("jobs")}
-                  onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px" }}
-                  className="menu-item"
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Jobs
-                  </Typography>
-                  {isOpen && (
-                    <Box className="dropdown-content">
-                      <Link to="/jobs" className="dropdown-item">
-                        <IconButton disabled>
-                          <SearchIcon />
-                        </IconButton>
-                        Find job
-                      </Link>
-                      <Link to="/jobs/applied" className="dropdown-item">
-                        <IconButton disabled>
-                          <WorkOutlineIcon />
-                        </IconButton>
-                        Job applied
-                      </Link>
-                      <Link to="/jobs/saved" className="dropdown-item">
-                        <IconButton disabled>
-                          <FavoriteBorderIcon />
-                        </IconButton>
-                        Job saved
-                      </Link>
-                    </Box>
-                  )}
-                </MenuItem>
-                {/*Cv*/}
-                {login ? (
-                  <MenuItem
-                    onMouseEnter={() => handleMouseEnter("cv")}
-                    onMouseLeave={handleMouseLeave}
-                    sx={{ py: "6px", px: "12px" }}
-                    className="menu-item"
-                  >
-                    <Typography variant="body2" color="text.primary">
-                      CV
-                    </Typography>
-                    {isOpenCv && (
-                      <Box className="dropdown-content">
-                        <Link to="/profile/manager" className="dropdown-item">
-                          <IconButton disabled>
-                            <ContentPasteIcon />
-                          </IconButton>
-                          Manager CV
-                        </Link>
-                        <Link to="/profile/upload" className="dropdown-item">
-                          <IconButton disabled>
-                            <PublishOutlinedIcon />
-                          </IconButton>
-                          Upload CV
-                        </Link>
-                      </Box>
-                    )}
-                  </MenuItem>
-                ) : null}
-
-                {/*Companies*/}
-                <MenuItem
-                  onMouseEnter={() => handleMouseEnter("companies")}
-                  onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px" }}
-                  className="menu-item"
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Companies
-                  </Typography>
-                  {isOpenCompany && (
-                    <Box className="dropdown-content">
-                      <Link to="/companies/all" className="dropdown-item">
-                        <IconButton disabled>
-                          <EmojiTransportationIcon />
-                        </IconButton>
-                        Companies
-                      </Link>
-                      <Link to="/companies/all" className="dropdown-item">
-                        <IconButton disabled>
-                          <AutoAwesomeOutlinedIcon />
-                        </IconButton>
-                        Top Company
-                      </Link>
-                    </Box>
-                  )}
-                </MenuItem>
-                {/*Tools*/}
-                <MenuItem
-                  onMouseEnter={() => handleMouseEnter("tools")}
-                  onMouseLeave={handleMouseLeave}
-                  sx={{ py: "6px", px: "12px" }}
-                  className="menu-item"
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Tools
-                  </Typography>
-                  {isOpenTools && (
-                    <Box className="dropdown-content">
-                      <Link to="/" className="dropdown-item">
-                        <IconButton disabled>
-                          <BuildCircleIcon />
-                        </IconButton>
-                        MBTI test
-                      </Link>
-                      <Link to="/" className="dropdown-item">
-                        <IconButton disabled>
-                          <BuildCircleIcon />
-                        </IconButton>
-                        MI test
-                      </Link>
-                    </Box>
-                  )}
-                </MenuItem>
-                {/*Faq*/}
-                <MenuItem className="menu-item">
-                  <Typography variant="body2" color="text.primary">
-                    FAQ
-                  </Typography>
-                </MenuItem>
-              </Box>
+              <img src={"mon.png"} style={logoStyle} alt="logo" />
             </Box>
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
-                gap: 0.5,
-                alignItems: "center",
-              }}
-            >
-              {login ? (
-                <Box
+
+            <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
+              {/*Job*/}
+              <MenuItem
+                onMouseEnter={() => handleMouseEnter("jobs")}
+                onMouseLeave={handleMouseLeave}
+                sx={{ py: "6px", px: "12px" }}
+                className="menu-item"
+              >
+                <Typography variant="body2" color="text.primary">
+                  Jobs
+                </Typography>
+                {isOpen && (
+                  <Box className="dropdown-content">
+                    <Link to="/jobs" className="dropdown-item">
+                      <IconButton disabled>
+                        <SearchIcon />
+                      </IconButton>
+                      Find job
+                    </Link>
+                    <Link to="/jobs/applied" className="dropdown-item">
+                      <IconButton disabled>
+                        <WorkOutlineIcon />
+                      </IconButton>
+                      Job applied
+                    </Link>
+                    <Link to="/jobs/saved" className="dropdown-item">
+                      <IconButton disabled>
+                        <FavoriteBorderIcon />
+                      </IconButton>
+                      Job saved
+                    </Link>
+                  </Box>
+                )}
+              </MenuItem>
+              {/*Companies*/}
+              <MenuItem
+                onMouseEnter={() => handleMouseEnter("companies")}
+                onMouseLeave={handleMouseLeave}
+                sx={{ py: "6px", px: "12px" }}
+                className="menu-item"
+              >
+                <Typography variant="body2" color="text.primary">
+                  Companies
+                </Typography>
+                {isOpenCompany && (
+                  <Box className="dropdown-content">
+                    <Link to="/companies/all" className="dropdown-item">
+                      <IconButton disabled>
+                        <EmojiTransportationIcon />
+                      </IconButton>
+                      Companies
+                    </Link>
+                    <Link to="/companies/all" className="dropdown-item">
+                      <IconButton disabled>
+                        <AutoAwesomeOutlinedIcon />
+                      </IconButton>
+                      Top Company
+                    </Link>
+                  </Box>
+                )}
+              </MenuItem>
+              {/*Tools*/}
+              <MenuItem
+                onMouseEnter={() => handleMouseEnter("tools")}
+                onMouseLeave={handleMouseLeave}
+                sx={{ py: "6px", px: "12px" }}
+                className="menu-item"
+              >
+                <Typography variant="body2" color="text.primary">
+                  Tools
+                </Typography>
+                {isOpenTools && (
+                  <Box className="dropdown-content">
+                    <Link to="/" className="dropdown-item">
+                      <IconButton disabled>
+                        <BuildCircleIcon />
+                      </IconButton>
+                      MBTI test
+                    </Link>
+                    <Link to="/" className="dropdown-item">
+                      <IconButton disabled>
+                        <BuildCircleIcon />
+                      </IconButton>
+                      MI test
+                    </Link>
+                  </Box>
+                )}
+              </MenuItem>
+              {/*Faq*/}
+              <MenuItem className="menu-item">
+                <Typography variant="body2" color="text.primary">
+                  FAQ
+                </Typography>
+              </MenuItem>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              gap: 0.5,
+              alignItems: "center",
+            }}
+          >
+            {login ? (
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                <MenuItem
                   sx={{
-                    display: { xs: "none", md: "flex" },
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: "inherit", // Keeps the background color unchanged
+                    },
                   }}
                 >
-                  <MenuItem
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        backgroundColor: "inherit", // Keeps the background color unchanged
-                      },
-                    }}
-                  >
-                    <Badge badgeContent={5} color="primary">
-                      <MailIcon color="action" />
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        backgroundColor: "inherit", // Keeps the background color unchanged
-                      },
-                    }}
-                  >
-                    <Badge badgeContent={4} color="primary">
-                      <NotificationsIcon color="action" />
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem
-                    sx={{
-                      py: "6px",
-                      px: "12px",
-                    }}
-                    onMouseEnter={() => handleMouseEnter("info")}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <Avatar alt="User Avatar" src="" />
-                    {isOpenProfile && (
-                      <Box
-                        className="dropdown-content"
-                        sx={{
-                          top: "100%",
-                          left: "50%",
-                          transform: "translateX(-85%)",
-                        }}
-                      >
-                        <Link to="/profile" className="dropdown-item">
-                          <IconButton disabled>
-                            <ManageAccountsIcon />
-                          </IconButton>
-                          Information
-                        </Link>
-                        <Link to="/" className="dropdown-item">
-                          <IconButton disabled>
-                            <MailOutlineIcon />
-                          </IconButton>
-                          Setting notification
-                        </Link>
-                        <Link to="/forgot" className="dropdown-item">
-                          <IconButton disabled>
-                            <QuestionMarkIcon />
-                          </IconButton>
-                          Forgot password
-                        </Link>
-                        <Box className="dropdown-item" onClick={handleLogout}>
-                          <IconButton disabled>
-                            <LogoutIcon />
-                          </IconButton>
-                          Logout
-                        </Box>
+                  <Badge badgeContent={5} color="primary">
+                    <MailIcon color="action" />
+                  </Badge>
+                </MenuItem>
+                <MenuItem
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: "inherit", // Keeps the background color unchanged
+                    },
+                  }}
+                >
+                  <Badge badgeContent={4} color="primary">
+                    <NotificationsIcon color="action" />
+                  </Badge>
+                </MenuItem>
+                <MenuItem
+                  sx={{
+                    py: "6px",
+                    px: "12px",
+                  }}
+                  onMouseEnter={() => handleMouseEnter("info")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Avatar alt="User Avatar" src="" />
+                  {isOpenProfile && (
+                    <Box
+                      className="dropdown-content"
+                      sx={{
+                        top: "100%",
+                        left: "50%",
+                        transform: "translateX(-85%)",
+                      }}
+                    >
+                      <Link to="/profile/manager" className="dropdown-item">
+                        <IconButton disabled>
+                          <ContentPasteIcon />
+                        </IconButton>
+                        Manage Cv
+                      </Link>
+                      <Link to="/profile/upload" className="dropdown-item">
+                        <IconButton disabled>
+                          <PublishOutlinedIcon />
+                        </IconButton>
+                        Upload
+                      </Link>
+                      <Link to="/profile" className="dropdown-item">
+                        <IconButton disabled>
+                          <ManageAccountsIcon />
+                        </IconButton>
+                        Information
+                      </Link>
+                      <Link to="/" className="dropdown-item">
+                        <IconButton disabled>
+                          <MailOutlineIcon />
+                        </IconButton>
+                        Setting notification
+                      </Link>
+                      <Link to="/forgot" className="dropdown-item">
+                        <IconButton disabled>
+                          <QuestionMarkIcon />
+                        </IconButton>
+                        Forgot password
+                      </Link>
+                      <Box className="dropdown-item" onClick={handleLogout}>
+                        <IconButton disabled>
+                          <LogoutIcon />
+                        </IconButton>
+                        Logout
                       </Box>
-                    )}
-                  </MenuItem>
-                </Box>
-              ) : (
-                <Box>
-                  <Button
-                    color="primary"
-                    variant="text"
-                    size="small"
-                    component={Link}
-                    to="/login"
-                  >
-                    Sign in
-                  </Button>
-                  <Button
-                    color="info"
-                    variant="contained"
-                    size="small"
-                    component={Link}
-                    to="/register"
-                  >
-                    Sign up
-                  </Button>
-                </Box>
-              )}
-            </Box>
-            {/* Header right */}
-            <HeaderRight />
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Box>
+                    </Box>
+                  )}
+                </MenuItem>
+              </Box>
+            ) : (
+              <Box>
+                <Button
+                  color="primary"
+                  variant="text"
+                  size="small"
+                  component={Link}
+                  to="/login"
+                >
+                  Sign in
+                </Button>
+                <Button
+                  color="info"
+                  variant="contained"
+                  size="small"
+                  component={Link}
+                  to="/register"
+                >
+                  Sign up
+                </Button>
+              </Box>
+            )}
+          </Box>
+          {/* Header right */}
+          <HeaderRight />
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
 
