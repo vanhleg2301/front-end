@@ -85,7 +85,7 @@ function Header() {
     setIsOpenTools(false);
   };
 
-  const { login, sethLogin } = React.useContext(AuthContext);
+  const { login, sethLogin, userLogin } = React.useContext(AuthContext);
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -276,6 +276,7 @@ function Header() {
                     <NotificationsIcon color="action" />
                   </Badge>
                 </MenuItem>
+                {/* Avatar */}
                 <MenuItem
                   sx={{
                     py: "6px",

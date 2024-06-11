@@ -1,33 +1,18 @@
-// import React, { useContext } from "react";
-// import { AuthContext } from "../context/AuthProvider";
-
-// export default function CheckRole(props) {
-//   const { roles, children } = props;
-//   const { userLogin } = useContext(AuthContext);
-
-//   return <div></div>;
-// }
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import AdminRoute from "./AdminRoute";
-import RecruiterRoutes from "./RecruiterRoutes";
-import LoggedRoute from "./LoggedRoute";
+import { Navigate, Outlet } from "react-router-dom";
 
-export default function CheckRole() {
+export default function CheckRole({ roles }) {
   const { login, userLogin } = useContext(AuthContext);
+  const userRoleID = userLogin?.user?.roleID;
 
   if (!login) {
-    return null; // or return a loading spinner / redirect to login
+    return <Navigate to="/login" />;
   }
 
-  switch (userLogin.user.roleID) {
-    case 3:
-      return <AdminRoute />;
-    case 2:
-      return <RecruiterRoutes />;
-    case 1:
-      return <LoggedRoute />;
-    default:
-      return null; // or handle the default case if needed
+  if (roles.includes(userRoleID)) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/login" />; // or a different fallback route
   }
 }

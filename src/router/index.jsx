@@ -26,7 +26,20 @@ export default createBrowserRouter([
     children: [
       {
         element: <ProtectedRoute />,
-        children: [{ element: <CheckRole /> }],
+        children: [
+          {
+            element: <CheckRole roles={[1]} />,
+            children: [LoggedRoute()],
+          },
+          {
+            element: <CheckRole roles={[2]} />,
+            children: [RecruiterRoutes()],
+          },
+          {
+            element: <CheckRole roles={[3]} />,
+            children: [AdminRoute()],
+          },
+        ],
       },
       authRoute(),
       Public(),
