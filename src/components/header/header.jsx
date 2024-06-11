@@ -13,21 +13,17 @@ import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
-import PublishOutlinedIcon from "@mui/icons-material/PublishOutlined";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import Avatar from "@mui/material/Avatar";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import LogoutIcon from "@mui/icons-material/Logout";
 import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 import HeaderRight from "./HeaderRight";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import { AuthContext } from "../../context/AuthProvider";
 import Cookies from "js-cookie";
+import Applicant from "./subHeader/applicant";
+import Recruiter from "./subHeader/recruiter";
 
 const logoStyle = {
   width: "30px",
@@ -38,7 +34,6 @@ const logoStyle = {
 function Header() {
   // Open
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isOpenCv, setIsOpenCv] = React.useState(false);
   const [isOpenCompany, setIsOpenCompany] = React.useState(false);
   const [isOpenProfile, setIsOpenProfile] = React.useState(false);
   const [isOpenTools, setIsOpenTools] = React.useState(false);
@@ -46,31 +41,21 @@ function Header() {
   const handleMouseEnter = (section) => {
     if (section === "jobs") {
       setIsOpen(true);
-      setIsOpenCv(false);
-      setIsOpenCompany(false);
-      setIsOpenProfile(false);
-      setIsOpenTools(false);
-    } else if (section === "cv") {
-      setIsOpen(false);
-      setIsOpenCv(true);
       setIsOpenCompany(false);
       setIsOpenProfile(false);
       setIsOpenTools(false);
     } else if (section === "companies") {
       setIsOpen(false);
-      setIsOpenCv(false);
       setIsOpenCompany(true);
       setIsOpenProfile(false);
       setIsOpenTools(false);
     } else if (section === "info") {
       setIsOpen(false);
-      setIsOpenCv(false);
       setIsOpenCompany(false);
       setIsOpenProfile(true);
       setIsOpenTools(false);
     } else if (section === "tools") {
       setIsOpen(false);
-      setIsOpenCv(false);
       setIsOpenCompany(false);
       setIsOpenProfile(false);
       setIsOpenTools(true);
@@ -79,20 +64,25 @@ function Header() {
 
   const handleMouseLeave = () => {
     setIsOpen(false);
-    setIsOpenCv(false);
     setIsOpenCompany(false);
     setIsOpenProfile(false);
     setIsOpenTools(false);
   };
 
-  const { login, sethLogin, userLogin } = React.useContext(AuthContext);
+  const { login, userLogin } = React.useContext(AuthContext);
 
-  const handleLogout = () => {
-    Cookies.remove("accessToken");
-    Cookies.remove("user");
-    sethLogin(false); // Đặt state logged về false sau khi đăng xuất
-    window.location.href = "/";
-  };
+  const [role, setRole] = React.useState("");
+  React.useEffect(() => {
+    if (userLogin && userLogin.user) {
+      if (userLogin.user.roleID === 3) {
+        setRole("admin");
+      } else if (userLogin.user.roleID === 2) {
+        setRole("recruiter");
+      } else if (userLogin.user.roleID === 1) {
+        setRole("applicant");
+      }
+    }
+  }, [userLogin]);
 
   return (
     <AppBar
@@ -286,53 +276,14 @@ function Header() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <Avatar alt="User Avatar" src="" />
-                  {isOpenProfile && (
-                    <Box
-                      className="dropdown-content"
-                      sx={{
-                        top: "100%",
-                        left: "50%",
-                        transform: "translateX(-85%)",
-                      }}
-                    >
-                      <Link to="/profile/manager" className="dropdown-item">
-                        <IconButton disabled>
-                          <ContentPasteIcon />
-                        </IconButton>
-                        Manage Cv
-                      </Link>
-                      <Link to="/profile/upload" className="dropdown-item">
-                        <IconButton disabled>
-                          <PublishOutlinedIcon />
-                        </IconButton>
-                        Upload
-                      </Link>
-                      <Link to="/profile" className="dropdown-item">
-                        <IconButton disabled>
-                          <ManageAccountsIcon />
-                        </IconButton>
-                        Information
-                      </Link>
-                      <Link to="/" className="dropdown-item">
-                        <IconButton disabled>
-                          <MailOutlineIcon />
-                        </IconButton>
-                        Setting notification
-                      </Link>
-                      <Link to="/forgot" className="dropdown-item">
-                        <IconButton disabled>
-                          <QuestionMarkIcon />
-                        </IconButton>
-                        Forgot password
-                      </Link>
-                      <Box className="dropdown-item" onClick={handleLogout}>
-                        <IconButton disabled>
-                          <LogoutIcon />
-                        </IconButton>
-                        Logout
-                      </Box>
-                    </Box>
-                  )}
+                  {isOpenProfile &&
+                    (role === "applicant" ? (
+                      <Applicant />
+                    ) : role === "recruiter" ? (
+                      <Recruiter />
+                    ) : role === "admin" ? (
+                      <Admin />
+                    ) : null)}
                 </MenuItem>
               </Box>
             ) : (
