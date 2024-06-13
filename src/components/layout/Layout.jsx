@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
-import { Box, CssBaseline, Divider } from "@mui/material";
+import {  CssBaseline, Box,Divider } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 
 export default function Layout() {

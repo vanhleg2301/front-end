@@ -21,7 +21,7 @@ export default function FilterJob() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await RequestGet(`jobs`);
+        const response = await RequestGet(`job`);
         setJobs(response);
       } catch (error) {
         console.error("Error fetching jobs:", error);

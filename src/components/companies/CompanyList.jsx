@@ -18,7 +18,7 @@ export default function CompanyList() {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await RequestGet(`companies`);
+        const response = await RequestGet(`company`);
         setCompanies(response);
       } catch (error) {
         console.error("Error fetching companies:", error);

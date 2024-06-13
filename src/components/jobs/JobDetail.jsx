@@ -29,7 +29,7 @@ export default function JobDetail() {
   useEffect(() => {
     const fetchJobDetail = async () => {
       try {
-        const response = await RequestGet(`jobs/${jobId}`);
+        const response = await RequestGet(`job/${jobId}`);
         setJobDetail(response);
         console.log(response);
       } catch (error) {

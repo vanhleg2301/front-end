@@ -47,7 +47,7 @@ export default function Act({ onSearch }) {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await RequestGet(`jobs`);
+        const response = await RequestGet(`job`);
         setJobs(response);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -66,7 +66,7 @@ export default function Act({ onSearch }) {
       setSearchValue(searchTerm);
       setSelectedJobs([...selectedJobs, searchTerm]);
       try {
-        const data = await RequestGet(`jobs/find?title=${searchTerm}`);
+        const data = await RequestGet(`job/find?title=${searchTerm}`);
         setAfterSearch(data);
       } catch (error) {
         console.error("Error fetching find job:", error);
@@ -83,7 +83,7 @@ export default function Act({ onSearch }) {
           experience: selectedExp,
           salary: selectedValue,
         }).toString();
-        const data = await RequestGet(`jobs/find?${query}`);
+        const data = await RequestGet(`job/find?${query}`);
         setAfterSearch(data);
         console.log("from fetch: ", afterSearch);
       } catch (error) {

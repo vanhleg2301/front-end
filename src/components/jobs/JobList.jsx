@@ -19,7 +19,7 @@ export default function JobList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9999/jobs")
+      .get("http://localhost:9999/job")
       .then((response) => {
         setJobs(response.data);
         // Ban đầu, khi component được render, hiển thị tất cả công việc
