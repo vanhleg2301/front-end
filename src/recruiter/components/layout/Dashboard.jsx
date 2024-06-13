@@ -85,7 +85,7 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme({
   palette: {
-    mode: "light", // Ensure mode is defined
+    mode: "dark", // Ensure mode is defined
     grey: {
       100: "#f5f5f5",
       900: "#212121",
