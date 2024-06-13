@@ -2,17 +2,17 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
-import {  CssBaseline, Box,Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 
 export default function Layout() {
   return (
     <>
       <ThemeProvider>
-        <CssBaseline />
         <Header />
         <Box
           sx={(theme) => ({
+            pt: 7,
             width: "100%",
             backgroundImage:
               theme.palette.mode === "light"
