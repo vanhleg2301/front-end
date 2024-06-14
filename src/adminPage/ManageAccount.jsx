@@ -3,8 +3,8 @@ import Header from "../components/Header/Header";
 import { Button, Container, Grid, TextField } from "@mui/material";
 import "./ManageAccount.css";
 import { useState } from "react";
-import AccountManagerRecuiter from "../components/Admin/AccountsManager/AccountManagerRecuiter";
-import AccountsManagerApplicant from "../components/Admin/AccountsManager/AccoutManagerApllicant";
+import AccountManagerRecuiter from "./Admin/AccountsManager/AccountManagerRecuiter";
+import AccountsManagerApplicant from "./Admin/AccountsManager/AccoutManagerApllicant";
 const ManageAccount = () => {
   const [recuiter, setRecuiter] = useState(true);
 
@@ -13,10 +13,8 @@ const ManageAccount = () => {
     e.preventDefault();
     if (value === "true") {
       setRecuiter(true);
-      console.log(value);
     } else {
       setRecuiter(false);
-      console.log(value);
     }
   };
 

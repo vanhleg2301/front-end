@@ -1,7 +1,7 @@
 import {} from "react";
 import { Container, Grid } from "@mui/material";
 
-const reportDetail = () => {
+const reportDetails = () => {
   return (
     <Container className="text-align-center">
       <h2>Report Detail</h2>
@@ -16,3 +16,5 @@ const reportDetail = () => {
     </Container>
   );
 };
+
+export default reportDetails;

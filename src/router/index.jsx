@@ -3,10 +3,11 @@ import { createBrowserRouter } from "react-router-dom";
 import ManageAccount from "../adminPage/ManageAccount";
 import ManageCompany from "../adminPage/ManageCompany";
 import Home from "../pages/Home";
-import AccountManagerRecuiter from "../components/Admin/AccountsManager/AccountManagerRecuiter";
-import AccountsManagerApplicant from "../components/Admin/AccountsManager/AccoutManagerApllicant";
 import ManageReport from "../adminPage/ManageReport";
-import CVManage from "../components/Admin/CVManage";
+import CVManage from "../adminPage/Admin/CVManage";
+import reportDetails from "../adminPage/Admin/reportDetail";
+import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
+// import AccountManagerRecuiter from "../Admin/AccountsManager/AccountManagerRecuiter";
 const AuthLayout = () => {};
 
 export default createBrowserRouter([
@@ -14,6 +15,11 @@ export default createBrowserRouter([
   {
     element: <ManageAccount />,
     path: "/accountmanager",
+    // children: {
+    //   {element: <AccountManagerRecuiter />,
+    //   path: "/"},
+    //   ,
+    // },
   },
   {
     element: <ManageCompany />,
@@ -26,5 +32,13 @@ export default createBrowserRouter([
   {
     element: <CVManage />,
     path: "/cvmanager",
+  },
+  {
+    element: <reportDetails />,
+    path: "/reportdetail",
+  },
+  {
+    element: <RecuiterRegister />,
+    path: "/recuiterregister",
   },
 ]);

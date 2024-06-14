@@ -3,7 +3,7 @@ import Header from "../components/Header/Header";
 import { Button, Container, Grid, TextField } from "@mui/material";
 import "./ManageAccount.css";
 import { useState } from "react";
-import CompanyManager from "../components/Admin/AccountsManager/ManagerCompany";
+import CompanyManager from "./Admin/AccountsManager/ManagerCompany";
 const ManageCompany = () => {
   return (
     <>

@@ -3,7 +3,7 @@ import Header from "../components/Header/Header";
 import { Button, Container, Grid, TextField } from "@mui/material";
 import "./ManageAccount.css";
 import { useState } from "react";
-import ReportManager from "../components/Admin/AccountsManager/ReportManager";
+import ReportManager from "./Admin/AccountsManager/ReportManager";
 const ManageReport = () => {
   return (
     <>

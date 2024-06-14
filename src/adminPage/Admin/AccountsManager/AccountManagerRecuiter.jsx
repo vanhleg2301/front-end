@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   TableBody,
@@ -14,7 +14,19 @@ import {
 } from "@mui/material";
 import {} from "@mui/icons-material";
 const AccountManagerRecuiter = () => {
-  const [account, setAccount] = useState([]);
+  const [recuiters, setRecuiters] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:9999/auth")
+      .then((resp) => resp.json())
+      .then((data) => {
+        setRecuiters(data.filter((a) => a.roleID === 2));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Container align="center">
       <Grid container justifyContent={"end"} paddingTop={2}>
@@ -39,6 +51,25 @@ const AccountManagerRecuiter = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {recuiters.map((r) => (
+              <TableRow hover>
+                <TableCell>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={"recuiter/" + r.id}
+                  >
+                    {r.id}
+                  </Link>
+                </TableCell>
+                <TableCell>{r.name}</TableCell>
+                <TableCell>{r.companies}</TableCell>
+                <TableCell>
+                  <Button color="error" variant="contained">
+                    Deactive
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
             <TableRow hover>
               <TableCell>
                 <Link href="#" style={{ textDecoration: "none" }}>
