@@ -1,4 +1,3 @@
-import {} from "react";
 import "./recuiterregister.css";
 import {
   Button,
@@ -9,8 +8,18 @@ import {
   TextField,
 } from "@mui/material";
 import { CheckBox } from "@mui/icons-material";
+import { useState } from "react";
 
 const RecuiterRegister = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repassword, setRePassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [address, setAddress] = useState("");
+
+  const handleSubmit = () => {};
   return (
     <Container align={"center"}>
       <h3>Register for Recuiter</h3>
@@ -27,6 +36,7 @@ const RecuiterRegister = () => {
             label="Email"
             className="width100pc"
             size="small"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Grid>
         <Grid item xs={2} className="padding-topbot-10px">
@@ -38,6 +48,7 @@ const RecuiterRegister = () => {
             label="Mật khẩu từ 6-25 ký tự"
             className="width100pc"
             size="small"
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Grid>
         <Grid item xs={2} className="padding-topbot-10px">
@@ -49,6 +60,7 @@ const RecuiterRegister = () => {
             label="Nhập lại mật khẩu"
             className="width100pc"
             size="small"
+            onChange={(e) => setRePassword(e.target.value)}
           />
         </Grid>
 
@@ -64,6 +76,7 @@ const RecuiterRegister = () => {
             label="Họ tên"
             className="width100pc"
             size="small"
+            onChange={(e) => setFullname(e.target.value)}
           />
         </Grid>
         <Grid item xs={2} className="padding-topbot-10px">
@@ -75,6 +88,7 @@ const RecuiterRegister = () => {
             label="Số điện thoại"
             className="width100pc"
             size="small"
+            onChange={(e) => setPhone(e.target.value)}
           />
         </Grid>
         <Grid item xs={2} className="padding-topbot-10px">
@@ -86,6 +100,7 @@ const RecuiterRegister = () => {
             label="Công ty"
             className="width100pc"
             size="small"
+            onChange={(e) => setCompany(e.target.value)}
           />
         </Grid>
         <Grid item xs={2} className="padding-topbot-10px">
@@ -97,6 +112,7 @@ const RecuiterRegister = () => {
             label="Địa điểm làm việc"
             className="width100pc"
             size="small"
+            onChange={(e) => setAddress(e.target.value)}
           />
         </Grid>
 
@@ -118,7 +134,9 @@ const RecuiterRegister = () => {
           <Button variant="outlined">Hủy</Button>
         </Grid>
         <Grid item xs={6} className="padding-topbot-10px" align={"start"}>
-          <Button variant="contained">Hoàn tất</Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            Hoàn tất
+          </Button>
         </Grid>
       </Grid>
     </Container>
