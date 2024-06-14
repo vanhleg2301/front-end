@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import { CheckBox } from "@mui/icons-material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RecuiterRegister = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
@@ -18,8 +20,25 @@ const RecuiterRegister = () => {
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
   const [address, setAddress] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newRecuiter = {
+      email,
+      password,
+      fullname,
+      phone,
+      company,
+      address,
+    };
+
+    if (repassword !== password) {
+      setPasswordErr("Re-password need same Password");
+    } else {
+      setPasswordErr("");
+    }
+  };
   return (
     <Container align={"center"}>
       <h3>Register for Recuiter</h3>
@@ -62,6 +81,8 @@ const RecuiterRegister = () => {
             size="small"
             onChange={(e) => setRePassword(e.target.value)}
           />
+          <br />
+          <label style={{ color: "red" }}>{passwordErr}</label>
         </Grid>
 
         <Grid item xs={12} className="margin-topbot-20px">
