@@ -1,13 +1,13 @@
 import "./recuiterregister.css";
 import {
   Button,
+  Checkbox,
   Container,
   FormControlLabel,
   FormGroup,
   Grid,
   TextField,
 } from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -140,7 +140,7 @@ const RecuiterRegister = () => {
         <Grid item xs={12} className="margin-topbot-20px">
           <FormGroup>
             <FormControlLabel
-              control={<CheckBox />}
+              control={<Checkbox />}
               label="Tôi đồng ý với điều khoản dịch vụ của Ace Interview"
             />
           </FormGroup>
