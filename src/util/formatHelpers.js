@@ -1,3 +1,9 @@
+import moment from "moment";
+
+export const formatDate = (timestamp) => {
+  return moment(timestamp).format("h:mm A");
+};
+
 // format description
 export const formatDescription = (description) => {
   if (!description || typeof description !== "string") {
@@ -12,12 +18,13 @@ export const formatDescription = (description) => {
 };
 
 // format salary
-export const formatSalary = (salary) => {
-  if (isNaN(salary)) {
-    return salary;
+export const formatSalary = (minSalary, maxSalary) => {
+  if (isNaN(minSalary) || isNaN(maxSalary)) {
+    return `${minSalary} - ${maxSalary}`;
   } else {
-    const millionSalary = salary / 1000000;
-    return `${millionSalary} - triệu`;
+    const millionMinSalary = minSalary / 1000;
+    const millionMaxSalary = maxSalary / 1000;
+    return `${millionMinSalary} - ${millionMaxSalary} triệu`;
   }
 };
 

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { ENDPOINT } from "./constants";
+import Cookies from "js-cookie";
 
 // Helper function to get the access token from localStorage
-const getAccessToken = () => localStorage.getItem("accessToken");
+const getAccessToken = () => Cookies.get("accessToken");
 
 // Common headers for requests with optional Authorization header
 const getHeaders = (isAuthRequired = false) => {
@@ -28,13 +29,28 @@ const handleResponse = (res) => {
   return res.data;
 };
 
-// POST request function
+// POST request have accessToken function
 export const Request = async (uri, payload) => {
   try {
     const res = await axios.post(
       `${ENDPOINT}/${uri}`,
-      //JSON.stringify(payload),
-      payload,
+      JSON.stringify(payload),
+      { headers: getHeaders(true) }
+    );
+    return handleResponse(res);
+  } catch (error) {
+    console.error("Error in request:", error);
+    throw error;
+  }
+};
+
+// POST request no AccessToken
+export const RequestPost = async (uri, payload) => {
+  try {
+    const res = await axios.post(
+      `${ENDPOINT}/${uri}`,
+      JSON.stringify(payload),
+      // payload,
       { headers: getHeaders() }
     );
     return handleResponse(res);

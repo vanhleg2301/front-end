@@ -23,6 +23,7 @@ import { RequestGet } from "../../util/request";
 import Act from "../action/Act";
 import FilterJob from "./FilterJob";
 import JobSaved from "./JobSaved";
+import { APIJOB } from "../../util/apiEndpoint";
 
 const itemsPerPage = 9;
 
@@ -39,10 +40,11 @@ export default function Job() {
   // favorite
   const [favoriteJobs, setFavoriteJobs] = useState([]);
   const [alertMessage, setAlertMessage] = useState("");
+
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await RequestGet(`job`);
+        const response = await RequestGet(APIJOB);
         setJobs(response);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -121,8 +123,7 @@ export default function Job() {
         <Alert
           // variant="outlined"
           severity="success"
-          sx={{ position: "fixed", bottom: "0", left: "0" }}
-        >
+          sx={{ position: "fixed", bottom: "0", left: "0" }}>
           {alertMessage}
         </Alert>
       )}
@@ -132,148 +133,148 @@ export default function Job() {
         <FilterJob />
         {/* content list job */}
         <Grid container spacing={2}>
-          {paginatedData.map((item) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              sx={{ display: "flex" }}
-              key={item._id}
-            >
-              <Card
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  flexGrow: 1,
-                  p: 1,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: 6,
-                    border: "1px solid gray",
-                  },
-                }}
-              >
-                <Box
-                  component={Link}
-                  to={`/jobs/${item._id}`}
-                  sx={{ display: "flex", width: "30%", height: "auto" }}
-                >
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                    }}
-                    src={item.logo}
-                    alt={`Logo ${item.id}`}
-                  />
-                </Box>
-                <Box
+          {paginatedData.length === 0 ? (
+            <Grid item xs={12} sm={12} md={12}>
+              <Typography variant="body1" textAlign={"center"}>
+                Don't have this job
+              </Typography>
+            </Grid>
+          ) : (
+            paginatedData.map((item) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                sx={{ display: "flex" }}
+                key={item._id}>
+                <Card
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
                     justifyContent: "space-between",
-                    width: "70%",
-                    pr: 2,
-                  }}
-                >
-                  <CardContent>
-                    <Grid container>
-                      <Grid item xs={12} md={12}>
-                        <Box
-                          sx={{ textDecoration: "none" }}
-                          component={Link}
-                          to={`/jobs/${item._id}`}
-                        >
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            {item.title}
-                          </Typography>
-                        </Box>
-                      </Grid>
-
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        component={Link}
-                        to={`/companies/${item._id}`}
-                        sx={{ textDecoration: "none" }}
-                      >
-                        {formatDescription(item.description.JobDescription)}
-                      </Typography>
-
-                      <Grid item xs={12} md={12}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
+                    flexGrow: 1,
+                    p: 1,
+                    transition: "transform 0.3s, box-shadow 0.3s",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: 6,
+                      border: "1px solid gray",
+                    },
+                  }}>
+                  <Box
+                    component={Link}
+                    to={`/jobs/${item._id}`}
+                    sx={{ display: "flex", width: "30%", height: "auto" }}>
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                      src={item.logo}
+                      alt={`Logo ${item.id}`}
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      width: "70%",
+                      pr: 2,
+                    }}>
+                    <CardContent>
+                      <Grid container>
+                        <Grid item xs={12} md={12}>
                           <Box
-                            className="salaryLocation"
+                            sx={{ textDecoration: "none" }}
+                            component={Link}
+                            to={`/jobs/${item._id}`}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ fontWeight: "bold" }}>
+                              {item.title}
+                            </Typography>
+                          </Box>
+                        </Grid>
+
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          title={item.description.JobDescription}
+                          component={Link}
+                          to={`/companies/${item._id}`}
+                          sx={{ textDecoration: "none" }}>
+                          {formatDescription(item.description.JobDescription)}
+                        </Typography>
+
+                        <Grid item xs={12} md={12} sx={{ mt: 1 }}>
+                          <Box
                             sx={{
                               display: "flex",
-                              height: "24px",
+                              justifyContent: "space-between",
                               alignItems: "center",
-                            }}
-                          >
+                            }}>
                             <Box
+                              className="salaryLocation"
                               sx={{
-                                backgroundColor: "#f4f5f5",
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                                mr: 1,
                                 display: "flex",
+                                height: "24px",
                                 alignItems: "center",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap", // co dãn ngang
-                                textOverflow: "ellipsis",
-                              }}
-                            >
-                              {formatSalary(item.salary)}
-                            </Box>
-                            <Box
-                              sx={{
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                                backgroundColor: "#f4f5f5",
-                                display: "flex",
-                                alignItems: "center",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                              }}
-                            >
-                              {formatLocation(item.location.city)}
-                            </Box>
-                            <Box className="icon">
-                              <IconButton
-                                aria-label="favorite"
-                                onClick={() => toggleFavorite(item._id, item)}
-                              >
-                                {isFavoriteList[item._id] ? (
-                                  <FavoriteIcon />
-                                ) : (
-                                  <FavoriteBorderIcon />
-                                )}
-                              </IconButton>
+                              }}>
+                              <Box
+                                sx={{
+                                  backgroundColor: "#f4f5f5",
+                                  paddingLeft: "10px",
+                                  paddingRight: "10px",
+                                  mr: 1,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap", // co dãn ngang
+                                  textOverflow: "ellipsis",
+                                }}>
+                                {formatSalary(item.minSalary, item.maxSalary)}
+                              </Box>
+                              <Box
+                                title={item.location.comune}
+                                sx={{
+                                  paddingLeft: "10px",
+                                  paddingRight: "10px",
+                                  backgroundColor: "#f4f5f5",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                }}>
+                                {formatLocation(item.location.comune)}
+                              </Box>
+                              <Box className="icon">
+                                <IconButton
+                                  aria-label="favorite"
+                                  onClick={() =>
+                                    toggleFavorite(item._id, item)
+                                  }>
+                                  {isFavoriteList[item._id] ? (
+                                    <FavoriteIcon />
+                                  ) : (
+                                    <FavoriteBorderIcon />
+                                  )}
+                                </IconButton>
+                              </Box>
                             </Box>
                           </Box>
-                        </Box>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </CardContent>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
+                    </CardContent>
+                  </Box>
+                </Card>
+              </Grid>
+            ))
+          )}
         </Grid>
         {/* pagination */}
         <Paginations

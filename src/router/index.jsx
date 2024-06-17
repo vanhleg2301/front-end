@@ -43,7 +43,7 @@ export default createBrowserRouter([
       },
       authRoute(),
       Public(),
-      publicRoutes(),
+      ...publicRoutes(),
     ],
   },
 ]);

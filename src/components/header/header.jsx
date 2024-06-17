@@ -21,9 +21,9 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AuthContext } from "../../context/AuthProvider";
-import Cookies from "js-cookie";
 import Applicant from "./subHeader/applicant";
 import Recruiter from "./subHeader/recruiter";
+import Admin from "./subHeader/admin";
 
 const logoStyle = {
   width: "30px",
@@ -91,20 +91,16 @@ function Header() {
         boxShadow: 0,
         backgroundColor: "transparent",
         backgroundImage: "none",
-      }}
-    >
-      <Container maxWidth={false} sx={{ width: "100%" }}>
+        width: "101vw",
+      }}>
+      <Container maxWidth={false} sx={{ px: 0 }}>
         <Toolbar
-          variant="regular"
           sx={(theme) => ({
+            width: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             flexShrink: 0,
-            backgroundColor:
-              theme.palette.mode === "light"
-                ? "rgba(240, 248, 255, 10)" // AliceBlue for light mode
-                : "rgba(25, 25, 112, 0.9)", // MidnightBlue for dark mode
             backdropFilter: "blur(20px)",
             maxHeight: 40,
             border: "1px solid",
@@ -113,23 +109,19 @@ function Header() {
               theme.palette.mode === "light"
                 ? `0 0 1px rgba(0, 0, 0, 0.1), 1px 1.5px 2px -1px rgba(0, 0, 0, 0.15), 4px 4px 12px -2.5px rgba(0, 0, 0, 0.15)`
                 : "0 0 1px rgba(255, 255, 255, 0.1), 1px 1.5px 2px -1px rgba(255, 255, 255, 0.15), 4px 4px 12px -2.5px rgba(255, 255, 255, 0.15)",
-          })}
-        >
+          })}>
           {/* Header top */}
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
               alignItems: "center",
-              ml: "-18px",
               px: 0,
-            }}
-          >
+            }}>
             <Box
               sx={{ ml: 2, textDecoration: "none", color: "blue" }}
               component={Link}
-              to="/"
-            >
+              to="/">
               <img src={"mon.png"} style={logoStyle} alt="logo" />
             </Box>
 
@@ -139,8 +131,7 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("jobs")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item"
-              >
+                className="menu-item">
                 <Typography variant="body2" color="text.primary">
                   Jobs
                 </Typography>
@@ -172,8 +163,7 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("companies")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item"
-              >
+                className="menu-item">
                 <Typography variant="body2" color="text.primary">
                   Companies
                 </Typography>
@@ -199,8 +189,7 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("tools")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item"
-              >
+                className="menu-item">
                 <Typography variant="body2" color="text.primary">
                   Tools
                 </Typography>
@@ -235,21 +224,19 @@ function Header() {
               gap: 0.5,
               alignItems: "center",
             }}
-          >
+            p={4}>
             {login ? (
               <Box
                 sx={{
                   display: { xs: "none", md: "flex" },
-                }}
-              >
+                }}>
                 <MenuItem
                   sx={{
                     "&:hover": {
                       cursor: "pointer",
                       backgroundColor: "inherit", // Keeps the background color unchanged
                     },
-                  }}
-                >
+                  }}>
                   <Badge badgeContent={5} color="primary">
                     <MailIcon color="action" />
                   </Badge>
@@ -260,8 +247,7 @@ function Header() {
                       cursor: "pointer",
                       backgroundColor: "inherit", // Keeps the background color unchanged
                     },
-                  }}
-                >
+                  }}>
                   <Badge badgeContent={4} color="primary">
                     <NotificationsIcon color="action" />
                   </Badge>
@@ -273,8 +259,7 @@ function Header() {
                     px: "12px",
                   }}
                   onMouseEnter={() => handleMouseEnter("info")}
-                  onMouseLeave={handleMouseLeave}
-                >
+                  onMouseLeave={handleMouseLeave}>
                   <Avatar alt="User Avatar" src="" />
                   {isOpenProfile &&
                     (role === "applicant" ? (
@@ -293,8 +278,7 @@ function Header() {
                   variant="text"
                   size="small"
                   component={Link}
-                  to="/login"
-                >
+                  to="/login">
                   Sign in
                 </Button>
                 <Button
@@ -302,8 +286,7 @@ function Header() {
                   variant="contained"
                   size="small"
                   component={Link}
-                  to="/register"
-                >
+                  to="/register">
                   Sign up
                 </Button>
               </Box>

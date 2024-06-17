@@ -12,43 +12,46 @@ import JobSaved from "../components/jobs/JobSaved";
 import MeetingPage from "../pages/MeetingPage";
 import HomeMeeting from "../components/meeting/HomeMeeting";
 import Home from "../pages/Home";
+import MeetingCall from "../components/meeting/MeetingCall";
 
 export default function publicRoutes() {
-  return {
-    path: "/",
-    element: (
-      <Layout>
-        <Outlet />
-      </Layout>
-    ),
-    children: [
-      { index: true, element: <Home /> },
-      {
-        path: "/meeting",
-        element: <MeetingPage />,
-        children: [{ index: true, element: <HomeMeeting /> }],
-      },
+  return [
+    {
+      path: "/",
+      element: (
+        <Layout>
+          <Outlet />
+        </Layout>
+      ),
+      children: [
+        { index: true, element: <Home /> },
 
-      {
-        path: "/companies",
-        element: <CompanyPage />,
-        children: [
-          { path: "all", element: <CompanyList /> },
-          { path: ":id", element: <CompanyDetail /> },
-        ],
-      },
-
-      {
-        path: "/jobs",
-        element: <JobPage />,
-        children: [
-          { index: true, element: <Job /> },
-          { path: ":jobId", element: <JobDetail /> },
-          { path: "applied", element: <JobApplied /> },
-          { path: "saved", element: <JobSaved /> },
-          { path: "table", element: <JobList /> },
-        ],
-      },
-    ],
-  };
+        {
+          path: "meeting",
+          element: <MeetingPage />,
+          children: [{ index: true, element: <HomeMeeting /> }],
+        },
+        {
+          path: "companies",
+          element: <CompanyPage />,
+          children: [
+            { path: "all", element: <CompanyList /> },
+            { path: ":id", element: <CompanyDetail /> },
+          ],
+        },
+        {
+          path: "jobs",
+          element: <JobPage />,
+          children: [
+            { index: true, element: <Job /> },
+            { path: ":jobId", element: <JobDetail /> },
+            { path: "applied", element: <JobApplied /> },
+            { path: "saved", element: <JobSaved /> },
+            { path: "table", element: <JobList /> },
+          ],
+        },
+      ],
+    },
+    { path: "/meeting/:id", element: <MeetingCall /> },
+  ];
 }

@@ -20,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { RequestGet } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { formatSalary } from "../../util/formatHelpers";
 
 export default function JobDetail() {
   // Job detail
@@ -77,12 +78,11 @@ export default function JobDetail() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                      }}
-                    >
+                      }}>
                       <AttachMoneyIcon />
                       <Typography variant="body1">Salary</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                        {jobDetail.salary}
+                        {formatSalary(jobDetail.minSalary, jobDetail.maxSalary)}
                       </Typography>
                     </IconButton>
                   </Grid>
@@ -92,12 +92,12 @@ export default function JobDetail() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                      }}
-                    >
+                      }}>
                       <LocationSearchingIcon />
                       <Typography variant="body1">Location</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                        {jobDetail.location.city}, {jobDetail.location.province}
+                        {jobDetail.location.comune},{" "}
+                        {jobDetail.location.province}
                       </Typography>
                     </IconButton>
                   </Grid>
@@ -107,8 +107,7 @@ export default function JobDetail() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                      }}
-                    >
+                      }}>
                       <HourglassEmptyIcon />
                       <Typography variant="body1">Exp</Typography>
                       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -139,8 +138,7 @@ export default function JobDetail() {
                     sx={{ width: "90%", mr: 1 }}
                     color="primary"
                     variant="contained"
-                    onClick={handleApply}
-                  >
+                    onClick={handleApply}>
                     Apply
                   </Button>
                 </Grid>
@@ -149,8 +147,7 @@ export default function JobDetail() {
                     sx={{ width: "80%", mr: 1 }}
                     color="primary"
                     variant="outlined"
-                    startIcon={<FavoriteBorderIcon />}
-                  >
+                    startIcon={<FavoriteBorderIcon />}>
                     Save
                   </Button>
                 </Grid>
@@ -181,8 +178,7 @@ export default function JobDetail() {
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                    }}
-                  >
+                    }}>
                     CompanyCompanyCompanyCompanyCompanyCompany
                     CompanyCompanyCompanyCompanyCompanyCompany
                   </Typography>
@@ -193,8 +189,7 @@ export default function JobDetail() {
                     <Box
                       display="flex"
                       flexDirection="column"
-                      alignItems="flex-start"
-                    >
+                      alignItems="flex-start">
                       <Box display="flex" alignItems="center" mb={2}>
                         <IconButton>
                           <ScaleIcon />
@@ -203,8 +198,7 @@ export default function JobDetail() {
                           <Typography variant="body1">Scale</Typography>
                           <Typography
                             variant="body2"
-                            sx={{ fontWeight: "bold" }}
-                          >
+                            sx={{ fontWeight: "bold" }}>
                             100 - 200
                           </Typography>
                         </Box>
@@ -224,8 +218,7 @@ export default function JobDetail() {
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                               maxWidth: "20%", // Adjust this value as needed
-                            }}
-                          >
+                            }}>
                             Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho
                             Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh,
                             Ha Noi, Ho Chi Minh
@@ -248,10 +241,6 @@ export default function JobDetail() {
             <Box sx={{ width: "100%" }}>
               <Card sx={{ width: "100%", p: 3, borderTop: "1px solid gray" }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
-                    Detail Job
-                  </Typography>
-
                   <Typography variant="h6" gutterBottom>
                     Job description
                   </Typography>
@@ -309,15 +298,13 @@ export default function JobDetail() {
                       variant="contained"
                       color="primary"
                       sx={{ mt: 2 }}
-                      onClick={handleApply}
-                    >
+                      onClick={handleApply}>
                       Apply now
                     </Button>
                     <Button
                       variant="contained"
                       color="primary"
-                      sx={{ mt: 2, ml: 3 }}
-                    >
+                      sx={{ mt: 2, ml: 3 }}>
                       <FavoriteIcon />
                       Save
                     </Button>
@@ -338,8 +325,7 @@ export default function JobDetail() {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                      }}
-                    >
+                      }}>
                       More information
                     </Typography>
                   </Grid>
@@ -349,8 +335,7 @@ export default function JobDetail() {
                       <Box
                         display="flex"
                         flexDirection="column"
-                        alignItems="flex-start"
-                      >
+                        alignItems="flex-start">
                         <Box display="flex" alignItems="center" mb={2}>
                           <IconButton>
                             <ScaleIcon />
@@ -361,8 +346,7 @@ export default function JobDetail() {
                             </Typography>
                             <Typography
                               variant="body2"
-                              sx={{ fontWeight: "bold" }}
-                            >
+                              sx={{ fontWeight: "bold" }}>
                               Job position
                             </Typography>
                           </Box>
@@ -382,8 +366,7 @@ export default function JobDetail() {
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 maxWidth: "20%", // Adjust this value as needed
-                              }}
-                            >
+                              }}>
                               Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi,
                               Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi
                               Minh, Ha Noi, Ho Chi Minh
@@ -403,8 +386,7 @@ export default function JobDetail() {
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                              }}
-                            >
+                              }}>
                               Exp
                             </Typography>
                           </Box>
@@ -424,8 +406,7 @@ export default function JobDetail() {
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                              }}
-                            >
+                              }}>
                               1
                             </Typography>
                           </Box>
@@ -443,8 +424,7 @@ export default function JobDetail() {
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                              }}
-                            >
+                              }}>
                               None
                             </Typography>
                           </Box>

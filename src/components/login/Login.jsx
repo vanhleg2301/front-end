@@ -23,8 +23,7 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
       {"Copyright © "}
       <Typography color="inherit" component={Link} to="/">
         Ace Interview
@@ -78,6 +77,9 @@ export default function Login() {
         if (response.user.roleID === 2) {
           navigate("/recruiter");
         }
+        if (response.user.roleID === 3) {
+          navigate("/admin");
+        }
         // Navigate to the home page on successful login
       } else {
         // Handle login failure (e.g., invalid credentials)
@@ -110,8 +112,7 @@ export default function Login() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-            }}
-          >
+            }}>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -122,8 +123,7 @@ export default function Login() {
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              sx={{ mt: 1 }}
-            >
+              sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -156,8 +156,7 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+                sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>

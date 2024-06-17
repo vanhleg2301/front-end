@@ -18,9 +18,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { RequestGet } from "../../util/request";
+import { APIJOB } from "../../util/apiEndpoint";
 
 export default function Act({ onSearch }) {
-  //Search bar
+  // ------ Search bar
   const [searchValue, setSearchValue] = useState("");
 
   const [jobs, setJobs] = useState([]);
@@ -29,25 +30,26 @@ export default function Act({ onSearch }) {
   // search
   const [afterSearch, setAfterSearch] = useState("");
 
-  // location
+  // ------ location
   const [selectedLocation, setSelectedLocation] = useState("");
   const [locationSearch, setLocationSearch] = useState("");
   const [locations, setLocations] = useState([]);
 
-  // salary
+  // ------ salary
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [customRanges, setCustomRanges] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
   const [errorColor, setErrorColor] = useState(false);
 
-  // EXP
+  // ------ EXP
   const [selectedExp, setSelectedExp] = useState("");
 
+  // get job
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await RequestGet(`job`);
+        const response = await RequestGet(APIJOB);
         setJobs(response);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -61,12 +63,13 @@ export default function Act({ onSearch }) {
     setSearchValue(searchTerm);
   };
 
+  // Dropdown in search bar
   const handleDropdownClick = async (event, searchTerm) => {
     if (typeof searchTerm === "string") {
       setSearchValue(searchTerm);
       setSelectedJobs([...selectedJobs, searchTerm]);
       try {
-        const data = await RequestGet(`job/find?title=${searchTerm}`);
+        const data = await RequestGet(`${APIJOB}/find?title=${searchTerm}`);
         setAfterSearch(data);
       } catch (error) {
         console.error("Error fetching find job:", error);
@@ -74,6 +77,7 @@ export default function Act({ onSearch }) {
     }
   };
 
+  // find with request
   useEffect(() => {
     const fetchFind = async () => {
       try {
@@ -81,36 +85,39 @@ export default function Act({ onSearch }) {
           title: searchValue,
           location: selectedLocation,
           experience: selectedExp,
-          salary: selectedValue,
-        }).toString();
-        const data = await RequestGet(`job/find?${query}`);
+          minSalary: from,
+          maxSalary: to,
+        });
+        const data = await RequestGet(`${APIJOB}/find?${query}`);
         setAfterSearch(data);
-        console.log("from fetch: ", afterSearch);
+        // console.log("from fetch: ", afterSearch);
       } catch (error) {
         console.error("Error fetching find job:", error);
       }
     };
     fetchFind();
-  }, [searchValue]);
+  }, [searchValue, selectedLocation, selectedExp, from, to]);
 
-  // submit all
+  // ------ submit all
   const handleSubmit = async (event) => {
     event.preventDefault(); // Ngăn chặn hành động mặc định của form
     onSearch(afterSearch);
+
     // console.log("from search: ", afterSearch);
     console.log("Form submitted!: ", [
       searchValue,
       selectedLocation,
       selectedExp,
       selectedValue,
+      afterSearch,
     ]);
   };
 
-  // location
+  // ------ location
   useEffect(() => {
     if (jobs && jobs.length > 0) {
       const uniqueLocations = [
-        ...new Set(jobs.map((job) => job.location.city)),
+        ...new Set(jobs.map((job) => job.location.comune)),
       ];
       setLocations(uniqueLocations);
     }
@@ -129,27 +136,30 @@ export default function Act({ onSearch }) {
     location.toLowerCase().includes(locationSearch.toLowerCase())
   );
 
-  // salary
+  // ------ salary
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+    const [min, max] = event.target.value.split(" - ");
+    setFrom(min);
+    setTo(max);
+  };
 
   const handleAddRange = () => {
     if (from && to) {
       if (Number(to) > Number(from)) {
-        setCustomRanges([...customRanges, `${from} - ${to}`]);
+        const ranges = [...customRanges, `${from} - ${to}`];
+        setCustomRanges(ranges);
+        setSelectedValue(`${from} - ${to}`);
         setFrom("");
         setTo("");
         setErrorColor(false);
-        setSelectedValue("");
       } else {
         setErrorColor(true);
       }
     }
   };
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
-  // EXP
+  // ------ EXP
   const handleExp = (event) => {
     setSelectedExp(event.target.value);
   };
@@ -200,11 +210,13 @@ export default function Act({ onSearch }) {
                       </InputAdornment>
                     }
                   />
-                }
-              >
+                }>
                 <Box
-                  sx={{ display: "flex", alignItems: "center", padding: "8px" }}
-                >
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "8px",
+                  }}>
                   <TextField
                     placeholder="Search location"
                     value={locationSearch}
@@ -240,8 +252,7 @@ export default function Act({ onSearch }) {
                       </InputAdornment>
                     }
                   />
-                }
-              >
+                }>
                 <MenuItem value="">---</MenuItem>
                 <MenuItem value="y">All</MenuItem>
                 <MenuItem value="0">Less than 1 year</MenuItem>
@@ -250,7 +261,7 @@ export default function Act({ onSearch }) {
                 <MenuItem value="3">3 year</MenuItem>
                 <MenuItem value="4">4 year</MenuItem>
                 <MenuItem value="5">5 year</MenuItem>
-                <MenuItem value="5">More than 5 year</MenuItem>
+                <MenuItem value="6">More than 5 year</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>
@@ -269,11 +280,13 @@ export default function Act({ onSearch }) {
                       </InputAdornment>
                     }
                   />
-                }
-              >
+                }>
                 <Box
-                  sx={{ display: "flex", alignItems: "center", padding: "8px" }}
-                >
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "8px",
+                  }}>
                   <TextField
                     error={errorColor}
                     placeholder="from"
@@ -300,16 +313,16 @@ export default function Act({ onSearch }) {
                     {range}
                   </MenuItem>
                 ))}
-
                 <MenuItem value="" hidden>
                   ---
                 </MenuItem>
+                <MenuItem value={`${from} - ${to}`}>16m - 19m</MenuItem>
+                {/*   
                 <MenuItem value="deal">Deal</MenuItem>
-                <MenuItem value="15-20">15 - 20</MenuItem>
+                
                 <MenuItem value="20-25">20 - 25</MenuItem>
                 <MenuItem value="25-30">25 - 30</MenuItem>
-                <MenuItem value="30-50">30 - 50</MenuItem>
-                {/* Add more salary ranges here */}
+                <MenuItem value="30-50">30 - 50</MenuItem> */}
               </Select>
             </FormControl>
           </Grid>
@@ -320,8 +333,7 @@ export default function Act({ onSearch }) {
               variant="contained"
               color="info"
               fullWidth
-              sx={{ height: "54.55px" }}
-            >
+              sx={{ height: "54.55px" }}>
               Find
             </Button>
           </Grid>

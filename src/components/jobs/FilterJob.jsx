@@ -35,7 +35,7 @@ export default function FilterJob() {
 
   // location
   const getUniqueLocations = () => {
-    const locations = jobs.map((job) => job.location.city);
+    const locations = jobs.map((job) => job.location.comune);
     return [...new Set(locations)];
   };
   const uniqueLocations = getUniqueLocations();
@@ -82,8 +82,7 @@ export default function FilterJob() {
       sx={{
         width: { sm: "left", md: "left" },
         textAlign: { sm: "left", md: "left" },
-      }}
-    >
+      }}>
       <Typography component="h2" variant="h4" color="text.primary">
         Jobs List
       </Typography>
@@ -92,8 +91,7 @@ export default function FilterJob() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-        }}
-      >
+        }}>
         <Box sx={{ display: "flex", width: "20%", mt: 2, mb: 2 }}>
           <FormControl sx={{ m: 1, minWidth: "100%" }}>
             <Select
@@ -107,8 +105,7 @@ export default function FilterJob() {
                   <FilterListIcon /> Filter by:
                 </InputAdornment>
               }
-              onChange={handelFilter}
-            >
+              onChange={handelFilter}>
               <MenuItem value={0}>
                 <em>All</em>
               </MenuItem>
@@ -125,12 +122,11 @@ export default function FilterJob() {
                   alignItems: "center",
                   overflowX: "auto",
                   maxWidth: "100%",
-                }}
-              >
+                }}>
                 <IconButton onClick={() => handlePageLocation("prev")}>
                   <ArrowBackIosIcon />
                 </IconButton>
-                {getPaginatedLocation().map((city, index) => (
+                {getPaginatedLocation().map((comune, index) => (
                   <Button
                     color="error"
                     key={index}
@@ -138,9 +134,8 @@ export default function FilterJob() {
                       m: 2,
                       whiteSpace: "nowrap", // Nút co dãn chiều ngang
                       backgroundColor: "#f4f5f5",
-                    }}
-                  >
-                    {city}
+                    }}>
+                    {comune}
                   </Button>
                 ))}
                 <IconButton onClick={() => handlePageLocation("next")}>
