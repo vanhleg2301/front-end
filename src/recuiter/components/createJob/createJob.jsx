@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import { Container, Grid, MenuItem, Select, TextField } from "@mui/material";
 import "./createJob.css";
 import { useState } from "react";
+import { Button } from "@mui/base";
 
 const CreateJob = () => {
   const [industries, setIndustries] = useState([]);
 
   const [title, setTitle] = useState("");
-  const [desciption, setDescription] = useState("");
+  const [description, setDescription] = useState("");
   const [industry, setIndustry] = useState("");
-  const [gender, setGender] = useState(null);
+  const [gender, setGender] = useState("");
   const [applicantNumber, setApplicantNumber] = useState(0);
   const [typeofwork, setTypeofWork] = useState("");
   const [level, setLevel] = useState("");
@@ -18,16 +19,41 @@ const CreateJob = () => {
   const [district, setDistrict] = useState("");
   const [commune, setCommune] = useState("");
   const [address, setAddress] = useState("");
-  // useEffect(() => {
-  //   fetch("http://localhost:9999/auth")
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //       setRecuiters(data.filter((a) => a.roleID === 2));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  const [minSalary, setMinSalary] = useState(0);
+  const [maxSalary, setMaxSalary] = useState(0);
+
+  useEffect(() => {
+    fetch("http://localhost:9999/industry")
+      .then((resp) => resp.json())
+      .then((data) => {
+        setIndustries(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newRecuiter = {
+      title,
+      description,
+      industry,
+      gender,
+      applicantNumber,
+      typeofwork,
+      level,
+      experience,
+      province,
+      district,
+      commune,
+      address,
+      minSalary,
+      maxSalary,
+    };
+
+    console.log(newRecuiter);
+  };
 
   return (
     <Container>
@@ -45,6 +71,7 @@ const CreateJob = () => {
               label="Tiêu đề"
               size="small"
               className="width100pc"
+              onChange={(e) => setTitle(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -66,6 +93,7 @@ const CreateJob = () => {
               size="small"
               className="width100pc"
               multiline
+              onChange={(e) => setDescription(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -82,7 +110,18 @@ const CreateJob = () => {
 
           <Grid item xs={1}></Grid>
           <Grid item xs={10}>
-            <Select size="small" value={""} className="width100pc"></Select>
+            <Select
+              size="small"
+              value={industry}
+              className="width100pc"
+              onChange={(e) => setIndustry(e.target.value)}
+            >
+              {industries.map((i) => (
+                <MenuItem key={i._id} value={i.name}>
+                  {i.name}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
           <Grid item xs={1}></Grid>
         </Grid>
@@ -109,12 +148,24 @@ const CreateJob = () => {
 
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
-            <TextField size="small" className="width100pc"></TextField>
+            <TextField
+              size="small"
+              className="width100pc"
+              onChange={(e) => setApplicantNumber(e.target.value)}
+            ></TextField>
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
-            <Select size="small" value={""} className="width100pc"></Select>
+            <Select
+              size="small"
+              value={typeofwork}
+              className="width100pc"
+              onChange={(e) => setTypeofWork(e.target.value)}
+            >
+              <MenuItem value={"Full time"}>Full time</MenuItem>
+              <MenuItem value={"Part time"}>Part time</MenuItem>
+            </Select>
           </Grid>
           <Grid item xs={1}></Grid>
 
@@ -136,28 +187,28 @@ const CreateJob = () => {
           <Grid item xs={3}>
             <Select
               size="small"
-              value={""}
+              value={gender}
               className="width100pc"
               onChange={(e) => setGender(e.target.value)}
             >
-              <MenuItem value={true}>Nam</MenuItem>
-              <MenuItem value={false}>Nữ</MenuItem>
-              <MenuItem value={null}>Không yêu cầu</MenuItem>
+              <MenuItem value={"Nam"}>Nam</MenuItem>
+              <MenuItem value={"Nữ"}>Nữ</MenuItem>
+              <MenuItem value={"Không yêu cầu"}>Không yêu cầu</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <Select
               size="small"
-              value={""}
+              value={level}
               className="width100pc"
               onChange={(e) => setLevel(e.target.value)}
             >
-              <MenuItem value={1}>Intern</MenuItem>
-              <MenuItem value={2}>Fresher</MenuItem>
-              <MenuItem value={3}>Junior</MenuItem>
-              <MenuItem value={4}>Middle</MenuItem>
-              <MenuItem value={5}>Senior</MenuItem>
+              <MenuItem value={"Intern"}>Intern</MenuItem>
+              <MenuItem value={"Fresher"}>Fresher</MenuItem>
+              <MenuItem value={"Junior"}>Junior</MenuItem>
+              <MenuItem value={"Middle"}>Middle</MenuItem>
+              <MenuItem value={"Senior"}>Senior</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={1}></Grid>
@@ -170,6 +221,41 @@ const CreateJob = () => {
               onChange={(e) => setExperience(e.target.value)}
             />
           </Grid>
+
+          <Grid item xs={1} />
+          <Grid item xs={11} className="padding-bot-10px padding-top-20px">
+            Mức lương
+          </Grid>
+
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4} className="padding-bot-10px">
+            Từ
+          </Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4} className="padding-bot-10px">
+            Đến
+          </Grid>
+          <Grid item xs={1}></Grid>
+
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4}>
+            <TextField
+              size="small"
+              className="width100pc"
+              onChange={(e) => setMinSalary(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4}>
+            <TextField
+              size="small"
+              className="width100pc"
+              onChange={(e) => setMaxSalary(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
 
           <Grid item xs={1} />
           <Grid item xs={11} className="padding-bot-10px padding-top-20px">
@@ -238,6 +324,22 @@ const CreateJob = () => {
           </Grid>
         </Grid>
       </div>
+
+      <Grid container>
+        <Grid
+          item
+          xs={6}
+          className="padding-topbot-10px padding-right-20px"
+          align={"end"}
+        >
+          <Button variant="outlined">Hủy</Button>
+        </Grid>
+        <Grid item xs={6} className="padding-topbot-10px" align={"start"}>
+          <Button variant="contained" onClick={handleSubmit}>
+            Hoàn tất
+          </Button>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
