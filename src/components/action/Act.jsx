@@ -23,7 +23,6 @@ import { APIJOB } from "../../util/apiEndpoint";
 export default function Act({ onSearch }) {
   // ------ Search bar
   const [searchValue, setSearchValue] = useState("");
-
   const [jobs, setJobs] = useState([]);
   const [selectedJobs, setSelectedJobs] = useState([]); // Keep track of selected jobs
 
@@ -87,16 +86,19 @@ export default function Act({ onSearch }) {
           experience: selectedExp,
           minSalary: from,
           maxSalary: to,
-        });
+        }).toString();
+
         const data = await RequestGet(`${APIJOB}/find?${query}`);
+        console.log(query);
         setAfterSearch(data);
+
         // console.log("from fetch: ", afterSearch);
       } catch (error) {
         console.error("Error fetching find job:", error);
       }
     };
     fetchFind();
-  }, [searchValue, selectedLocation, selectedExp, from, to]);
+  }, [searchValue, selectedLocation, selectedExp, from, to, selectedValue]);
 
   // ------ submit all
   const handleSubmit = async (event) => {
@@ -150,8 +152,6 @@ export default function Act({ onSearch }) {
         const ranges = [...customRanges, `${from} - ${to}`];
         setCustomRanges(ranges);
         setSelectedValue(`${from} - ${to}`);
-        setFrom("");
-        setTo("");
         setErrorColor(false);
       } else {
         setErrorColor(true);
@@ -229,7 +229,6 @@ export default function Act({ onSearch }) {
                 <MenuItem value="" hidden>
                   ---
                 </MenuItem>
-                <MenuItem value="all">All</MenuItem>
                 {filteredLocations.map((item, index) => (
                   <MenuItem key={index} value={item}>
                     {item}
@@ -254,14 +253,13 @@ export default function Act({ onSearch }) {
                   />
                 }>
                 <MenuItem value="">---</MenuItem>
-                <MenuItem value="y">All</MenuItem>
-                <MenuItem value="0">Less than 1 year</MenuItem>
-                <MenuItem value="1">1 year</MenuItem>
-                <MenuItem value="2">2 year</MenuItem>
-                <MenuItem value="3">3 year</MenuItem>
-                <MenuItem value="4">4 year</MenuItem>
-                <MenuItem value="5">5 year</MenuItem>
-                <MenuItem value="6">More than 5 year</MenuItem>
+                <MenuItem value={0}>Less than 1 year</MenuItem>
+                <MenuItem value={1}>1 year</MenuItem>
+                <MenuItem value={2}>2 year</MenuItem>
+                <MenuItem value={3}>3 year</MenuItem>
+                <MenuItem value={4}>4 year</MenuItem>
+                <MenuItem value={5}>5 year</MenuItem>
+                <MenuItem value={6}>More than 5 year</MenuItem>
                 {/* Add more salary ranges here */}
               </Select>
             </FormControl>
@@ -316,10 +314,8 @@ export default function Act({ onSearch }) {
                 <MenuItem value="" hidden>
                   ---
                 </MenuItem>
-                <MenuItem value={`${from} - ${to}`}>16m - 19m</MenuItem>
-                {/*   
-                <MenuItem value="deal">Deal</MenuItem>
-                
+                <MenuItem value="0 - 0">Deal</MenuItem>
+                {/* 
                 <MenuItem value="20-25">20 - 25</MenuItem>
                 <MenuItem value="25-30">25 - 30</MenuItem>
                 <MenuItem value="30-50">30 - 50</MenuItem> */}

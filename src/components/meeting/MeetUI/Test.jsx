@@ -2,16 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
 import { Chance } from "chance";
 
+const chance = new Chance();
+
 export default function Test({ playVideo, muteMic }) {
-  const chance = new Chance();
   const [userDetail] = useState({
     id: chance.guid(),
     name: chance.name(),
   });
   const refVideo = useRef(null);
   const [mediaStream, setMediaStream] = useState(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isMicMuted, setIsMicMuted] = useState(false);
+  const [error, setError] = useState(null); // State for handling errors
 
   useEffect(() => {
     let stream;
@@ -24,10 +26,9 @@ export default function Test({ playVideo, muteMic }) {
         });
         setMediaStream(stream);
         refVideo.current.srcObject = stream;
-        setIsVideoPlaying(true);
       } catch (err) {
         console.error("Error accessing media devices.", err);
-        // Xử lý thông báo lỗi khi không thể truy cập camera/microphone
+        setError(err); // Set error state for UI feedback
       }
     };
 
@@ -41,30 +42,26 @@ export default function Test({ playVideo, muteMic }) {
   }, []);
 
   useEffect(() => {
-    if (refVideo.current && mediaStream) {
-      refVideo.current.srcObject = mediaStream;
-    }
-  }, [mediaStream]);
-
-  useEffect(() => {
     if (mediaStream) {
-      const tracks = mediaStream.getAudioTracks();
-      tracks.forEach((track) => {
+      const audioTracks = mediaStream.getAudioTracks();
+      audioTracks.forEach((track) => {
         track.enabled = !muteMic;
         setIsMicMuted(muteMic);
+        console.log("muteMic", muteMic);
       });
     }
-  }, [muteMic, mediaStream]);
+  }, [muteMic]);
 
   useEffect(() => {
     if (mediaStream) {
-      const tracks = mediaStream.getVideoTracks();
-      tracks.forEach((track) => {
+      const videoTracks = mediaStream.getVideoTracks();
+      videoTracks.forEach((track) => {
         track.enabled = playVideo;
         setIsVideoPlaying(playVideo);
+        console.log("playVideo", playVideo);
       });
     }
-  }, [playVideo, mediaStream]);
+  }, [playVideo]);
 
   return (
     <Box
