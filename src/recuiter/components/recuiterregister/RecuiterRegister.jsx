@@ -49,7 +49,7 @@ const RecuiterRegister = () => {
         body: JSON.stringify(newRecuiter),
       });
       if (response.ok) {
-        alert("create successful");
+        alert("Create successful");
         navigate("/");
       } else {
         throw new Error("Create failed");
