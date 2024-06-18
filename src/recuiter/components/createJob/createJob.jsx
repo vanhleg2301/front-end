@@ -41,7 +41,7 @@ const CreateJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newRecuiter = {
+    const newJob = {
       title,
       description,
       industry,
@@ -59,6 +59,15 @@ const CreateJob = () => {
     };
 
     console.log(newRecuiter);
+    try {
+      const response = await fetch("http://localhost:9999/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Charset: "UTF8" },
+        body: JSON.stringify(newJob),
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
