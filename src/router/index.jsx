@@ -9,6 +9,7 @@ import reportDetails from "../adminPage/Admin/reportDetail";
 import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 import CreateJob from "../recuiter/components/createJob/createJob";
 import HomeRecuiter from "../recuiter/components/HomeRecuiter/HomeRecuiter";
+import ChooseCompany from "../recuiter/components/ChooseCompany/ChooseCompany";
 // import AccountManagerRecuiter from "../Admin/AccountsManager/AccountManagerRecuiter";
 const AuthLayout = () => {};
 
@@ -50,5 +51,9 @@ export default createBrowserRouter([
   {
     element: <HomeRecuiter />,
     path: "/homerecuiter",
+  },
+  {
+    element: <ChooseCompany />,
+    path: "/choosecompany",
   },
 ]);

@@ -58,9 +58,9 @@ const CreateJob = () => {
       maxSalary,
     };
 
-    console.log(newRecuiter);
+    console.log(newJob);
     try {
-      const response = await fetch("http://localhost:9999/jobs", {
+      const response = await fetch("http://localhost:9999/job", {
         method: "POST",
         headers: { "Content-Type": "application/json", Charset: "UTF8" },
         body: JSON.stringify(newJob),
