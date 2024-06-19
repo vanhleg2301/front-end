@@ -18,8 +18,7 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
       {"Copyright © "}
       <Typography color="inherit" component={Link} to="/">
         Ace Interview
@@ -31,9 +30,32 @@ function Copyright(props) {
 }
 
 export default function ForgotPassword() {
-  const handleSubmit = () => {
-    console.log("send");
-  };
+  const [email, setEmail] = React.useState("");
+
+  // const generatePassword = () => {
+  //   const length = 8;
+  //   const charset =
+  //     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  //   let retVal = "";
+  //   for (let i = 0, n = charset.length; i < length; ++i) {
+  //     retVal += charset[Math.floor(Math.random() * n)];
+  //   }
+  //   return retVal;
+  // };
+
+  // const handleSubmit = async () => {
+  //   const newPassword = generatePassword();
+  //   // Send the new password to the user's email
+  //   await sendEmail(
+  //     email,
+  //     "Your new password",
+  //     `Your new password is: ${newPassword}`
+  //   );
+  //   console.log("send");
+  // };
+
+  // Rest of your component
+
   return (
     <Grid container>
       <Grid item md={12}>
@@ -46,8 +68,7 @@ export default function ForgotPassword() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-            }}
-          >
+            }}>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -56,10 +77,9 @@ export default function ForgotPassword() {
             </Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
               noValidate
-              sx={{ mt: 1, width: "80%" }}
-            >
+              sx={{ mt: 1, width: "80%" }}>
               <TextField
                 margin="normal"
                 required
@@ -74,8 +94,7 @@ export default function ForgotPassword() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+                sx={{ mt: 3, mb: 2 }}>
                 Send
               </Button>
               <Grid container>

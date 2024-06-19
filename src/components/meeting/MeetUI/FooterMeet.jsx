@@ -57,6 +57,7 @@ export default function FooterMeet({
   toggleAudio,
   toggleVideo,
   isPresenting,
+  togglePresenting,
   stopScreenShare,
   screenShare,
   disconnectCall,
@@ -99,15 +100,11 @@ export default function FooterMeet({
             </IconButton>
           </Tooltip>
           <Tooltip title="Presentation">
-            <IconButton onClick={screenShare}>
+            <IconButton onClick={togglePresenting}>
               {isPresenting ? (
-                <IconButton onClick={stopScreenShare} title="Stop presenting">
-                  <DesktopIcon style={{ color: "gray" }} />
-                </IconButton>
+                <DesktopIcon style={{ color: "#d93025" }} />
               ) : (
-                <IconButton onClick={screenShare} title="Present now">
-                  <DesktopIcon style={{ color: "#d93025" }} />
-                </IconButton>
+                <DesktopIcon />
               )}
             </IconButton>
           </Tooltip>

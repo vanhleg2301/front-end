@@ -7,7 +7,6 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
-import "./header.css";
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -24,6 +23,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import Applicant from "./subHeader/applicant";
 import Recruiter from "./subHeader/recruiter";
 import Admin from "./subHeader/admin";
+import "./header.css";
 
 const logoStyle = {
   width: "30px",

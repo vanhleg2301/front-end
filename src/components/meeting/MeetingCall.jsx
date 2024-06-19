@@ -9,8 +9,8 @@ export default function MeetingCall() {
   const [isMessengerVisible, setIsMessengerVisible] = useState(false);
   const [isPeopleVisible, setIsPeopleVisible] = useState(false);
 
-  const [isVideo, setIsVideo] = useState(false);
-  const [isAudio, setIsAudio] = useState(false);
+  const [isVideo, setIsVideo] = useState(true);
+  const [isAudio, setIsAudio] = useState(true);
   const [isPresenting, setIsPresenting] = useState(false);
 
   const toggleMessenger = () => {
@@ -68,7 +68,11 @@ export default function MeetingCall() {
             borderRadius: 2,
           }}>
           {/*<MeetMain />*/}
-          <Test playVideo={isVideo} muteMic={!isAudio} />
+          <Test
+            playVideo={isVideo}
+            muteMic={!isAudio}
+            screenShare={isPresenting}
+          />
         </Paper>
       </Box>
 
