@@ -33,8 +33,6 @@ const RecuiterRegister = () => {
       fullName,
       roleID,
       phone,
-      company,
-      address,
     };
     console.log(newRecuiter);
     if (repassword !== password) {
@@ -143,30 +141,6 @@ const RecuiterRegister = () => {
             className="width100pc"
             size="small"
             onChange={(e) => setPhone(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={2} className="padding-topbot-10px">
-          Công ty
-        </Grid>
-        <Grid item xs={10} className="padding-topbot-10px">
-          <TextField
-            variant="outlined"
-            label="Công ty"
-            className="width100pc"
-            size="small"
-            onChange={(e) => setCompany(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={2} className="padding-topbot-10px">
-          Địa điểm làm việc
-        </Grid>
-        <Grid item xs={10} className="padding-topbot-10px">
-          <TextField
-            variant="outlined"
-            label="Địa điểm làm việc"
-            className="width100pc"
-            size="small"
-            onChange={(e) => setAddress(e.target.value)}
           />
         </Grid>
 

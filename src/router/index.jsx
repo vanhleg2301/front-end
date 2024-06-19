@@ -8,6 +8,7 @@ import CVManage from "../adminPage/Admin/CVManage";
 import reportDetails from "../adminPage/Admin/reportDetail";
 import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 import CreateJob from "../recuiter/components/createJob/createJob";
+import HomeRecuiter from "../recuiter/components/HomeRecuiter/HomeRecuiter";
 // import AccountManagerRecuiter from "../Admin/AccountsManager/AccountManagerRecuiter";
 const AuthLayout = () => {};
 
@@ -45,5 +46,9 @@ export default createBrowserRouter([
   {
     element: <CreateJob />,
     path: "/createjob",
+  },
+  {
+    element: <HomeRecuiter />,
+    path: "/homerecuiter",
   },
 ]);
