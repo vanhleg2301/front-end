@@ -1,0 +1,27 @@
+.width100pc {
+  width: 100%;
+}
+
+.height-auto {
+  height: auto;
+}
+
+.part {
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #cccccc;
+}
+
+.color-white {
+  color: white;
+}
+
+.bg-black {
+  background-color: black;
+}
+.height-100pc {
+  height: 100%;
+}
+.padding-top-5px {
+  padding-top: 5px;
+}
