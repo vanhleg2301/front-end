@@ -1,0 +1,12 @@
+.form-continue-item {
+    width: 100%;
+    margin-top: 20px;
+    border: solid 1px;
+    color: "#002333";
+    font-weight: bold; /* Im đậm */
+   margin: 2px;
+}
+
+.form-text-item {
+    margin-top: 20px;
+}
