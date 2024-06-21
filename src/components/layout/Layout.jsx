@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../header/Header";
-import Footer from "../footer/Footer";
+import Header from "../Header/header";
+import Footer from "../Footer/Footer";
 import { Box, Divider } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 
