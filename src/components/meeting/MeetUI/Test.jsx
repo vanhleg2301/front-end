@@ -132,8 +132,16 @@ export default function Test({ playVideo, muteMic, screenShare }) {
   // peerJs
   useEffect(() => {
     const initializePeer = () => {
-      const peerInstance = new Peer();
+      const peerInstance = new Peer({
+        initializePeer: location.hash === "#init",
+        trickle: false,
+        stream: mediaStream,
+      });
       console.log("peerInstance", peerInstance);
+
+      peerInstance.on("signal", (data) => {
+        console.log("SIGNAL", data);
+      });
 
       peerInstance.on("open", (id) => {
         console.log("Peer connected with ID:", id);
