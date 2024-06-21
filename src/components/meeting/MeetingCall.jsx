@@ -65,7 +65,7 @@ export default function MeetingCall() {
             height: "82vh",
             width: "90%",
             boxShadow: 3,
-            borderRadius: 2,
+            borderRadius: 3,
           }}>
           {/*<MeetMain />*/}
           <Test
