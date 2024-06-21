@@ -10,17 +10,23 @@ import {
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { RequestPut } from "../../util/request"; // Assuming you have a Request utility for making API calls
+import axios from "axios";
+import { ENDPOINT } from "../../util/constants";
+import { APIUSER } from "../../util/apiEndpoint";
 
 export default function Info() {
   const { userLogin } = useContext(AuthContext);
-  const [phone, setPhone] = useState(userLogin.user.fullName);
+  const [phone, setPhone] = useState(userLogin.user.phone);
 
-  console.log("From info - userLogin: ", userLogin);
+  console.log("From info - userLogin: ", userLogin.user._id);
 
   const handlePhone = async () => {
     try {
       // Assuming you have an endpoint for updating user information
-      const response = await RequestPut("user/updatePhone", { phone });
+      const response = await RequestPut(
+        `${ENDPOINT}/${APIUSER}/${userLogin.user._id}`,
+        { phone }
+      );
 
       if (response.success) {
         alert("Phone number saved successfully");
@@ -72,8 +78,7 @@ export default function Info() {
           <Button
             variant="contained"
             sx={{ ml: 2, mb: 2 }}
-            onClick={handlePhone}
-          >
+            onClick={handlePhone}>
             Save
           </Button>
         </CardActions>
