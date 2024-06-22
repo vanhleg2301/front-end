@@ -19,6 +19,7 @@ export default function Company() {
     const fetchCompanies = async () => {
       try {
         const response = await RequestGet(`company`);
+      
         setCompanies(response);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -27,7 +28,6 @@ export default function Company() {
 
     fetchCompanies();
   }, []);
-
   return (
     <Container>
       <Box
@@ -49,7 +49,7 @@ export default function Company() {
           {companies.map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Link
-                to={`/companies/${company.id}`}
+                to={`/companies/${company._id}`}
                 style={{ textDecoration: "none" }}
               >
                 <Card

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -9,13 +9,29 @@ import {
 } from "@mui/material";
 import { Business, People, Add } from "@mui/icons-material";
 import Job from "../jobs/Job";
+import { RequestGet } from "../../util/request";
+import { APICOMPANY } from "../../util/apiEndpoint";
+import { useParams } from "react-router-dom";
 
 export default function CompanyDetail() {
+  const {companyID} = useParams()
   const [showMore, setShowMore] = useState(false);
-
+const [detailCom, setDetailCom] = useState({});
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    try {
+      const response = RequestGet(`${APICOMPANY}/${companyID}`)
+    setDetailCom(response)
+    } catch (error) {
+      throw new Error("Error fetching company:", error);
+    }
+    
+  }, []);
+  console.log(detailCom.companyName);
+
   return (
     <Container maxWidth="lg">
       <Card>
@@ -23,7 +39,7 @@ export default function CompanyDetail() {
           {/* Company Information */}
           <Box>
             <Typography variant="h4" align="center" gutterBottom>
-              Công Ty TNHH TransCosmos Việt Nam
+              Công Ty TNHH TransCosmos Việt Nam 
             </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={6}>
