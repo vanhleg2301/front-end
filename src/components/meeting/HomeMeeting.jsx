@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import {
   Box,
   Button,
@@ -15,9 +15,9 @@ import {
 
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
-import { Link, useNavigate } from "react-router-dom";
-import shortid from "shortid";
+import { useNavigate } from "react-router-dom";
 import { ENDPOINT } from "../../util/constants";
+import { APIMEET } from "../../util/apiEndpoint";
 
 export default function HomeMeeting() {
   const [meetingCode, setMeetingCode] = useState("");
@@ -39,29 +39,21 @@ export default function HomeMeeting() {
     setAnchorEl(null);
   };
 
-  const startCall = () => {
-    const uid = shortid.generate();
-    navigate(`/meeting/${uid}#init`);
-    console.log("From shortid: ", uid);
+  const apiUrl = ENDPOINT;
+  const [roomCode, setRoomCode] = useState("");
+
+  const onCreateRoom = async () => {
+    try {
+      const response = await axios.get(`${ENDPOINT}/${APIMEET}`);
+      navigate(`/meeting/${response.data.roomId}`);
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
   };
 
-  const apiUrl = ENDPOINT;
-  const [roomCode, setRoomCode] = useState('');
-
-  const onCreateRoom = () => {
-      axios.post(`${apiUrl}/create-room`).then((res) => {
-        navigate(`/meeting/${res.data.code}`);
-      });
-  }
-
-  
   const onJoinRoom = () => {
-          axios.get(`${apiUrl}/get-room/${roomCode}`).then((res) => {
-            navigate(`/meeting/${res.data.code}`);
-      }).catch(err => {
-          console.log(err);
-      });
-  }
+    navigate(`/meeting/${roomCode}`);
+  };
 
   return (
     <Container maxWidth="lg" style={{ marginTop: "2rem" }}>
@@ -89,8 +81,7 @@ export default function HomeMeeting() {
                   startIcon={<CameraEnhanceIcon />}
                   style={{ marginBottom: "1rem", width: "100%" }}
                   // onClick={handleMenuOpen}
-                  onClick={onCreateRoom}
-                >
+                  onClick={onCreateRoom}>
                   New Meeting
                 </Button>
                 {/*<Menu
@@ -110,7 +101,6 @@ export default function HomeMeeting() {
                     Create Meeting for Later
                   </MenuItem>
                 </Menu>*/}
-                
               </Box>
               <Box sx={{ width: "100%" }}>
                 <TextField
@@ -128,7 +118,7 @@ export default function HomeMeeting() {
                   }}
                   style={{ marginBottom: "1rem" }}
                   onChange={(input) => setRoomCode(input.target.value)}
-                  name='room-code'
+                  name="room-code"
                 />
                 <Button
                   variant="outlined"
@@ -136,8 +126,7 @@ export default function HomeMeeting() {
                   style={{ width: "100%" }}
                   // disabled={!meetingCode}
                   // onClick={handleJoin}
-                  onClick={onJoinRoom}
-                >
+                  onClick={onJoinRoom}>
                   Join
                 </Button>
               </Box>
