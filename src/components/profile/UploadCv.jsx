@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -9,10 +10,9 @@ import {
   Alert,
 } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
-import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { APICV } from "../../util/apiEndpoint";
-import { Request } from "../../util/request";
+import { RequestPost } from "../../util/request";
 
 export default function UploadCv() {
   const { userLogin } = useContext(AuthContext);
@@ -27,7 +27,7 @@ export default function UploadCv() {
     if (alertMessage) {
       timer = setTimeout(() => {
         setAlertMessage("");
-      }, 3000); // Thời gian đặt là 3 giây (3000 milliseconds)
+      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [alertMessage]);
@@ -40,14 +40,14 @@ export default function UploadCv() {
 
   const handleUpload = async () => {
     if (selectedFile) {
+      const formData = new FormData();
+      formData.append("cvFile", selectedFile);
+      formData.append("applicantID", userLogin.user._id);
+
       try {
-        const response = await Request(`${APICV}/upload`, {
-          fileURL: selectedFile.name,
-          applicantID: userLogin.user._id,
-        });
+        const response = await RequestPost(`${APICV}/upload`, formData);
         console.log("Upload successful:", response);
         setAlertMessage("Upload successful");
-        // Optionally reset the form state after successful upload
         setSelectedFile(null);
         setFileName("");
       } catch (error) {
@@ -56,7 +56,6 @@ export default function UploadCv() {
         setErrorSnackbarOpen(true);
       }
     } else {
-      console.log("No file selected.");
       setErrorMessage("No file selected.");
       setErrorSnackbarOpen(true);
     }
@@ -100,8 +99,6 @@ export default function UploadCv() {
                       >
                         Choose CV
                         <input
-                          // id="fileURL"
-                          // name="fileURL"
                           type="file"
                           hidden
                           onChange={handleFileChange}
