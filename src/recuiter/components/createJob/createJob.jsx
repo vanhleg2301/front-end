@@ -9,24 +9,34 @@ import {
 } from "@mui/material";
 import "./createJob.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateJob = () => {
+  const navigate = useNavigate();
   const [industries, setIndustries] = useState([]);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [gender, setGender] = useState("");
-  const [applicantNumber, setApplicantNumber] = useState(0);
-  const [typeofwork, setTypeofWork] = useState("");
-  const [level, setLevel] = useState("");
-  const [experience, setExperience] = useState(0);
+  const [inputindustry, setInputIndustry] = useState("");
+  const [inputgender, setInputGender] = useState("");
+  const [inputapplicantNumber, setInputApplicantNumber] = useState(0);
+  const [inputtypeOfWork, setInputTypeOfWork] = useState("");
+  const [inputlevel, setInputLevel] = useState("");
+  const [inputexperience, setInputExperience] = useState(0);
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [commune, setCommune] = useState("");
   const [address, setAddress] = useState("");
+  const [inputminSalary, setInputMinSalary] = useState(0);
+  const [inputmaxSalary, setInputMaxSalary] = useState(0);
+  const [gender, setGender] = useState(true);
+  const [applicantNumber, setApplicantNumber] = useState(0);
+  const [typeOfWork, setTypeOfWork] = useState(true);
+  const [level, setLevel] = useState(1);
+  const [experience, setExperience] = useState(0);
   const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState(0);
+  const [industry, setIndustry] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9999/industry")
@@ -41,19 +51,45 @@ const CreateJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const location = { address, district, province, commune };
+    setApplicantNumber(inputapplicantNumber);
+    setExperience(inputexperience);
+    setMinSalary(inputminSalary);
+    setMaxSalary(inputmaxSalary);
+    setIndustry(inputindustry);
+    if (inputgender === "Male") {
+      setGender(true);
+    } else {
+      setGender(false);
+    }
+
+    if (inputlevel === "Intern") {
+      setLevel(1);
+    } else if (inputlevel === "Fresher") {
+      setLevel(2);
+    } else if (inputlevel === "Junior") {
+      setLevel(3);
+    } else if (inputlevel === "Middle") {
+      setLevel(4);
+    } else {
+      setLevel(5);
+    }
+
+    if (inputtypeOfWork === "Full time") {
+      setTypeOfWork(true);
+    } else {
+      setTypeOfWork(false);
+    }
     const newJob = {
       title,
       description,
       industry,
       gender,
       applicantNumber,
-      typeofwork,
+      typeOfWork,
       level,
       experience,
-      province,
-      district,
-      commune,
-      address,
+      location,
       minSalary,
       maxSalary,
     };
@@ -65,6 +101,12 @@ const CreateJob = () => {
         headers: { "Content-Type": "application/json", Charset: "UTF8" },
         body: JSON.stringify(newJob),
       });
+      if (response.ok) {
+        alert("Create successful");
+        navigate("/choosecompany");
+      } else {
+        throw new Error("Create failed");
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -127,9 +169,9 @@ const CreateJob = () => {
           <Grid item xs={10}>
             <Select
               size="small"
-              value={industry}
+              value={inputindustry}
               className="width100pc"
-              onChange={(e) => setIndustry(e.target.value)}
+              onChange={(e) => setInputIndustry(e.target.value)}
             >
               {industries.map((i) => (
                 <MenuItem key={i._id} value={i.name}>
@@ -166,7 +208,7 @@ const CreateJob = () => {
             <TextField
               size="small"
               className="width100pc"
-              onChange={(e) => setApplicantNumber(e.target.value)}
+              onChange={(e) => setInputApplicantNumber(e.target.value)}
             ></TextField>
           </Grid>
           <Grid item xs={1}></Grid>
@@ -174,9 +216,9 @@ const CreateJob = () => {
           <Grid item xs={4}>
             <Select
               size="small"
-              value={typeofwork}
+              value={inputtypeOfWork}
               className="width100pc"
-              onChange={(e) => setTypeofWork(e.target.value)}
+              onChange={(e) => setInputTypeOfWork(e.target.value)}
             >
               <MenuItem value={"Full time"}>Full time</MenuItem>
               <MenuItem value={"Part time"}>Part time</MenuItem>
@@ -202,22 +244,21 @@ const CreateJob = () => {
           <Grid item xs={3}>
             <Select
               size="small"
-              value={gender}
+              value={inputgender}
               className="width100pc"
-              onChange={(e) => setGender(e.target.value)}
+              onChange={(e) => setInputGender(e.target.value)}
             >
-              <MenuItem value={"Nam"}>Nam</MenuItem>
-              <MenuItem value={"Nữ"}>Nữ</MenuItem>
-              <MenuItem value={"Không yêu cầu"}>Không yêu cầu</MenuItem>
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <Select
               size="small"
-              value={level}
+              value={inputlevel}
               className="width100pc"
-              onChange={(e) => setLevel(e.target.value)}
+              onChange={(e) => setInputLevel(e.target.value)}
             >
               <MenuItem value={"Intern"}>Intern</MenuItem>
               <MenuItem value={"Fresher"}>Fresher</MenuItem>
@@ -233,7 +274,7 @@ const CreateJob = () => {
               label="Kinh nghiệm"
               className="width100pc"
               size="small"
-              onChange={(e) => setExperience(e.target.value)}
+              onChange={(e) => setInputExperience(e.target.value)}
             />
           </Grid>
 
@@ -258,7 +299,7 @@ const CreateJob = () => {
             <TextField
               size="small"
               className="width100pc"
-              onChange={(e) => setMinSalary(e.target.value)}
+              onChange={(e) => setInputMinSalary(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -267,7 +308,7 @@ const CreateJob = () => {
             <TextField
               size="small"
               className="width100pc"
-              onChange={(e) => setMaxSalary(e.target.value)}
+              onChange={(e) => setInputMaxSalary(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>

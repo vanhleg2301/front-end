@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Grid, TextField } from "@mui/material";
 import "./ChooseCompany.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChooseCompany = () => {
+  const navigate = useNavigate();
   const { recuiters } = useParams();
 
   const [companies, setCompanies] = useState("");
@@ -18,7 +19,7 @@ const ChooseCompany = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
   const [companyStatus, setCompanyStatus] = useState("Bronze");
-  const [NumberOfEmployees, setNumberOfEmployees] = useState(0);
+  const [numberOfEmployees, setNumberOfEmployees] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9999/company")
@@ -33,6 +34,7 @@ const ChooseCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const NumberOfEmployees = parseInt(numberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
     const newCompany = {
       companyName,
@@ -42,6 +44,7 @@ const ChooseCompany = () => {
       taxNumber,
       NumberOfEmployees,
       companyStatus,
+      recuiters,
     };
     console.log(newCompany);
     if (company !== "" && newCompany !== "") {
@@ -156,7 +159,7 @@ const ChooseCompany = () => {
               <TextField
                 variant="outlined"
                 size="small"
-                onChange={(e) => setNewCommune(e.target.value)}
+                onChange={(e) => setNewDistrict(e.target.value)}
                 className="width100pc padding-top-20px"
               ></TextField>
             </Grid>
