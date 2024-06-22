@@ -72,7 +72,7 @@ const ChooseCompany = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item xs={5.5} className="part">
+        <Grid item xs={12} className="part" textAlign={'center'}>
           Existed Company
           <Grid container>
             <Grid item xs={3} className="padding-top-20px">
@@ -91,7 +91,7 @@ const ChooseCompany = () => {
 
         <Grid item xs={1}></Grid>
 
-        <Grid item xs={5.5} className="part">
+        <Grid item xs={12} className="part" textAlign={'center'}>
           New Company
           <Grid container>
             <Grid item xs={3} className="padding-top-20px">

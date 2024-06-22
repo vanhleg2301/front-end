@@ -55,7 +55,7 @@ export const RequestPost = async (uri, payload) => {
     );
     return handleResponse(res);
   } catch (error) {
-    console.error("Error in request:", error);
+    console.error("Error in request post:", error);
     throw error;
   }
 };

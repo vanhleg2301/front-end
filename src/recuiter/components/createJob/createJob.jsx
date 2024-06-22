@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -92,7 +92,6 @@ const CreateJob = () => {
       maxSalary,
     };
 
-    console.log(newJob);
     try {
       const response = await fetch("http://localhost:9999/job", {
         method: "POST",
@@ -108,6 +107,22 @@ const CreateJob = () => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handleLocationChange = (e) => {
+    const { name, value } = e.target;
+    setLocation((prevLocation) => ({
+      ...prevLocation,
+      [name]: value,
+    }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    const { name, value } = e.target;
+    setDescription((prevDescription) => ({
+      ...prevDescription,
+      [name]: value,
+    }));
   };
 
   return (
@@ -363,7 +378,8 @@ const CreateJob = () => {
               label="Tỉnh/thành"
               className="width100pc"
               size="small"
-              onChange={(e) => setProvince(e.target.value)}
+              name="province"
+              onChange={handleLocationChange}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -373,7 +389,8 @@ const CreateJob = () => {
               label="Quận/huyện"
               className="width100pc"
               size="small"
-              onChange={(e) => setDistrict(e.target.value)}
+              name="district"
+              onChange={handleLocationChange}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -383,7 +400,8 @@ const CreateJob = () => {
               label="Xã/phường"
               className="width100pc"
               size="small"
-              onChange={(e) => setCommune(e.target.value)}
+              name="commune"
+              onChange={handleLocationChange}
             />
           </Grid>
 
@@ -396,10 +414,11 @@ const CreateJob = () => {
           <Grid item xs={11}>
             <TextField
               variant="outlined"
-              label="Xã/phường"
+              label="Địa chỉ"
               className="width100pc"
               size="small"
-              onChange={(e) => setAddress(e.target.value)}
+              name="address"
+              onChange={handleLocationChange}
             />
           </Grid>
         </Grid>

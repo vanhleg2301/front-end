@@ -8,11 +8,18 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { RequestPost } from "../../util/request";
+import { APIAPPLY } from "../../util/apiEndpoint";
+import { AuthContext } from "../../context/AuthProvider";
+import { useParams } from "react-router-dom";
 
 export default function JobSavedChild({ open, handleClose }) {
+  const { jobId } = useParams();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
   const [textDes, setTextDes] = React.useState("");
+  const [applied, setApplied] = React.useState(false); // State để kiểm tra đã áp dụng công việc hay chưa
+  const { userLogin } = React.useContext(AuthContext);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -20,19 +27,28 @@ export default function JobSavedChild({ open, handleClose }) {
     setFileName(file.name);
   };
 
-  const handleDes = async (e) => {
+  const handleDes = async (event) => {
     setTextDes(event.target.value);
   };
 
-  const handleUpload = async () => {
-    if (selectedFile) {
-      // Gửi tệp tin được chọn lên máy chủ
-      // Ở đây bạn có thể sử dụng các thư viện như axios để gửi dữ liệu
-      console.log("Uploading file:", selectedFile);
-      console.log("description", textDes);
+  const handleApply = async () => {
+    const applicantId = userLogin.user._id;
+    if (applicantId) {
+      try {
+        const response = await RequestPost(`${APIAPPLY}/apply`, {
+          applicantId,
+          jobId
+        });
+        console.log(response);
+        setApplied(true); // Đã áp dụng thành công
+      } catch (error) {
+        console.error("Error applying for job:", error);
+        // Xử lý lỗi khi áp dụng công việc
+      }
     } else {
       console.log("No file selected.");
     }
+    handleClose();
   };
 
   return (
@@ -104,13 +120,19 @@ export default function JobSavedChild({ open, handleClose }) {
 
         <DialogActions>
           <Box sx={{ width: "100%", textAlign: "center" }}>
-            <Button
-              variant="contained"
-              onClick={handleUpload}
-              sx={{ width: "90%" }}
-            >
-              Apply
-            </Button>
+            {applied ? (
+              <Typography variant="body1" color="secondary">
+                You have already applied for this job. Wait recruiter check
+              </Typography>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleApply}
+                sx={{ width: "90%" }}
+              >
+                Apply
+              </Button>
+            )}
           </Box>
         </DialogActions>
       </Dialog>
