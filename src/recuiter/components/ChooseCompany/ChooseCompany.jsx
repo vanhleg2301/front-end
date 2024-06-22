@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Grid, TextField } from "@mui/material";
 import "./ChooseCompany.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChooseCompany = () => {
-  const { recuiters } = useParams();
+  const navigate = useNavigate();
+  const { recuiter } = useParams();
 
   const [companies, setCompanies] = useState("");
   const [company, setCompany] = useState("");
@@ -17,9 +18,8 @@ const ChooseCompany = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
-  const [companyStatus, setCompanyStatus] = useState("Bronze");
-  const [NumberOfEmployees, setNumberOfEmployees] = useState(0);
-
+  const [companyStatus, setCompanyStatus] = useState(1);
+  const [NumberOfEmployees, setNumberOfEmployees] = useState("");
   useEffect(() => {
     fetch("http://localhost:9999/company")
       .then((resp) => resp.json())
@@ -33,15 +33,18 @@ const ChooseCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const numberOfEmployees = parseInt(NumberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
+    const recuiters = [];
     const newCompany = {
       companyName,
       email,
       phoneNumber,
       location,
       taxNumber,
-      NumberOfEmployees,
+      numberOfEmployees,
       companyStatus,
+      recuiters,
     };
     console.log(newCompany);
     if (company !== "" && newCompany !== "") {
@@ -156,7 +159,7 @@ const ChooseCompany = () => {
               <TextField
                 variant="outlined"
                 size="small"
-                onChange={(e) => setNewCommune(e.target.value)}
+                onChange={(e) => setNewDistrict(e.target.value)}
                 className="width100pc padding-top-20px"
               ></TextField>
             </Grid>

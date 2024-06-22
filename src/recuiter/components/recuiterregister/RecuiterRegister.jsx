@@ -48,7 +48,7 @@ const RecuiterRegister = () => {
       });
       if (response.ok) {
         alert("Create successful");
-        navigate("/");
+        navigate("/choosecompany");
       } else {
         throw new Error("Create failed");
       }
