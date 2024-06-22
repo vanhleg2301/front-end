@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -8,23 +8,30 @@ import {
   TextField,
 } from "@mui/material";
 import "./createJob.css";
-import { useState } from "react";
+import { RequestPost } from "../../../util/request";
+import { APIJOB } from "../../../util/apiEndpoint";
 
 const CreateJob = () => {
   const [industries, setIndustries] = useState([]);
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState({
+    JobDescription: "",
+    CandidateRequirements: "",
+    Benefit: "",
+  });
   const [industry, setIndustry] = useState("");
   const [gender, setGender] = useState("");
   const [applicantNumber, setApplicantNumber] = useState(0);
   const [typeofwork, setTypeofWork] = useState("");
   const [level, setLevel] = useState("");
   const [experience, setExperience] = useState(0);
-  const [province, setProvince] = useState("");
-  const [district, setDistrict] = useState("");
-  const [commune, setCommune] = useState("");
-  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState({
+    province: "",
+    district: "",
+    commune: "",
+    address: "",
+  });
   const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState(0);
 
@@ -50,24 +57,36 @@ const CreateJob = () => {
       typeofwork,
       level,
       experience,
-      province,
-      district,
-      commune,
-      address,
+      location,
       minSalary,
       maxSalary,
     };
 
-    console.log(newJob);
     try {
-      const response = await fetch("http://localhost:9999/job", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Charset: "UTF8" },
-        body: JSON.stringify(newJob),
-      });
+      console.log(newJob)
+      const response = await RequestPost(`${APIJOB}`, newJob);
+      if (response) {
+        console.log("Job created successfully: ", newJob);
+      }
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handleLocationChange = (e) => {
+    const { name, value } = e.target;
+    setLocation((prevLocation) => ({
+      ...prevLocation,
+      [name]: value,
+    }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    const { name, value } = e.target;
+    setDescription((prevDescription) => ({
+      ...prevDescription,
+      [name]: value,
+    }));
   };
 
   return (
@@ -108,7 +127,44 @@ const CreateJob = () => {
               size="small"
               className="width100pc"
               multiline
-              onChange={(e) => setDescription(e.target.value)}
+              name="JobDescription"
+              onChange={handleDescriptionChange}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
+      </div>
+
+      <div className="part">
+        <Grid container>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10}>
+            <TextField
+              variant="standard"
+              label="Yêu cầu ứng viên"
+              size="small"
+              className="width100pc"
+              multiline
+              name="CandidateRequirements"
+              onChange={handleDescriptionChange}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
+      </div>
+
+      <div className="part">
+        <Grid container>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10}>
+            <TextField
+              variant="standard"
+              label="Quyền lợi"
+              size="small"
+              className="width100pc"
+              multiline
+              name="Benefit"
+              onChange={handleDescriptionChange}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -298,7 +354,8 @@ const CreateJob = () => {
               label="Tỉnh/thành"
               className="width100pc"
               size="small"
-              onChange={(e) => setProvince(e.target.value)}
+              name="province"
+              onChange={handleLocationChange}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -308,7 +365,8 @@ const CreateJob = () => {
               label="Quận/huyện"
               className="width100pc"
               size="small"
-              onChange={(e) => setDistrict(e.target.value)}
+              name="district"
+              onChange={handleLocationChange}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -318,7 +376,8 @@ const CreateJob = () => {
               label="Xã/phường"
               className="width100pc"
               size="small"
-              onChange={(e) => setCommune(e.target.value)}
+              name="commune"
+              onChange={handleLocationChange}
             />
           </Grid>
 
@@ -331,10 +390,11 @@ const CreateJob = () => {
           <Grid item xs={11}>
             <TextField
               variant="outlined"
-              label="Xã/phường"
+              label="Địa chỉ"
               className="width100pc"
               size="small"
-              onChange={(e) => setAddress(e.target.value)}
+              name="address"
+              onChange={handleLocationChange}
             />
           </Grid>
         </Grid>
