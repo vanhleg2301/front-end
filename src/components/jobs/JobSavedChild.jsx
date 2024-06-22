@@ -8,11 +8,17 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { RequestPost } from "../../util/request";
+import { APIAPPLY } from "../../util/apiEndpoint";
+import { AuthContext } from "../../context/AuthProvider";
+import { useParams } from "react-router-dom";
 
 export default function JobSavedChild({ open, handleClose }) {
+  const {jobId} = useParams();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
   const [textDes, setTextDes] = React.useState("");
+  const { userLogin } = React.useContext(AuthContext);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -25,11 +31,12 @@ export default function JobSavedChild({ open, handleClose }) {
   };
 
   const handleUpload = async () => {
+    const applicationID = userLogin.user._id;
     if (selectedFile) {
+      RequestPost(`${APIAPPLY}/apply`, { jobId, applicationID });
       // Gửi tệp tin được chọn lên máy chủ
       // Ở đây bạn có thể sử dụng các thư viện như axios để gửi dữ liệu
-      console.log("Uploading file:", selectedFile);
-      console.log("description", textDes);
+      console.log("Uploading file:", selectedFile, 'With applicationID:', applicationID, 'And description:', textDes, 'id:', jobId);
     } else {
       console.log("No file selected.");
     }

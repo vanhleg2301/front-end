@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Container, Grid, IconButton, Link } from "@mui/material";
 import { Message, Description } from "@mui/icons-material";
+import { AuthContext } from "../../context/AuthProvider";
+import { RequestGet } from "../../util/request";
+import { APIAPPLY } from "../../util/apiEndpoint";
 
 export default function JobApplied() {
+  const {userLogin} = useContext(AuthContext);
+  const [jobApplied, setJobApplied] = useState();
+
+  useEffect(() => {
+    const fetchJobDetail = async () => {
+      try {
+        const response = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
+        setJobApplied(response);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching job applied:", error);
+      }
+    };
+    fetchJobDetail();
+  }, []);
   return (
     <Container maxWidth={"lg"}>
       <Box mb={3}>
         <Typography variant="h5" component="h2">
-          Job applied
+          {jobApplied?.length} Job Applied
         </Typography>
       </Box>
       <Card variant="outlined">
