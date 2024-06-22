@@ -14,7 +14,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { useParams } from "react-router-dom";
 
 export default function JobSavedChild({ open, handleClose }) {
-  const {jobId} = useParams();
+  const { jobId } = useParams();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
   const [textDes, setTextDes] = React.useState("");
@@ -30,13 +30,27 @@ export default function JobSavedChild({ open, handleClose }) {
     setTextDes(event.target.value);
   };
 
-  const handleUpload = async () => {
-    const applicationID = userLogin.user._id;
-    if (selectedFile) {
-      RequestPost(`${APIAPPLY}/apply`, { jobId, applicationID });
-      // Gửi tệp tin được chọn lên máy chủ
-      // Ở đây bạn có thể sử dụng các thư viện như axios để gửi dữ liệu
-      console.log("Uploading file:", selectedFile, 'With applicationID:', applicationID, 'And description:', textDes, 'id:', jobId);
+  const handleApply = async () => {
+    const applicantId = userLogin.user._id;
+    if (applicantId) {
+      let response = RequestPost(`${APIAPPLY}/apply`, {
+        applicantId,
+        jobId
+      });
+      const apply = JSON.stringify(response);
+      console.log(apply.message);
+      console.log(apply.jobApplied);
+      console.log(
+        "Uploading file:",
+        selectedFile,
+        "And description:",
+        textDes,
+        "applicationId:",
+        applicantId,
+        "jobId:",
+        jobId
+      );
+      handleClose();
     } else {
       console.log("No file selected.");
     }
@@ -49,8 +63,7 @@ export default function JobSavedChild({ open, handleClose }) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        sx={{ textAlign: "center" }}
-      >
+        sx={{ textAlign: "center" }}>
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Form apply"}
         </DialogTitle>
@@ -72,8 +85,7 @@ export default function JobSavedChild({ open, handleClose }) {
                       <Button
                         variant="contained"
                         component="label"
-                        startIcon={<UploadFile />}
-                      >
+                        startIcon={<UploadFile />}>
                         Choose CV
                         <input type="file" hidden onChange={handleFileChange} />
                       </Button>
@@ -113,9 +125,8 @@ export default function JobSavedChild({ open, handleClose }) {
           <Box sx={{ width: "100%", textAlign: "center" }}>
             <Button
               variant="contained"
-              onClick={handleUpload}
-              sx={{ width: "90%" }}
-            >
+              onClick={handleApply}
+              sx={{ width: "90%" }}>
               Apply
             </Button>
           </Box>
