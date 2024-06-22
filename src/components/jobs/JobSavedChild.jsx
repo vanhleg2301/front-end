@@ -18,6 +18,7 @@ export default function JobSavedChild({ open, handleClose }) {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
   const [textDes, setTextDes] = React.useState("");
+  const [applied, setApplied] = React.useState(false); // State để kiểm tra đã áp dụng công việc hay chưa
   const { userLogin } = React.useContext(AuthContext);
 
   const handleFileChange = (event) => {
@@ -26,34 +27,28 @@ export default function JobSavedChild({ open, handleClose }) {
     setFileName(file.name);
   };
 
-  const handleDes = async (e) => {
+  const handleDes = async (event) => {
     setTextDes(event.target.value);
   };
 
   const handleApply = async () => {
     const applicantId = userLogin.user._id;
     if (applicantId) {
-      let response = RequestPost(`${APIAPPLY}/apply`, {
-        applicantId,
-        jobId
-      });
-      const apply = JSON.stringify(response);
-      console.log(apply.message);
-      console.log(apply.jobApplied);
-      console.log(
-        "Uploading file:",
-        selectedFile,
-        "And description:",
-        textDes,
-        "applicationId:",
-        applicantId,
-        "jobId:",
-        jobId
-      );
-      handleClose();
+      try {
+        const response = await RequestPost(`${APIAPPLY}/apply`, {
+          applicantId,
+          jobId
+        });
+        console.log(response);
+        setApplied(true); // Đã áp dụng thành công
+      } catch (error) {
+        console.error("Error applying for job:", error);
+        // Xử lý lỗi khi áp dụng công việc
+      }
     } else {
       console.log("No file selected.");
     }
+    handleClose();
   };
 
   return (
@@ -63,7 +58,8 @@ export default function JobSavedChild({ open, handleClose }) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        sx={{ textAlign: "center" }}>
+        sx={{ textAlign: "center" }}
+      >
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Form apply"}
         </DialogTitle>
@@ -85,7 +81,8 @@ export default function JobSavedChild({ open, handleClose }) {
                       <Button
                         variant="contained"
                         component="label"
-                        startIcon={<UploadFile />}>
+                        startIcon={<UploadFile />}
+                      >
                         Choose CV
                         <input type="file" hidden onChange={handleFileChange} />
                       </Button>
@@ -123,12 +120,19 @@ export default function JobSavedChild({ open, handleClose }) {
 
         <DialogActions>
           <Box sx={{ width: "100%", textAlign: "center" }}>
-            <Button
-              variant="contained"
-              onClick={handleApply}
-              sx={{ width: "90%" }}>
-              Apply
-            </Button>
+            {applied ? (
+              <Typography variant="body1" color="secondary">
+                You have already applied for this job. Wait recruiter check
+              </Typography>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleApply}
+                sx={{ width: "90%" }}
+              >
+                Apply
+              </Button>
+            )}
           </Box>
         </DialogActions>
       </Dialog>

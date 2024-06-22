@@ -10,15 +10,33 @@ import {
   Divider,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { APICV } from "../../util/apiEndpoint";
+import { Request, RequestGet } from "../../util/request";
 
 export default function ManagerCv() {
   const [cvList, setCvList] = useState([]);
 
-  const handleDelete = (index) => {
-    const newCvList = [...cvList];
-    newCvList.splice(index, 1);
-    setCvList(newCvList);
+  useEffect(() => {
+    const fetchCVs = async () => {
+      try {
+        const response = await RequestGet(`${APICV}/`);
+        console.log(response)
+        setCvList(response);
+      } catch (error) {
+        console.error("Error fetching CVs:", error);
+      }
+    };
+    fetchCVs();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await Request(`${APICV}/${id}`, { method: 'DELETE' });
+      setCvList(cvList.filter((cv) => cv._id !== id));
+    } catch (error) {
+      console.error("Error deleting CV:", error);
+    }
   };
 
   return (
@@ -28,12 +46,12 @@ export default function ManagerCv() {
           Manage CVs
         </Typography>
         <List>
-          {cvList.map((cv, index) => (
-            <div key={index}>
+          {cvList.map((cv) => (
+            <div key={cv._id}>
               <ListItem>
-                <ListItemText primary={cv.fileName} />
+                <ListItemText primary={cv.fileURL} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => handleDelete(index)}>
+                  <IconButton edge="end" onClick={() => handleDelete(cv._id)}>
                     <Delete />
                   </IconButton>
                 </ListItemSecondaryAction>
