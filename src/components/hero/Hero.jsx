@@ -8,17 +8,9 @@ import Ad from "./Ad";
 
 const pictures = [
   {
-    imagel: "./3D-Logo-Mockup-Design-Download.jpg",
-    title: "Image 1",
-  },
-  {
     imagel: "https://static.topcv.vn/img/T1%201100x220.png",
     title: "Image 2",
-  },
-  {
-    imagel: "https://static.topcv.vn/img/T1%201100x220.png",
-    title: "Image 2",
-  },
+  }
 ];
 
 export default function Hero() {

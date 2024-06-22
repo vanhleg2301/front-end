@@ -1,19 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
-import { Chance } from "chance";
 import Peer from "peerjs";
 import { io } from "socket.io-client";
 import { AuthContext } from "../../../context/AuthProvider";
 
-const chance = new Chance();
-
 export default function Test({ playVideo, muteMic, screenShare }) {
+  const { userLogin } = useContext(AuthContext);
   const [userDetail] = useState({
-    id: chance.guid(),
-    name: chance.name(),
+    id: userLogin.user._id,
+    name: userLogin.user.fullName,
   });
 
-  const { userLogin } = useContext(AuthContext);
   const refVideo = useRef(null);
   const refScreenShareVideo = useRef(null);
   const [mediaStream, setMediaStream] = useState(null);
@@ -132,19 +129,24 @@ export default function Test({ playVideo, muteMic, screenShare }) {
   // peerJs
   useEffect(() => {
     const initializePeer = () => {
-      const peerInstance = new Peer({
-        initializePeer: location.hash === "#init",
-        trickle: false,
-        stream: mediaStream,
+      // const peerInstance = new Peer({
+      //   initializePeer: location.hash === "#init",
+      //   trickle: false,
+      //   stream: mediaStream,
+      // });
+      const peerInstance = new Peer(userDetail.id, {
+        host: "/",
+        port: 9000,
       });
       console.log("peerInstance", peerInstance);
 
-      peerInstance.on("signal", (data) => {
-        console.log("SIGNAL", data);
-      });
+      // peerInstance.on("signal", (data) => {
+      //   console.log("SIGNAL", data);
+      // });
 
       peerInstance.on("open", (id) => {
         console.log("Peer connected with ID:", id);
+        socket.emit("join-room", "room-id", id);
       });
 
       peerInstance.on("call", (call) => {
@@ -169,7 +171,7 @@ export default function Test({ playVideo, muteMic, screenShare }) {
       setPeer(peerInstance);
     };
 
-    if (!peer) {
+    if (!peer && mediaStream) {
       initializePeer();
     }
 
@@ -178,51 +180,36 @@ export default function Test({ playVideo, muteMic, screenShare }) {
         peer.destroy();
       }
     };
-  }, [mediaStream, peer]);
+  }, [mediaStream, peer, userDetail.id]);
 
   const handleCallPeer = (peerId) => {
-    console.log("peerId: ", peerId);
-    if (!peerId) {
-      console.error("Peer ID is not available");
-      return;
+    if (peer && mediaStream) {
+      const call = peer.call(peerId, mediaStream);
+      if (!call) {
+        console.log("call fail: ", peer.call());
+        console.log("call fail: ", call);
+        return;
+      }
+      call.on("stream", (remoteStream) => {
+        setRemoteStream(remoteStream);
+      });
+    } else {
+      console.error("Cannot call peer. Peer or media stream is not available.");
     }
-
-    console.log("peer: ", peer);
-    if (!peer) {
-      console.error("Peer is not available");
-      return;
-    }
-
-    console.log("mediaStream: ", mediaStream);
-    if (!mediaStream) {
-      console.error("Media stream is not available");
-      return;
-    }
-
-    const call = peer.call(peerId, mediaStream);
-    console.log("call: ", call);
-    if (!call) {
-      console.error("Failed to create call");
-      return;
-    }
-
-    call.on("stream", (remoteStream) => {
-      setRemoteStream(remoteStream);
-    });
   };
 
-  // useEffect(() => {
-  //   const socket = io("http://localhost:9999"); // Replace with your server URL
-  //   socket.emit("join-room", "room-id"); // Replace with your room ID
+  useEffect(() => {
+    const socket = io("/"); // Replace with your server URL
+    socket.emit("join-room", "room-id", userDetail.id); // Replace with your room ID
 
-  //   socket.on("user-connected", (userId) => {
-  //     handleCallPeer(userId);
-  //   });
+    socket.on("user-connected", (userId) => {
+      handleCallPeer(userId);
+    });
 
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, [handleCallPeer]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [userDetail.id]);
 
   return (
     <Box
@@ -250,14 +237,19 @@ export default function Test({ playVideo, muteMic, screenShare }) {
           playsInline
         />
       )}
-      <button onClick={() => handleCallPeer(userLogin.user._id)}>
+      <button onClick={() => handleCallPeer("peerID-connect")}>
         Call Peer
       </button>
 
       {screenShare && mediaStreamShared && (
         <video
           muted={isMicMuted}
-          ref={refScreenShareVideo}
+          // ref={refScreenShareVideo}
+          ref={(ref) => {
+            if (ref) {
+              ref.srcObject = mediaStreamShared;
+            }
+          }}
           autoPlay
           playsInline
         />

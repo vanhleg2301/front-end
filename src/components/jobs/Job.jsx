@@ -172,7 +172,7 @@ export default function Job() {
                         height: "100%",
                         objectFit: "contain",
                       }}
-                      src={item.logo}
+                      src='./cong-ty-co-phan-cong-nghe-prep-9e0e05f147c67e222533732301419855-64990515c754f.webp'
                       alt={`Logo ${item.id}`}
                     />
                   </Box>
