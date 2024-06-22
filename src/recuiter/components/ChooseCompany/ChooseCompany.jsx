@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const ChooseCompany = () => {
   const navigate = useNavigate();
-  const { recuiters } = useParams();
+  const { recuiter } = useParams();
 
   const [companies, setCompanies] = useState("");
   const [company, setCompany] = useState("");
@@ -18,9 +18,8 @@ const ChooseCompany = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
-  const [companyStatus, setCompanyStatus] = useState("Bronze");
-  const [numberOfEmployees, setNumberOfEmployees] = useState("");
-
+  const [companyStatus, setCompanyStatus] = useState(1);
+  const [NumberOfEmployees, setNumberOfEmployees] = useState("");
   useEffect(() => {
     fetch("http://localhost:9999/company")
       .then((resp) => resp.json())
@@ -34,15 +33,16 @@ const ChooseCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const NumberOfEmployees = parseInt(numberOfEmployees);
+    const numberOfEmployees = parseInt(NumberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
+    const recuiters = [];
     const newCompany = {
       companyName,
       email,
       phoneNumber,
       location,
       taxNumber,
-      NumberOfEmployees,
+      numberOfEmployees,
       companyStatus,
       recuiters,
     };

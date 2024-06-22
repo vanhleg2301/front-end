@@ -16,7 +16,9 @@ const CreateJob = () => {
   const [industries, setIndustries] = useState([]);
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [JobDescription, setJobDescription] = useState("");
+  const [CandidateRequirements, setCandidateRequirements] = useState("");
+  const [Benefit, setBenefit] = useState("");
   const [inputindustry, setInputIndustry] = useState("");
   const [inputgender, setInputGender] = useState("");
   const [inputapplicantNumber, setInputApplicantNumber] = useState(0);
@@ -30,13 +32,8 @@ const CreateJob = () => {
   const [inputminSalary, setInputMinSalary] = useState(0);
   const [inputmaxSalary, setInputMaxSalary] = useState(0);
   const [gender, setGender] = useState(true);
-  const [applicantNumber, setApplicantNumber] = useState(0);
   const [typeOfWork, setTypeOfWork] = useState(true);
   const [level, setLevel] = useState(1);
-  const [experience, setExperience] = useState(0);
-  const [minSalary, setMinSalary] = useState(0);
-  const [maxSalary, setMaxSalary] = useState(0);
-  const [industry, setIndustry] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9999/industry")
@@ -52,11 +49,12 @@ const CreateJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const location = { address, district, province, commune };
-    setApplicantNumber(inputapplicantNumber);
-    setExperience(inputexperience);
-    setMinSalary(inputminSalary);
-    setMaxSalary(inputmaxSalary);
-    setIndustry(inputindustry);
+    const description = { JobDescription, CandidateRequirements, Benefit };
+    const applicantNumber = parseInt(inputapplicantNumber);
+    const experience = parseInt(inputexperience);
+    const minSalary = parseInt(inputminSalary);
+    const maxSalary = parseInt(inputmaxSalary);
+    const industry = inputindustry;
     if (inputgender === "Male") {
       setGender(true);
     } else {
@@ -143,14 +141,40 @@ const CreateJob = () => {
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10}>
+          <Grid item xs={10} marginBottom={2}>
             <TextField
               variant="standard"
               label="Mô tả công việc"
               size="small"
               className="width100pc"
               multiline
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
+
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10} marginBottom={2}>
+            <TextField
+              variant="standard"
+              label="Yêu cầu công việc"
+              size="small"
+              className="width100pc"
+              multiline
+              onChange={(e) => setCandidateRequirements(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
+
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10}>
+            <TextField
+              variant="standard"
+              label="Quyền lợi"
+              size="small"
+              className="width100pc"
+              multiline
+              onChange={(e) => setBenefit(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -174,7 +198,7 @@ const CreateJob = () => {
               onChange={(e) => setInputIndustry(e.target.value)}
             >
               {industries.map((i) => (
-                <MenuItem key={i._id} value={i.name}>
+                <MenuItem key={i._id} value={i._id}>
                   {i.name}
                 </MenuItem>
               ))}
