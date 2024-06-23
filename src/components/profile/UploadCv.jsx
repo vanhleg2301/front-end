@@ -13,6 +13,7 @@ import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthProvider";
 import { APICV } from "../../util/apiEndpoint";
 import { RequestPostFile } from "../../util/request";
+import { Link } from "react-router-dom";
 
 export default function UploadCv() {
   const { userLogin } = useContext(AuthContext);
@@ -89,6 +90,15 @@ export default function UploadCv() {
               <Typography variant="h3" gutterBottom>
                 Upload CV Here
               </Typography>
+              <Typography variant="h5" gutterBottom>
+          <Button
+          LinkComponent={Link}
+            to={`/profile/manager`}
+            variant="outlined"
+            style={{ textDecoration: "none", color: "black" }}>
+            Check your uploaded CVs
+          </Button>
+        </Typography>
               <Box sx={{ my: 2 }}>
                 <Paper elevation={0} sx={{ p: 2 }}>
                   <Grid container spacing={2} alignItems="center">
