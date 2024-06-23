@@ -1,5 +1,5 @@
 import React from "react";
-import "../header.css";
+import "../Header.css";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
@@ -26,8 +26,7 @@ export default function Recruiter() {
         top: "100%",
         left: "50%",
         transform: "translateX(-85%)",
-      }}
-    >
+      }}>
       <Link to="/recruiter" className="dropdown-item">
         <IconButton disabled>
           <ManageAccountsIcon />
