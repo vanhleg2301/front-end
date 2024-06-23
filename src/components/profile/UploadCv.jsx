@@ -12,7 +12,7 @@ import {
 import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthProvider";
 import { APICV } from "../../util/apiEndpoint";
-import { RequestPost } from "../../util/request";
+import { RequestPostFile } from "../../util/request";
 
 export default function UploadCv() {
   const { userLogin } = useContext(AuthContext);
@@ -43,9 +43,10 @@ export default function UploadCv() {
       const formData = new FormData();
       formData.append("cvFile", selectedFile);
       formData.append("applicantID", userLogin.user._id);
-
+      
       try {
-        const response = await RequestPost(`${APICV}/upload`, formData);
+        const response = await RequestPostFile(`${APICV}/upload`, formData);
+        console.log("formData", formData);
         console.log("Upload successful:", response);
         setAlertMessage("Upload successful");
         setSelectedFile(null);
@@ -71,8 +72,7 @@ export default function UploadCv() {
         <Alert
           variant="outlined"
           severity="success"
-          sx={{ position: "fixed", bottom: "10px", left: "10px" }}
-        >
+          sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
           {alertMessage}
         </Alert>
       )}
@@ -95,10 +95,11 @@ export default function UploadCv() {
                       <Button
                         variant="contained"
                         component="label"
-                        startIcon={<UploadFile />}
-                      >
+                        startIcon={<UploadFile />}>
                         Choose CV
                         <input
+                          fileName={selectedFile}
+                          name="cvFile"
                           type="file"
                           hidden
                           onChange={handleFileChange}
@@ -117,8 +118,7 @@ export default function UploadCv() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleUpload}
-                >
+                  onClick={handleUpload}>
                   Upload
                 </Button>
               </Box>
