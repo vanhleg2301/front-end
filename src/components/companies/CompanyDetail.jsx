@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -9,13 +9,32 @@ import {
 } from "@mui/material";
 import { Business, People, Add } from "@mui/icons-material";
 import Job from "../jobs/Job";
+import { RequestGet } from "../../util/request";
+import { APICOMPANY } from "../../util/apiEndpoint";
+import { useParams } from "react-router-dom";
 
 export default function CompanyDetail() {
-  const [showMore, setShowMore] = useState(false);
+  const { companyID } = useParams();
+  const [showMore, setShowMore] = useState("");
+  const [detailCom, setDetailCom] = useState({});
 
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await RequestGet(`${APICOMPANY}/${companyID}`);
+        setDetailCom(response);
+      } catch (error) {
+        console.error("Error fetching company:", error);
+      }
+    })();
+  }, [companyID]);
+
+  console.log(detailCom.companyName);
+
   return (
     <Container maxWidth="lg">
       <Card>
@@ -23,7 +42,7 @@ export default function CompanyDetail() {
           {/* Company Information */}
           <Box>
             <Typography variant="h4" align="center" gutterBottom>
-              Công Ty TNHH TransCosmos Việt Nam
+              {detailCom.companyName}
             </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={6}>
@@ -49,8 +68,7 @@ export default function CompanyDetail() {
                 href="https://www.trans-cosmos.com.vn/?locale=en"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
+                style={{ textDecoration: "none" }}>
                 https://www.trans-cosmos.com.vn/?locale=en
               </a>
             </Typography>
@@ -78,8 +96,7 @@ export default function CompanyDetail() {
                     {!showMore && (
                       <Typography
                         onClick={handleShowMore}
-                        sx={{ cursor: "pointer", color: "blue" }}
-                      >
+                        sx={{ cursor: "pointer", color: "blue" }}>
                         Xem thêm
                       </Typography>
                     )}

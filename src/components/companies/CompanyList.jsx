@@ -39,9 +39,8 @@ export default function CompanyList() {
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Box
                 component={Link}
-                to="/companies/:id"
-                sx={{ textDecoration: "none" }}
-              >
+                to={`/companies/${company._id}`}
+                sx={{ textDecoration: "none" }}>
                 <Card>
                   <CardMedia
                     component="img"
@@ -54,8 +53,7 @@ export default function CompanyList() {
                       sx={{ fontWeight: "bold" }}
                       variant="h6"
                       component="div"
-                      gutterBottom
-                    >
+                      gutterBottom>
                       {company.companyName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

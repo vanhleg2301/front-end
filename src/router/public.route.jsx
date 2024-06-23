@@ -35,8 +35,8 @@ export default function publicRoutes() {
           path: "companies",
           element: <CompanyPage />,
           children: [
-            { path: "all", element: <CompanyList /> },
-            { path: ":id", element: <CompanyDetail /> },
+            { index: true, element: <CompanyList /> },
+            { path: ":companyID", element: <CompanyDetail /> },
           ],
         },
         {
