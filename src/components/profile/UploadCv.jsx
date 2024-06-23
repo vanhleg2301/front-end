@@ -52,6 +52,21 @@ export default function UploadCv() {
           console.log("Upload fail:", response.message);
           setErrorMessage("File already exists. Please choose another file.");
           setErrorSnackbarOpen(true);
+        } else if (response && response.message === "Invalid file type.") {
+          console.log("Upload fail:", response.message);
+          setErrorMessage(
+            "Invalid file type. Let upload .doc, .docx, .pdf file only."
+          );
+          setErrorSnackbarOpen(true);
+        } else if (
+          response &&
+          response.message === "File size exceeds limit."
+        ) {
+          console.log("Upload fail:", response.message);
+          setErrorMessage(
+            "File size exceeds limit. Please upload file below 5MB."
+          );
+          setErrorSnackbarOpen(true);
         } else {
           console.log("Upload successful:", response);
           setAlertMessage("Upload successful");
@@ -91,14 +106,14 @@ export default function UploadCv() {
                 Upload CV Here
               </Typography>
               <Typography variant="h5" gutterBottom>
-          <Button
-          LinkComponent={Link}
-            to={`/profile/manager`}
-            variant="outlined"
-            style={{ textDecoration: "none", color: "black" }}>
-            Check your uploaded CVs
-          </Button>
-        </Typography>
+                <Button
+                  LinkComponent={Link}
+                  to={`/profile/manager`}
+                  variant="outlined"
+                  style={{ textDecoration: "none", color: "black" }}>
+                  Check your uploaded CVs
+                </Button>
+              </Typography>
               <Box sx={{ my: 2 }}>
                 <Paper elevation={0} sx={{ p: 2 }}>
                   <Grid container spacing={2} alignItems="center">
