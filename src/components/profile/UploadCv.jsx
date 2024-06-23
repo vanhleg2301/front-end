@@ -13,6 +13,7 @@ import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthProvider";
 import { APICV } from "../../util/apiEndpoint";
 import { RequestPostFile } from "../../util/request";
+import { Link } from "react-router-dom";
 
 export default function UploadCv() {
   const { userLogin } = useContext(AuthContext);
@@ -43,14 +44,20 @@ export default function UploadCv() {
       const formData = new FormData();
       formData.append("cvFile", selectedFile);
       formData.append("applicantID", userLogin.user._id);
-      
+
       try {
         const response = await RequestPostFile(`${APICV}/upload`, formData);
-        console.log("formData", formData);
-        console.log("Upload successful:", response);
-        setAlertMessage("Upload successful");
-        setSelectedFile(null);
-        setFileName("");
+
+        if (response && response.message === "File already exists.") {
+          console.log("Upload fail:", response.message);
+          setErrorMessage("File already exists. Please choose another file.");
+          setErrorSnackbarOpen(true);
+        } else {
+          console.log("Upload successful:", response);
+          setAlertMessage("Upload successful");
+          setSelectedFile(null);
+          setFileName("");
+        }
       } catch (error) {
         console.error("Error uploading file:", error);
         setErrorMessage("Error uploading file. Please try again.");
@@ -83,6 +90,15 @@ export default function UploadCv() {
               <Typography variant="h3" gutterBottom>
                 Upload CV Here
               </Typography>
+              <Typography variant="h5" gutterBottom>
+          <Button
+          LinkComponent={Link}
+            to={`/profile/manager`}
+            variant="outlined"
+            style={{ textDecoration: "none", color: "black" }}>
+            Check your uploaded CVs
+          </Button>
+        </Typography>
               <Box sx={{ my: 2 }}>
                 <Paper elevation={0} sx={{ p: 2 }}>
                   <Grid container spacing={2} alignItems="center">
