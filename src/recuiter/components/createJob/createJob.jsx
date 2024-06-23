@@ -8,7 +8,6 @@ import {
   TextField,
 } from "@mui/material";
 import "./createJob.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateJob = () => {

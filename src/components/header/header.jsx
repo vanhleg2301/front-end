@@ -169,13 +169,13 @@ function Header() {
                 </Typography>
                 {isOpenCompany && (
                   <Box className="dropdown-content">
-                    <Link to="/companies/all" className="dropdown-item">
+                    <Link to="/companies" className="dropdown-item">
                       <IconButton disabled>
                         <EmojiTransportationIcon />
                       </IconButton>
                       Companies
                     </Link>
-                    <Link to="/companies/all" className="dropdown-item">
+                    <Link to="/companies" className="dropdown-item">
                       <IconButton disabled>
                         <AutoAwesomeOutlinedIcon />
                       </IconButton>

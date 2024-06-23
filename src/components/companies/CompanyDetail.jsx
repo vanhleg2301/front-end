@@ -14,22 +14,25 @@ import { APICOMPANY } from "../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 
 export default function CompanyDetail() {
-  const {companyID} = useParams()
-  const [showMore, setShowMore] = useState(false);
-const [detailCom, setDetailCom] = useState({});
+  const { companyID } = useParams();
+  const [showMore, setShowMore] = useState("");
+  const [detailCom, setDetailCom] = useState({});
+
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
 
   useEffect(() => {
-    try {
-      const response = RequestGet(`${APICOMPANY}/${companyID}`)
-    setDetailCom(response)
-    } catch (error) {
-      throw new Error("Error fetching company:", error);
-    }
-    
-  }, []);
+    (async () => {
+      try {
+        const response = await RequestGet(`${APICOMPANY}/${companyID}`);
+        setDetailCom(response);
+      } catch (error) {
+        console.error("Error fetching company:", error);
+      }
+    })();
+  }, [companyID]);
+  
   console.log(detailCom.companyName);
 
   return (
@@ -39,7 +42,7 @@ const [detailCom, setDetailCom] = useState({});
           {/* Company Information */}
           <Box>
             <Typography variant="h4" align="center" gutterBottom>
-              Công Ty TNHH TransCosmos Việt Nam 
+              {detailCom.companyName}
             </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={6}>
@@ -65,8 +68,7 @@ const [detailCom, setDetailCom] = useState({});
                 href="https://www.trans-cosmos.com.vn/?locale=en"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
+                style={{ textDecoration: "none" }}>
                 https://www.trans-cosmos.com.vn/?locale=en
               </a>
             </Typography>
@@ -94,8 +96,7 @@ const [detailCom, setDetailCom] = useState({});
                     {!showMore && (
                       <Typography
                         onClick={handleShowMore}
-                        sx={{ cursor: "pointer", color: "blue" }}
-                      >
+                        sx={{ cursor: "pointer", color: "blue" }}>
                         Xem thêm
                       </Typography>
                     )}

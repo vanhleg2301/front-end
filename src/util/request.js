@@ -44,6 +44,22 @@ export const Request = async (uri, payload) => {
   }
 };
 
+export const RequestPostFile = async (uri, payload) => {
+  try {
+    const res = await axios.post(`${ENDPOINT}/${uri}`,
+      // JSON.stringify(payload), 
+      payload,
+      {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return handleResponse(res);
+  } catch (error) {
+    throw error;
+  }
+};
+
 // POST request no AccessToken
 export const RequestPost = async (uri, payload) => {
   try {

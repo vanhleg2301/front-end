@@ -39,7 +39,7 @@ export default function CompanyList() {
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Box
                 component={Link}
-                to="/companies/:id"
+                to={`/companies/${company._id}`}
                 sx={{ textDecoration: "none" }}
               >
                 <Card>
