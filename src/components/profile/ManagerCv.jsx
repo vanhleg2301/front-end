@@ -3,13 +3,7 @@ import {
   Box,
   Container,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
   IconButton,
-  Divider,
-  Paper,
   Button,
   Card,
   CardContent,
@@ -17,7 +11,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { APICV } from "../../util/apiEndpoint";
-import { Request, RequestDelete, RequestGet } from "../../util/request";
+import { RequestDelete, RequestGet } from "../../util/request";
 import { AuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../util/formatHelpers";
@@ -42,6 +36,7 @@ export default function ManagerCv() {
     try {
       await RequestDelete(`${APICV}/${id}`);
       setCvList(cvList.filter((cv) => cv._id !== id));
+      console.log("CV deleted successfully.")
     } catch (error) {
       console.error("Error deleting CV:", error);
     }
