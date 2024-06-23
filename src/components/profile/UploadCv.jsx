@@ -43,14 +43,20 @@ export default function UploadCv() {
       const formData = new FormData();
       formData.append("cvFile", selectedFile);
       formData.append("applicantID", userLogin.user._id);
-      
+
       try {
         const response = await RequestPostFile(`${APICV}/upload`, formData);
-        console.log("formData", formData);
-        console.log("Upload successful:", response);
-        setAlertMessage("Upload successful");
-        setSelectedFile(null);
-        setFileName("");
+
+        if (response && response.message === "File already exists.") {
+          console.log("Upload fail:", response.message);
+          setErrorMessage("File already exists. Please choose another file.");
+          setErrorSnackbarOpen(true);
+        } else {
+          console.log("Upload successful:", response);
+          setAlertMessage("Upload successful");
+          setSelectedFile(null);
+          setFileName("");
+        }
       } catch (error) {
         console.error("Error uploading file:", error);
         setErrorMessage("Error uploading file. Please try again.");
