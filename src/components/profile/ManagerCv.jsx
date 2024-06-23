@@ -11,6 +11,9 @@ import {
   Divider,
   Paper,
   Button,
+  Card,
+  CardContent,
+  Grid,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { APICV } from "../../util/apiEndpoint";
@@ -48,11 +51,19 @@ export default function ManagerCv() {
     const extension = fileURL.split(".").pop().toLowerCase();
     if (extension === "png" || extension === "jpg" || extension === "jpeg") {
       return "image";
-    } else if (extension === "pdf" || extension === "docx" || extension === "doc") {
+    } else if (
+      extension === "pdf" ||
+      extension === "docx" ||
+      extension === "doc"
+    ) {
       return "pdf";
     } else {
       return "unknown";
     }
+  };
+
+  const getFileExtension = (fileURL) => {
+    return fileURL.split(".").pop().toLowerCase();
   };
 
   return (
@@ -61,49 +72,94 @@ export default function ManagerCv() {
         <Typography variant="h3" gutterBottom>
           Manage CVs
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          <Button
-          LinkComponent={Link}
-            to={`/profile/upload`}
-            variant="outlined"
-            style={{ textDecoration: "none", color: "black" }}>
-            Upload more CVs
-          </Button>
-        </Typography>
-        <List>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={2}>
+          <Typography variant="h5">
+            <Button
+              component={Link}
+              to={`/profile/upload`}
+              variant="outlined"
+              style={{ textDecoration: "none", color: "black" }}>
+              Upload more CVs
+            </Button>
+          </Typography>
+          {cvList.length === 0 && (
+            <Typography variant="body1">No CVs uploaded yet.</Typography>
+          )}
+        </Box>
+        <Grid container spacing={2}>
           {cvList.map((cv) => (
-            <div key={cv._id}>
-              <ListItem>
-                {getFileType(cv.fileURL) === "image" ? (
-                  <Paper elevation={3}>
-                    <img
-                      src={cv.fileURL}
-                      alt="CV Thumbnail"
-                      style={{ width: "100px", height: "auto" }}
-                    />
-                  </Paper>
-                ) : getFileType(cv.fileURL) === "pdf" ? (
-                  <Paper elevation={3}>
-                    <Typography variant="body1">PDF Thumbnail</Typography>
-                    {/* You can add a PDF thumbnail generator here */}
-                  </Paper>
-                ) : (
-                  <ListItemText primary={cv.fileURL} />
-                )}
-                <Typography variant="body1">Update: {formatDate(cv.updatedAt)}</Typography>
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => handleDelete(cv._id)}>
-                    <Delete />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider />
-            </div>
+            <Grid item key={cv._id} xs={12} sm={6} md={4}>
+              <Card
+                variant="outlined"
+                sx={{
+                  position: "relative", // Ensure relative positioning
+                  height: 200,
+                  width: 200,
+                }}>
+                {/* Background image */}
+                <Box
+                  sx={{
+                    backgroundImage: `url('https://www.topcv.vn/v4/image/upload_cv/default_cv.jpg')`,
+                    backgroundSize: "cover",
+                    height: 200,
+                    width: 200,
+                  }}
+                />
+                {/* Content at the bottom */}
+                <CardContent
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: "rgba(255, 255, 255, 0.3)", // Semi-transparent white background
+                    textAlign: "left",
+                    padding: 1, // Adjust padding as needed
+                  }}>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      padding: 1,
+                    }}>
+                    {/* Content */}
+                    {getFileType(cv.fileURL) === "image" && (
+                      <Box>
+                        {/* Image display */}
+                        <Box
+                          // component="img"
+                          src={cv.fileURL}
+                          sx={{ maxWidth: "100%", height: "auto" }}
+                        />
+                      </Box>
+                    )}
+                    <Typography variant="subtitle2" mt={1}>
+                     Update: {formatDate(cv.updatedAt)}
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                      <Typography
+                        variant="subtitle2"
+                        mt={1}
+                        sx={{ position: "absolute", pr: 7}}>
+                        {getFileExtension(cv.fileURL)}
+                      </Typography>
+                      <IconButton onClick={() => handleDelete(cv._id)}>
+                        <Delete />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </List>
-        {cvList.length === 0 && (
-          <Typography variant="body1">No CVs uploaded yet.</Typography>
-        )}
+        </Grid>
       </Box>
     </Container>
   );
