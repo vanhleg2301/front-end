@@ -37,7 +37,7 @@ export default function JobSavedChild({ open, handleClose }) {
       try {
         const response = await RequestPost(`${APIAPPLY}/apply`, {
           applicantId,
-          jobId
+          jobId,
         });
         console.log(response);
         setApplied(true); // Đã áp dụng thành công
@@ -58,8 +58,7 @@ export default function JobSavedChild({ open, handleClose }) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        sx={{ textAlign: "center" }}
-      >
+        sx={{ textAlign: "center" }}>
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Form apply"}
         </DialogTitle>
@@ -81,8 +80,7 @@ export default function JobSavedChild({ open, handleClose }) {
                       <Button
                         variant="contained"
                         component="label"
-                        startIcon={<UploadFile />}
-                      >
+                        startIcon={<UploadFile />}>
                         Choose CV
                         <input type="file" hidden onChange={handleFileChange} />
                       </Button>
@@ -128,8 +126,7 @@ export default function JobSavedChild({ open, handleClose }) {
               <Button
                 variant="contained"
                 onClick={handleApply}
-                sx={{ width: "90%" }}
-              >
+                sx={{ width: "90%" }}>
                 Apply
               </Button>
             )}

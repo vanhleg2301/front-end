@@ -35,24 +35,21 @@ export default function Footer() {
         gap: { xs: 4, sm: 8 },
         py: { xs: 8, sm: 10 },
         textAlign: { sm: "center", md: "left" },
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           width: "100%",
           justifyContent: "space-between",
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: 4,
             minWidth: { xs: "100%", sm: "60%" },
-          }}
-        >
+          }}>
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
             <Box sx={{ ml: "-15px" }}>
               <img src={""} style={logoStyle} alt="logo of AceInterview" />
@@ -62,8 +59,7 @@ export default function Footer() {
               variant="body2"
               color="text.secondary"
               mb={2}
-              sx={{ mt: 5 }}
-            >
+              sx={{ mt: 5 }}>
               Go to Ace Interview.
             </Typography>
             <Stack direction="column" spacing={1} useFlexGap sx={{ mt: 5 }}>
@@ -86,8 +82,7 @@ export default function Footer() {
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
             gap: 1,
-          }}
-        >
+          }}>
           <Typography variant="body2" fontWeight={600}>
             About Ace Interview
           </Typography>
@@ -112,8 +107,7 @@ export default function Footer() {
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
             gap: 1,
-          }}
-        >
+          }}>
           <Typography variant="body2" fontWeight={600}>
             Company
           </Typography>
@@ -132,8 +126,7 @@ export default function Footer() {
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
             gap: 1,
-          }}
-        >
+          }}>
           <Typography variant="body2" fontWeight={600}>
             Legal
           </Typography>
@@ -156,8 +149,7 @@ export default function Footer() {
           width: "100%",
           borderTop: "1px solid",
           borderColor: "divider",
-        }}
-      >
+        }}>
         <div>
           <Link color="text.secondary" href="#">
             Privacy Policy
@@ -177,30 +169,26 @@ export default function Footer() {
           useFlexGap
           sx={{
             color: "text.secondary",
-          }}
-        >
+          }}>
           <IconButton
             color="inherit"
             href="https://github.com/mui"
             aria-label="GitHub"
-            sx={{ alignSelf: "center" }}
-          >
+            sx={{ alignSelf: "center" }}>
             <FacebookIcon />
           </IconButton>
           <IconButton
             color="inherit"
             href="https://twitter.com/MaterialUI"
             aria-label="X"
-            sx={{ alignSelf: "center" }}
-          >
+            sx={{ alignSelf: "center" }}>
             <TwitterIcon />
           </IconButton>
           <IconButton
             color="inherit"
             href="https://www.linkedin.com/company/mui/"
             aria-label="LinkedIn"
-            sx={{ alignSelf: "center" }}
-          >
+            sx={{ alignSelf: "center" }}>
             <LinkedInIcon />
           </IconButton>
         </Stack>
