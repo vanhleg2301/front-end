@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -8,9 +9,9 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Divider,
+  Paper,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
 import { APICV } from "../../util/apiEndpoint";
 import { Request, RequestGet } from "../../util/request";
 
@@ -21,7 +22,6 @@ export default function ManagerCv() {
     const fetchCVs = async () => {
       try {
         const response = await RequestGet(`${APICV}/`);
-        console.log(response)
         setCvList(response);
       } catch (error) {
         console.error("Error fetching CVs:", error);
@@ -39,6 +39,17 @@ export default function ManagerCv() {
     }
   };
 
+  const getFileType = (fileURL) => {
+    const extension = fileURL.split(".").pop().toLowerCase();
+    if (extension === "png" || extension === "jpg" || extension === "jpeg") {
+      return "image";
+    } else if (extension === "pdf") {
+      return "pdf";
+    } else {
+      return "unknown";
+    }
+  };
+
   return (
     <Container maxWidth="md">
       <Box mt={4}>
@@ -49,7 +60,22 @@ export default function ManagerCv() {
           {cvList.map((cv) => (
             <div key={cv._id}>
               <ListItem>
-                <ListItemText primary={cv.fileURL} />
+                {getFileType(cv.fileURL) === "image" ? (
+                  <Paper elevation={3}>
+                    <img
+                      src={cv.fileURL}
+                      alt="CV Thumbnail"
+                      style={{ width: "100px", height: "auto" }}
+                    />
+                  </Paper>
+                ) : getFileType(cv.fileURL) === "pdf" ? (
+                  <Paper elevation={3}>
+                    <Typography variant="body1">PDF Thumbnail</Typography>
+                    {/* You can add a PDF thumbnail generator here */}
+                  </Paper>
+                ) : (
+                  <ListItemText primary={cv.fileURL} />
+                )}
                 <ListItemSecondaryAction>
                   <IconButton edge="end" onClick={() => handleDelete(cv._id)}>
                     <Delete />
