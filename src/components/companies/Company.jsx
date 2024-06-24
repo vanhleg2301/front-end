@@ -9,7 +9,6 @@ import {
   CardMedia,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { RequestGet } from "../../util/request";
 
 export default function Company() {
@@ -19,7 +18,7 @@ export default function Company() {
     const fetchCompanies = async () => {
       try {
         const response = await RequestGet(`company`);
-      
+      console.log("response:", response.name)
         setCompanies(response);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -66,7 +65,12 @@ export default function Company() {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={company.logo}
+                    style={{
+                      width: "100%",
+                      
+                      objectFit: "contain",
+                    }}
+                    image={`http://localhost:9999/${company.logo}`}
                     alt={`${company.name} logo`}
                   />
                   <CardContent sx={{ textAlign: "center" }}>

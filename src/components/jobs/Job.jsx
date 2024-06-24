@@ -172,7 +172,8 @@ export default function Job() {
                         height: "100%",
                         objectFit: "contain",
                       }}
-                      src="@public/cong-ty-co-phan-cong-nghe-prep-9e0e05f147c67e222533732301419855-64990515c754f.webp"                      alt={`Logo ${item._id}`}
+                      src={"https://www.topcv.vn/v4/image/normal-company/logo_default.png"}
+                      alt={`Logo ${item._id}`}
                     />
                   </Box>
                   <Box

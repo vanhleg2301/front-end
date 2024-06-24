@@ -13,12 +13,13 @@ import { Delete } from "@mui/icons-material";
 import { APICV } from "../../util/apiEndpoint";
 import { RequestDelete, RequestGet } from "../../util/request";
 import { AuthContext } from "../../context/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../util/formatHelpers";
 
 export default function ManagerCv() {
   const { userLogin } = useContext(AuthContext);
   const [cvList, setCvList] = useState([]);
+  const nagivation = useNavigate();
 
   useEffect(() => {
     const fetchCVs = async () => {
@@ -36,7 +37,7 @@ export default function ManagerCv() {
     try {
       await RequestDelete(`${APICV}/${id}`);
       setCvList(cvList.filter((cv) => cv._id !== id));
-      console.log("CV deleted successfully.")
+      console.log("CV deleted successfully.");
     } catch (error) {
       console.error("Error deleting CV:", error);
     }
@@ -59,6 +60,10 @@ export default function ManagerCv() {
 
   const getFileExtension = (fileURL) => {
     return fileURL.split(".").pop().toLowerCase();
+  };
+
+  const handleOpenPdf = (fileURL) => {
+    nagivation(`/profile/manager/${encodeURIComponent(fileURL)}`);
   };
 
   return (
@@ -117,12 +122,19 @@ export default function ManagerCv() {
                     padding: 1, // Adjust padding as needed
                   }}>
                   <Box
+                    sx={{ position: "absolute", right: 1, top: 0, m: 2 ,cursor:"pointer"}}
+                    onClick={() => handleOpenPdf(cv.fileURL)}>
+                    
+                    View cv
+                  </Box>
+                  <Box
                     sx={{
                       position: "absolute",
                       bottom: 0,
                       left: 0,
                       right: 0,
                       padding: 1,
+                      mt: 1,
                     }}>
                     {/* Content */}
                     {getFileType(cv.fileURL) === "image" && (
@@ -136,13 +148,13 @@ export default function ManagerCv() {
                       </Box>
                     )}
                     <Typography variant="subtitle2" mt={3} ml={2}>
-                     Update: {formatDate(cv.updatedAt)}
+                      Update: {formatDate(cv.updatedAt)}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                       <Typography
                         variant="subtitle2"
                         mt={1}
-                        sx={{ position: "absolute", pr: 7}}>
+                        sx={{ position: "absolute", pr: 7 }}>
                         {getFileExtension(cv.fileURL)}
                       </Typography>
                       <IconButton onClick={() => handleDelete(cv._id)}>

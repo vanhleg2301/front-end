@@ -8,17 +8,19 @@ import { AuthContext } from "../../context/AuthProvider";
 import { RequestGet } from "../../util/request";
 import { APIAPPLY } from "../../util/apiEndpoint";
 import JobDetail from "./JobDetail";
+import { useNavigate } from "react-router-dom";
 
 export default function JobApplied() {
   const { userLogin } = useContext(AuthContext);
   const [jobApplied, setJobApplied] = useState([]);
+  const nagivation = useNavigate();
 
   useEffect(() => {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
-        setJobApplied(response);
-        // console.log("response:", response.map((job) => job.jobID?.title));
+        setJobApplied(response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+         console.log("response:", response);
       } catch (error) {
         console.error("Error fetching job applied:", error);
       }
@@ -26,6 +28,10 @@ export default function JobApplied() {
     fetchJobDetail();
   }, [userLogin.user._id]);
 
+  const handleOpenPdf = (fileURL) => {
+    nagivation(`/profile/manager/${encodeURIComponent(fileURL)}`);
+  };
+  
   return (
     <Container maxWidth={"lg"}>
       <Box mb={3}>
@@ -66,11 +72,6 @@ export default function JobApplied() {
                     Applied on: {new Date(job.createdAt).toLocaleDateString()} -{" "}
                     {new Date(job.createdAt).toLocaleTimeString()}
                   </Typography>
-                  <Box>
-                    <Typography color="textSecondary">
-                      CV applied <Link href="#">View CV</Link>
-                    </Typography>
-                  </Box>
                 </Box>
               </Grid>
               <Grid item md={2}>
@@ -89,7 +90,7 @@ export default function JobApplied() {
                     </Button>
                   </IconButton>
                   <IconButton>
-                    <Button variant="contained" startIcon={<Description />}>
+                    <Button variant="contained" startIcon={<Description />} onClick={() => handleOpenPdf(cv.fileURL)}>
                       View CV
                     </Button>
                   </IconButton>
