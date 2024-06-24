@@ -7,6 +7,7 @@ import { Message, Description } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthProvider";
 import { RequestGet } from "../../util/request";
 import { APIAPPLY } from "../../util/apiEndpoint";
+import JobDetail from "./JobDetail";
 
 export default function JobApplied() {
   const { userLogin } = useContext(AuthContext);
@@ -17,7 +18,7 @@ export default function JobApplied() {
       try {
         const response = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
         setJobApplied(response);
-        console.log("response:", response);
+        // console.log("response:", response.map((job) => job.jobID?.title));
       } catch (error) {
         console.error("Error fetching job applied:", error);
       }
@@ -44,8 +45,7 @@ export default function JobApplied() {
                     alignItems: "center",
                     width: "80%",
                     height: "100%",
-                  }}
-                >
+                  }}>
                   <img
                     src="your_image_url"
                     alt="Job Logo"
@@ -59,10 +59,12 @@ export default function JobApplied() {
                     {job.jobID?.title || "Title not available"}
                   </Typography>
                   <Typography color="textSecondary">
-                    Company: {job.jobID?.recruitersID || "Company not available"}
+                    Company:{" "}
+                    {job.jobID?.recruitersID || "Company not available"}
                   </Typography>
                   <Typography color="textSecondary">
-                    Applied on: {new Date(job.createdAt).toLocaleDateString()} - {new Date(job.createdAt).toLocaleTimeString()}
+                    Applied on: {new Date(job.createdAt).toLocaleDateString()} -{" "}
+                    {new Date(job.createdAt).toLocaleTimeString()}
                   </Typography>
                   <Box>
                     <Typography color="textSecondary">
@@ -80,8 +82,7 @@ export default function JobApplied() {
                     justifyContent: "flex-end",
                     alignItems: "flex-end",
                     height: "100%",
-                  }}
-                >
+                  }}>
                   <IconButton>
                     <Button variant="contained" startIcon={<Message />}>
                       Message
@@ -98,6 +99,7 @@ export default function JobApplied() {
           </CardContent>
         </Card>
       ))}
+
     </Container>
   );
 }

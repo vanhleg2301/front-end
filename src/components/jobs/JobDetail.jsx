@@ -8,7 +8,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
@@ -21,26 +21,15 @@ import { RequestGet } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatSalary } from "../../util/formatHelpers";
+import { APIAPPLY } from "../../util/apiEndpoint";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function JobDetail() {
   // Job detail
+  const { userLogin } = useContext(AuthContext);
   const { jobId } = useParams();
   const [jobDetail, setJobDetail] = useState();
-
-  useEffect(() => {
-    const fetchJobDetail = async () => {
-      try {
-        const response = await RequestGet(`job/${jobId}`);
-        setJobDetail(response);
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching job detail:", error);
-      }
-    };
-    fetchJobDetail();
-  }, [jobId]);
-
-  // Company in jobDetail
+  const [isApplied, setIsApplied] = useState();
 
   // apply here
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog
@@ -52,6 +41,39 @@ export default function JobDetail() {
   const handleCloseDialog = () => {
     setOpenDialog(false); // Close the dialog
   };
+
+  useEffect(() => {
+    const fetchJobDetail = async () => {
+      try {
+        const response = await RequestGet(`job/${jobId}`);
+        setJobDetail(response);
+        // console.log(response);
+      } catch (error) {
+        console.error("Error fetching job detail:", error);
+      }
+    };
+
+    const checkIfApplied = async () => {
+      try {
+        const appliedJobs = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
+        const applied = appliedJobs.some((job) => job.jobID?._id=== jobId);
+        // console.log(appliedJobs.map((job) => job.jobID?.title))
+        setIsApplied(applied);
+        // console.log("applied:", applied);
+        
+      } catch (error) {
+        console.error("Error checking if job is applied:", error);
+      }
+    };
+
+    checkIfApplied();
+    fetchJobDetail();
+  }, [jobId, userLogin.user._id]);
+
+  
+
+  // Company in jobDetail
+
 
   if (!jobDetail) {
     return (
@@ -134,13 +156,25 @@ export default function JobDetail() {
 
               <Grid container>
                 <Grid item md={9}>
+                {isApplied ? (
                   <Button
                     sx={{ width: "90%", mr: 1 }}
                     color="primary"
                     variant="contained"
-                    onClick={handleApply}>
+                    disabled
+                  >
+                    Applied
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{ width: "90%", mr: 1 }}
+                    color="primary"
+                    variant="contained"
+                    onClick={handleApply}
+                  >
                     Apply
                   </Button>
+                )}
                 </Grid>
                 <Grid item md={3}>
                   <Button
@@ -294,6 +328,16 @@ export default function JobDetail() {
                   </Typography>
 
                   <Grid container justifyContent="left">
+                  {isApplied ? (
+                    <Button
+                      sx={{mt: 2 }}
+                      color="primary"
+                      variant="contained"
+                      disabled
+                    >
+                      Applied
+                    </Button>
+                  ) : (
                     <Button
                       variant="contained"
                       color="primary"
@@ -301,6 +345,7 @@ export default function JobDetail() {
                       onClick={handleApply}>
                       Apply now
                     </Button>
+                  )}
                     <Button
                       variant="contained"
                       color="primary"
@@ -436,7 +481,7 @@ export default function JobDetail() {
               </Card>
             </Box>
           </Grid>
-        </Grid>
+        </Grid> 
       </Grid>
       <JobSavedChild open={openDialog} handleClose={handleCloseDialog} />
     </Container>

@@ -135,7 +135,7 @@ export default function ManagerCv() {
                         />
                       </Box>
                     )}
-                    <Typography variant="subtitle2" mt={1}>
+                    <Typography variant="subtitle2" mt={3} ml={2}>
                      Update: {formatDate(cv.updatedAt)}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
