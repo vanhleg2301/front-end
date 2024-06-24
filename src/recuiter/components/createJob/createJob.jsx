@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -9,11 +9,12 @@ import {
 } from "@mui/material";
 import "./createJob.css";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthProvider";
 
 const CreateJob = () => {
   const navigate = useNavigate();
   const [industries, setIndustries] = useState([]);
-
+const {userLogin} = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [JobDescription, setJobDescription] = useState("");
   const [CandidateRequirements, setCandidateRequirements] = useState("");
@@ -47,6 +48,7 @@ const CreateJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const recruitersID = userLogin.user._id;
     const location = { address, district, province, commune };
     const description = { JobDescription, CandidateRequirements, Benefit };
     const applicantNumber = parseInt(inputapplicantNumber);
@@ -78,6 +80,7 @@ const CreateJob = () => {
       setTypeOfWork(false);
     }
     const newJob = {
+      recruitersID,
       title,
       description,
       industry,
@@ -97,9 +100,10 @@ const CreateJob = () => {
         headers: { "Content-Type": "application/json", Charset: "UTF8" },
         body: JSON.stringify(newJob),
       });
+      console.log(newJob);
       if (response.ok) {
         alert("Create successful");
-        navigate("/choosecompany");
+        navigate("/recruiter/companyregister");
       } else {
         throw new Error("Create failed");
       }
@@ -108,21 +112,21 @@ const CreateJob = () => {
     }
   };
 
-  const handleLocationChange = (e) => {
-    const { name, value } = e.target;
-    setLocation((prevLocation) => ({
-      ...prevLocation,
-      [name]: value,
-    }));
-  };
+  // const handleLocationChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setLocation((prevLocation) => ({
+  //     ...prevLocation,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleDescriptionChange = (e) => {
-    const { name, value } = e.target;
-    setDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: value,
-    }));
-  };
+  // const handleDescriptionChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setDescription((prevDescription) => ({
+  //     ...prevDescription,
+  //     [name]: value,
+  //   }));
+  // };
 
   return (
     <Container>
@@ -378,7 +382,7 @@ const CreateJob = () => {
               className="width100pc"
               size="small"
               name="province"
-              onChange={handleLocationChange}
+              onChange={(e)=> {setProvince(e.target.value)}}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -389,7 +393,7 @@ const CreateJob = () => {
               className="width100pc"
               size="small"
               name="district"
-              onChange={handleLocationChange}
+              onChange={(e)=> {setDistrict(e.target.value)}}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -400,7 +404,7 @@ const CreateJob = () => {
               className="width100pc"
               size="small"
               name="commune"
-              onChange={handleLocationChange}
+              onChange={(e)=> {setCommune(e.target.value)}}
             />
           </Grid>
 
@@ -417,7 +421,7 @@ const CreateJob = () => {
               className="width100pc"
               size="small"
               name="address"
-              onChange={handleLocationChange}
+              onChange={(e)=> {setAddress(e.target.value)}}
             />
           </Grid>
         </Grid>

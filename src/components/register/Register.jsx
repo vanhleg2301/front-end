@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoginWith from "../login/LoginWith";
-import { Request } from "../../util/request";
+import { Request, RequestPost } from "../../util/request";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, Link } from "react-router-dom";
@@ -23,8 +23,7 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
       {"Copyright © "}
       <Link color="inherit" to="/">
         Ace Interview
@@ -67,7 +66,10 @@ export default function Register() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const validateForm = () => {
@@ -89,12 +91,15 @@ export default function Register() {
     if (!validateForm()) return;
 
     const payload = {
-      ...formData,
+      fullName: formData.fullName,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
       roleID: selectedButton === 1 ? 1 : 2,
     };
-
+    console.log(payload);
     try {
-      const response = await Request("user/register", payload);
+      const response = await RequestPost("user/register", payload);
       setUser(response);
       console.log("User registered successfully:", response);
       setIsRegistered(true);
@@ -130,8 +135,7 @@ export default function Register() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        }}
-      >
+        }}>
         {isRegistered && (
           <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
             Registration successful!
@@ -214,18 +218,18 @@ export default function Register() {
                   name="roleID"
                   variant={selectedButton === 1 ? "contained" : "outlined"}
                   sx={{ mt: 3, mb: 2, width: "80%" }}
-                  onClick={() => handleButtonClick(1)}
-                >
+                  onClick={() => handleButtonClick(1)}>
                   Applicant
                 </Button>
               </Grid>
               <Grid item xs={6}>
                 <Button
+                  // component={Link}
+                  // to="/register/recruiter"
                   name="roleID"
                   variant={selectedButton === 2 ? "contained" : "outlined"}
                   sx={{ mt: 3, mb: 2, width: "80%" }}
-                  onClick={() => handleButtonClick(2)}
-                >
+                  onClick={() => handleButtonClick(2)}>
                   Recruiter
                 </Button>
               </Grid>
@@ -235,8 +239,7 @@ export default function Register() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
         </Box>

@@ -134,7 +134,8 @@ export default function Act({ onSearch }) {
   };
 
   // Lọc location dựa trên giá trị tìm kiếm
-  const filteredLocations = locations.filter((location) =>
+  var data = locations.filter(function( element ) { return element !== undefined; });
+  const filteredLocations = data.filter((location) =>
     location.toLowerCase().includes(locationSearch.toLowerCase())
   );
 

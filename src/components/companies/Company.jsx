@@ -24,6 +24,7 @@ export default function Company() {
         console.error("Error fetching companies:", error);
       }
     };
+    
 
     fetchCompanies();
   }, []);

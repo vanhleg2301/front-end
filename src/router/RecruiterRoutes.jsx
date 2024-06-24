@@ -5,6 +5,7 @@ import Layout from "../recruiter/components/layout/Layout";
 import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 import ChooseCompany from "../recuiter/components/ChooseCompany/ChooseCompany";
 import CreateJob from "../recuiter/components/createJob/createJob";
+import JobList from "../recuiter/components/JobList/JobList";
 
 export default function RecruiterRoutes() {
   return {
@@ -27,6 +28,10 @@ export default function RecruiterRoutes() {
       {
         path: "createjob",
         element: <CreateJob />,
+      },
+      {
+        path: "jobByRecruiter",
+        element: <JobList />,
       },
     ],
   };

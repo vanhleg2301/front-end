@@ -33,7 +33,7 @@ export default function CompanyDetail() {
     })();
   }, [companyID]);
   
-  console.log(detailCom.companyName);
+  console.log(detailCom.logo);
 
   return (
     <Container maxWidth="lg">
@@ -58,7 +58,7 @@ export default function CompanyDetail() {
             </Grid>
             <Box textAlign="center" my={2}>
               <img
-                src="https://static.topcv.vn/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg"
+                src={detailCom.logo}
                 alt="Company Logo"
                 style={{ maxWidth: "200px", maxHeight: "100px" }}
               />
