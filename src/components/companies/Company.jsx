@@ -46,7 +46,7 @@ export default function Company() {
           Top Companies
         </Typography>
         <Grid container spacing={3}>
-          {companies.map((company, index) => (
+          {companies.slice(0, 4).map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Link
                 to={`/companies/${company._id}`}

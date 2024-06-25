@@ -27,14 +27,18 @@ export default function AuthProvider({ children }) {
           sethLogin(true);
           const currentUser = JSON.parse(userObject);
           setUserLogin(currentUser);
-          // console.log("From AuthProvider ,login: ", login);
-          // console.log("From AuthProvider ,userLogin: ", userLogin);
-          // if (user.accessToken !== Cookies.get("accessToken")) {
-          //   Cookies.set("accessToken", user.accessToken);
-          //   window.location.reload();
-          // }
           setIsLoading(false);
-          return;
+
+          // set timeout to logout after 30s
+          const timer = setTimeout(() => {
+            Cookies.remove("accessToken"); 
+            Cookies.remove("user"); 
+            sethLogin(false); 
+            navigate("/"); 
+            window.location.reload(); 
+          }, 30000); 
+
+          return () => clearTimeout(timer);
         }
         setIsLoading(false);
       };
@@ -42,7 +46,7 @@ export default function AuthProvider({ children }) {
         logged();
       };
     }
-  }, [accessToken]);
+  }, [accessToken, login, userObject]);
 
   return (
     <AuthContext.Provider

@@ -13,7 +13,7 @@ import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import { useParams } from "react-router-dom";
 
-export default function JobSavedChild({ open, handleClose }) {
+export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const { jobId } = useParams();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState("");
@@ -40,7 +40,9 @@ export default function JobSavedChild({ open, handleClose }) {
           jobId,
         });
         console.log(response);
+        
         setApplied(true); // Đã áp dụng thành công
+        setApplied(setIsApplied); // Đã áp dụng thành công
       } catch (error) {
         console.error("Error applying for job:", error);
         // Xử lý lỗi khi áp dụng công việc

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -31,6 +32,18 @@ export default function JobDetail() {
   const [jobDetail, setJobDetail] = useState();
   const [isApplied, setIsApplied] = useState();
 
+  const [alertMessage, setAlertMessage] = useState("");
+
+  useEffect(() => {
+    let timer;
+    if (alertMessage) {
+      timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [alertMessage]);
+
   // apply here
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog
 
@@ -46,6 +59,7 @@ export default function JobDetail() {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`job/${jobId}`);
+        
         setJobDetail(response);
         // console.log(response);
       } catch (error) {
@@ -59,6 +73,9 @@ export default function JobDetail() {
         const applied = appliedJobs.some((job) => job.jobID?._id=== jobId);
         // console.log(appliedJobs.map((job) => job.jobID?.title))
         setIsApplied(applied);
+        if(applied){
+          setAlertMessage('You have successfully applied for this job.');
+        }
         // console.log("applied:", applied);
         
       } catch (error) {
@@ -84,6 +101,14 @@ export default function JobDetail() {
   }
   return (
     <Container>
+    {alertMessage && (
+      <Alert
+        variant="outlined"
+        severity="success"
+        sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
+        {alertMessage}
+      </Alert>
+    )}
       <Grid container spacing={0} sx={{ mb: 5 }}>
         {/*left*/}
         <Grid item xs={12} md={8}>
@@ -483,7 +508,7 @@ export default function JobDetail() {
           </Grid>
         </Grid> 
       </Grid>
-      <JobSavedChild open={openDialog} handleClose={handleCloseDialog} />
+      <JobSavedChild open={openDialog} handleClose={handleCloseDialog} setIsApplied={setIsApplied}/>
     </Container>
   );
 }

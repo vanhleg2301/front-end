@@ -9,9 +9,10 @@ import Industries from "../components/industries/Industries";
 export default function Home() {
   return (
     <Box sx={{ backgroundColor: "background.default" }}>
-      <Hero />
-      <Divider />
+    <Box mt={15} ></Box>
       <Job />
+      <Divider />
+      <Hero />
       <Divider />
       <Company />
       <Divider />

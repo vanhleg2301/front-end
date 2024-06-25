@@ -34,6 +34,7 @@ export default function CompanyDetail() {
   }, [companyID]);
   
   console.log(detailCom.logo);
+  console.log(detailCom.numberOfEmployees);
 
   return (
     <Container maxWidth="lg">
@@ -45,14 +46,9 @@ export default function CompanyDetail() {
               {detailCom.companyName}
             </Typography>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Typography variant="body1" align="center" gutterBottom>
-                  1000+ nhân viên
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="body1" align="center" gutterBottom>
-                  1415 người theo dõi
+                  {detailCom.numberOfEmployees}
                 </Typography>
               </Grid>
             </Grid>
@@ -63,15 +59,7 @@ export default function CompanyDetail() {
                 style={{ maxWidth: "200px", maxHeight: "100px" }}
               />
             </Box>
-            <Typography variant="body1" align="center" gutterBottom>
-              <a
-                href="https://www.trans-cosmos.com.vn/?locale=en"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}>
-                https://www.trans-cosmos.com.vn/?locale=en
-              </a>
-            </Typography>
+            
           </Box>
 
           {/* Grid for Company Introduction and Contact Information */}
