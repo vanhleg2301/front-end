@@ -98,8 +98,6 @@ export default function Login() {
     }
   };
 
-  console.log("From login page:", "login:", login, "userLogin: ", userLogin);
-
   return (
     <Grid container>
       <Grid item md={12}>

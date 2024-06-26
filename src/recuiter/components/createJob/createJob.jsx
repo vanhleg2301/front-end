@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import "./createJob.css";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +15,7 @@ import { AuthContext } from "../../../context/AuthProvider";
 const CreateJob = () => {
   const navigate = useNavigate();
   const [industries, setIndustries] = useState([]);
-const {userLogin} = useContext(AuthContext);
+  const { userLogin } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [JobDescription, setJobDescription] = useState("");
   const [CandidateRequirements, setCandidateRequirements] = useState("");
@@ -34,6 +35,7 @@ const {userLogin} = useContext(AuthContext);
   const [gender, setGender] = useState(true);
   const [typeOfWork, setTypeOfWork] = useState(true);
   const [level, setLevel] = useState(1);
+  const [deadline, setDeadline] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:9999/industry")
@@ -56,6 +58,7 @@ const {userLogin} = useContext(AuthContext);
     const minSalary = parseInt(inputminSalary);
     const maxSalary = parseInt(inputmaxSalary);
     const industry = inputindustry;
+
     if (inputgender === "Male") {
       setGender(true);
     } else {
@@ -92,6 +95,7 @@ const {userLogin} = useContext(AuthContext);
       location,
       minSalary,
       maxSalary,
+      deadline,
     };
 
     try {
@@ -103,7 +107,7 @@ const {userLogin} = useContext(AuthContext);
       console.log(newJob);
       if (response.ok) {
         alert("Create successful");
-        navigate("/recruiter/companyregister");
+        navigate("/recruiter/jobByRecruiter");
       } else {
         throw new Error("Create failed");
       }
@@ -213,8 +217,7 @@ const {userLogin} = useContext(AuthContext);
               size="small"
               value={inputindustry}
               className="width100pc"
-              onChange={(e) => setInputIndustry(e.target.value)}
-            >
+              onChange={(e) => setInputIndustry(e.target.value)}>
               {industries.map((i) => (
                 <MenuItem key={i._id} value={i._id}>
                   {i.name}
@@ -250,8 +253,9 @@ const {userLogin} = useContext(AuthContext);
             <TextField
               size="small"
               className="width100pc"
-              onChange={(e) => setInputApplicantNumber(e.target.value)}
-            ></TextField>
+              onChange={(e) =>
+                setInputApplicantNumber(e.target.value)
+              }></TextField>
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
@@ -260,8 +264,7 @@ const {userLogin} = useContext(AuthContext);
               size="small"
               value={inputtypeOfWork}
               className="width100pc"
-              onChange={(e) => setInputTypeOfWork(e.target.value)}
-            >
+              onChange={(e) => setInputTypeOfWork(e.target.value)}>
               <MenuItem value={"Full time"}>Full time</MenuItem>
               <MenuItem value={"Part time"}>Part time</MenuItem>
             </Select>
@@ -288,8 +291,7 @@ const {userLogin} = useContext(AuthContext);
               size="small"
               value={inputgender}
               className="width100pc"
-              onChange={(e) => setInputGender(e.target.value)}
-            >
+              onChange={(e) => setInputGender(e.target.value)}>
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>
             </Select>
@@ -300,8 +302,7 @@ const {userLogin} = useContext(AuthContext);
               size="small"
               value={inputlevel}
               className="width100pc"
-              onChange={(e) => setInputLevel(e.target.value)}
-            >
+              onChange={(e) => setInputLevel(e.target.value)}>
               <MenuItem value={"Intern"}>Intern</MenuItem>
               <MenuItem value={"Fresher"}>Fresher</MenuItem>
               <MenuItem value={"Junior"}>Junior</MenuItem>
@@ -319,6 +320,19 @@ const {userLogin} = useContext(AuthContext);
               onChange={(e) => setInputExperience(e.target.value)}
             />
           </Grid>
+
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10} className="padding-bot-10px padding-top-20px">
+            <Typography>Deadline</Typography>
+            <TextField
+              variant="standard"
+              type="datetime-local"
+              size="small"
+              className="width100pc"
+              onChange={(e) => setDeadline(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={1}></Grid>
 
           <Grid item xs={1} />
           <Grid item xs={11} className="padding-bot-10px padding-top-20px">
@@ -382,7 +396,9 @@ const {userLogin} = useContext(AuthContext);
               className="width100pc"
               size="small"
               name="province"
-              onChange={(e)=> {setProvince(e.target.value)}}
+              onChange={(e) => {
+                setProvince(e.target.value);
+              }}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -393,7 +409,9 @@ const {userLogin} = useContext(AuthContext);
               className="width100pc"
               size="small"
               name="district"
-              onChange={(e)=> {setDistrict(e.target.value)}}
+              onChange={(e) => {
+                setDistrict(e.target.value);
+              }}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -404,7 +422,9 @@ const {userLogin} = useContext(AuthContext);
               className="width100pc"
               size="small"
               name="commune"
-              onChange={(e)=> {setCommune(e.target.value)}}
+              onChange={(e) => {
+                setCommune(e.target.value);
+              }}
             />
           </Grid>
 
@@ -421,9 +441,12 @@ const {userLogin} = useContext(AuthContext);
               className="width100pc"
               size="small"
               name="address"
-              onChange={(e)=> {setAddress(e.target.value)}}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
             />
           </Grid>
+
         </Grid>
       </div>
 
@@ -432,8 +455,7 @@ const {userLogin} = useContext(AuthContext);
           item
           xs={6}
           className="padding-topbot-10px padding-right-20px"
-          align={"end"}
-        >
+          align={"end"}>
           <Button variant="outlined">Hủy</Button>
         </Grid>
         <Grid item xs={6} className="padding-topbot-10px" align={"start"}>

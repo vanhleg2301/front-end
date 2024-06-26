@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { AuthContext } from "../../../context/AuthProvider";
 
 export default function Applicant() {
-  const { sethLogin } = React.useContext(AuthContext);
+  const { login, sethLogin } = React.useContext(AuthContext);
 
   const handleLogout = () => {
     Cookies.remove("accessToken");

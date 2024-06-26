@@ -5,6 +5,7 @@ import {
   Container,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import "./ChooseCompany.css";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,8 @@ const ChooseCompany = () => {
   const [taxNumber, setTaxNumber] = useState("");
   const [companyStatus, setCompanyStatus] = useState(1);
   const [NumberOfEmployees, setNumberOfEmployees] = useState("");
+  const [logoFile, setLogoFile] = useState(null);
+  const [businessLicenseFile, setBusinessLicenseFile] = useState(null);
 
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,7 +35,9 @@ const ChooseCompany = () => {
   const fetchCompanies = async (name) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:9999/company/search?name=${name}`);
+      const response = await fetch(
+        `http://localhost:9999/company/search?name=${name}`
+      );
       const data = await response.json();
       setCompanies(data);
     } catch (err) {
@@ -63,25 +68,26 @@ const ChooseCompany = () => {
     e.preventDefault();
     const numberOfEmployees = parseInt(NumberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
-    const newCompany = {
-      companyName: selectedCompany?.companyName || companyName,
-      email,
-      phoneNumber,
-      location,
-      taxNumber,
-      numberOfEmployees: numberOfEmployees,
-      companyStatus,
-    };
-    console.log(newCompany);
+    const formData = new FormData();
+    formData.append("logo", logoFile); // Thêm file logo vào FormData
+    formData.append("businessLicense", businessLicenseFile); // Thêm file businessLicense vào FormData
+    formData.append("companyName", selectedCompany?.companyName || companyName); // Thêm tên công ty vào FormData
+    formData.append("email", email);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("location", location);
+    formData.append("taxNumber", taxNumber);
+    formData.append("numberOfEmployees", numberOfEmployees);
+    formData.append("companyStatus", companyStatus);
+  
     try {
       const response = await fetch("http://localhost:9999/company", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Charset: "UTF8" },
-        body: JSON.stringify(newCompany),
+        body: formData, // Gửi FormData chứa các trường và file
       });
       if (response.ok) {
+        console.log("response: ", response); 
         alert("Create successful");
-        navigate("/recruiter/createjob");
+        navigate("/recruiter/companyByRecruiter");
       } else {
         throw new Error("Create failed");
       }
@@ -89,6 +95,7 @@ const ChooseCompany = () => {
       console.log(error.message);
     }
   };
+  
 
   return (
     <Container>
@@ -97,14 +104,16 @@ const ChooseCompany = () => {
           <Box>
             Existed Company
             <Autocomplete
-            disabled={Boolean(companyName)}
+              disabled={Boolean(companyName)}
               value={selectedCompany}
               onChange={(_, newValue) => setSelectedCompany(newValue)}
               options={companies}
               getOptionLabel={(option) => option?.companyName || ""}
               renderInput={(params) => (
-                <TextField {...params} label="Select a company" variant="outlined" 
-                
+                <TextField
+                  {...params}
+                  label="Select a company"
+                  variant="outlined"
                 />
               )}
               fullWidth
@@ -113,7 +122,26 @@ const ChooseCompany = () => {
         </Grid>
 
         <Grid item xs={1}></Grid>
+        <Grid item xs={5} className="padding-bot-10px padding-top-20px">
+          <Typography>Logo</Typography>
+          <input
+            name="logo"
+            type="file"
+            onChange={(e) => setLogoFile(e.target.files[0])}
+          />
+        </Grid>
 
+        <Grid item xs={5} className="padding-bot-10px padding-top-20px">
+          <Typography>Business License</Typography>
+          <input
+            name="businessLicense"
+            type="file"
+            onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
+          />
+        </Grid>
+        <Grid item xs={1}></Grid>
+
+        <Grid item xs={1}></Grid>
         <Grid item xs={12} className="part" textAlign={"center"}>
           New Company
           <Grid container>
@@ -130,7 +158,7 @@ const ChooseCompany = () => {
                 }}
                 className="width100pc"
                 disabled={Boolean(selectedCompany)}
-                />
+              />
             </Grid>
 
             <Grid item xs={3} className="padding-top-20px">
@@ -141,6 +169,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc"></TextField>
             </Grid>
 
@@ -152,6 +181,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc"></TextField>
             </Grid>
 
@@ -163,6 +193,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setNewAddress(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
             <Grid item xs={3} className="padding-top-20px">
@@ -173,6 +204,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setNewCommune(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
             <Grid item xs={3} className="padding-top-20px">
@@ -183,6 +215,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setNewDistrict(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
 
@@ -194,6 +227,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setNewProvince(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
 
@@ -205,6 +239,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setTaxNumber(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
 
@@ -216,6 +251,7 @@ const ChooseCompany = () => {
                 variant="outlined"
                 size="small"
                 onChange={(e) => setNumberOfEmployees(e.target.value)}
+                disabled={Boolean(selectedCompany)}
                 className="width100pc padding-top-20px"></TextField>
             </Grid>
           </Grid>

@@ -17,7 +17,7 @@ export const mainListItems = (
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Job and CV" />
+      <ListItemText primary="Dashboard" />
     </ListItemButton>
     <ListItemButton component={Link} to="createjob">
       <ListItemIcon>
@@ -37,6 +37,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Job list" />
     </ListItemButton>
+    <ListItemButton component={Link} to="companyByRecruiter">
+    <ListItemIcon>
+      <ShoppingCartIcon />
+    </ListItemIcon>
+    <ListItemText primary="Company list" />
+  </ListItemButton>
   </React.Fragment>
 );
 

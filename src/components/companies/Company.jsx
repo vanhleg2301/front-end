@@ -18,7 +18,6 @@ export default function Company() {
     const fetchCompanies = async () => {
       try {
         const response = await RequestGet(`company`);
-      console.log("response:", response.name)
         setCompanies(response);
       } catch (error) {
         console.error("Error fetching companies:", error);

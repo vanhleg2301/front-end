@@ -6,6 +6,7 @@ import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRe
 import ChooseCompany from "../recuiter/components/ChooseCompany/ChooseCompany";
 import CreateJob from "../recuiter/components/createJob/createJob";
 import JobList from "../recuiter/components/JobList/JobList";
+import CompanyList from "../recuiter/components/companyList/CompanyList";
 
 export default function RecruiterRoutes() {
   return {
@@ -32,6 +33,10 @@ export default function RecruiterRoutes() {
       {
         path: "jobByRecruiter",
         element: <JobList />,
+      },
+      {
+        path: "companyByRecruiter",
+        element: <CompanyList />,
       },
     ],
   };

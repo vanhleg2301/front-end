@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { clearAuthCookies } from "../router";
 
 export const AuthContext = createContext();
 
@@ -28,17 +29,7 @@ export default function AuthProvider({ children }) {
           const currentUser = JSON.parse(userObject);
           setUserLogin(currentUser);
           setIsLoading(false);
-
-          // set timeout to logout after 30s
-          const timer = setTimeout(() => {
-            Cookies.remove("accessToken"); 
-            Cookies.remove("user"); 
-            sethLogin(false); 
-            navigate("/"); 
-            window.location.reload(); 
-          }, 30000); 
-
-          return () => clearTimeout(timer);
+          return;
         }
         setIsLoading(false);
       };
@@ -47,6 +38,13 @@ export default function AuthProvider({ children }) {
       };
     }
   }, [accessToken, login, userObject]);
+
+  useEffect(() => {
+    if (login) {
+      // Chỉ gọi clearAuthCookies khi login là true
+      clearAuthCookies();
+    }
+  }, [login]);
 
   return (
     <AuthContext.Provider
