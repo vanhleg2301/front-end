@@ -43,6 +43,7 @@ export default function CompanyList() {
               <TableCell>taxNumber</TableCell>
               <TableCell>NumberOfEmployees</TableCell>
               <TableCell>Business License</TableCell>
+              <TableCell>Function</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -60,8 +61,8 @@ export default function CompanyList() {
                 <TableCell>{company.NumberOfEmployees}</TableCell>
                 <TableCell>{company.businessLicense}</TableCell>
                 <TableCell>
-                  <Button color="error" variant="contained">
-                    Delete
+                  <Button color="primary" variant="contained">
+                    Update
                   </Button>
                 </TableCell>
               </TableRow>

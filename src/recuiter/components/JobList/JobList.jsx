@@ -38,6 +38,11 @@ const JobList = () => {
 
   console.log(jobs.map((j) => j.deadline));
 
+  const truncateTitle = (title) => {
+    const words = title.split(' ');
+    return words.length > 3 ? words.slice(0, 3).join(' ') + '...' : title;
+  };
+
   return (
     <Container>
       <h2>List Job of Recuiter</h2>
@@ -45,12 +50,13 @@ const JobList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              <TableCell>No.</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>MinSalary</TableCell>
               <TableCell>MaxSalary</TableCell>
               <TableCell>Deadline</TableCell>
-              <TableCell></TableCell>
+              <TableCell>CvApplied</TableCell>
+              <TableCell colSpan={2} sx={{textAlign:'center'}}>Function</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,10 +67,16 @@ const JobList = () => {
                     {j._id}
                   </Link>
                 </TableCell>
-                <TableCell>{j.title}</TableCell>
+                <TableCell>{truncateTitle(j.title)}</TableCell>
                 <TableCell>{j.minSalary}</TableCell>
                 <TableCell>{j.maxSalary}</TableCell>
                 <TableCell>{formatDate(j.deadline)}</TableCell>
+                <TableCell>{formatDate(j.deadline)}</TableCell>
+                <TableCell>
+                  <Button color="primary" variant="contained">
+                    Update
+                  </Button>
+                </TableCell>
                 <TableCell>
                   <Button color="error" variant="contained">
                     Delete
