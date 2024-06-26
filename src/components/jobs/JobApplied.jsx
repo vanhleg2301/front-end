@@ -85,11 +85,6 @@ export default function JobApplied() {
                     height: "100%",
                   }}>
                   <IconButton>
-                    <Button variant="contained" startIcon={<Message />}>
-                      Message
-                    </Button>
-                  </IconButton>
-                  <IconButton>
                     <Button variant="contained" startIcon={<Description />} onClick={() => handleOpenPdf(cv.fileURL)}>
                       View CV
                     </Button>

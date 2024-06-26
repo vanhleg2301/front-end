@@ -32,7 +32,7 @@ export default function Recruiter() {
         <IconButton disabled>
           <ManageAccountsIcon />
         </IconButton>
-        Information
+        Dashboard
       </Link>
       <Link to="/" className="dropdown-item">
         <IconButton disabled>
