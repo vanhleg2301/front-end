@@ -2,13 +2,13 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import RecruiterPage from "../recruiter/pages/RecruiterPage";
 import Layout from "../recruiter/components/layout/Layout";
-import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 import ChooseCompany from "../recuiter/components/ChooseCompany/ChooseCompany";
 import CreateJob from "../recuiter/components/createJob/createJob";
 import JobList from "../recuiter/components/JobList/JobList";
 import CompanyList from "../recuiter/components/companyList/CompanyList";
 import CompanyDetail from "../recuiter/components/companyList/CompanyDetail";
 import JobDetail from "../recuiter/components/JobList/JobDetail";
+import ProfileRecruiter from "../recuiter/components/profile/ProfileRecruiter";
 
 export default function RecruiterRoutes() {
   return {
@@ -20,10 +20,6 @@ export default function RecruiterRoutes() {
     ),
     children: [
       { index: true, element: <RecruiterPage /> },
-      {
-        path: "recruitertest",
-        element: <RecuiterRegister />,
-      },
       {
         path: "companyregister",
         element: <ChooseCompany />,
@@ -47,6 +43,10 @@ export default function RecruiterRoutes() {
       {
         path: "companyByRecruiter/:companyId",
         element: <CompanyDetail />,
+      },
+      {
+        path: "profile",
+        element: <ProfileRecruiter />,
       },
     ],
   };

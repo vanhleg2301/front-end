@@ -97,9 +97,13 @@ export default function CompanyDetail() {
                   <CardContent>
                     <Typography variant="h6">Thông tin liên hệ</Typography>
                     <Typography variant="body1">
-                      Địa chỉ công ty: Tầng 8 và tầng 10, Tòa nhà SCETPA, Số 19A
-                      đường Cộng Hòa, Phường 12, Quận Tân Bình, Thành Phố Hồ Chí
-                      Minh, Việt Nam
+                     {detailCom.email}
+                    </Typography>
+                    <Typography variant="body1">
+                     {detailCom.phoneNumber}
+                    </Typography>
+                    <Typography variant="body1">
+                     {detailCom.location}
                     </Typography>
                   </CardContent>
                 </Card>

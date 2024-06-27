@@ -47,10 +47,10 @@ export default function CompanyList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {companies.map((company) => (
-              <TableRow hover>
+            {companies.map((company, index) => (
+              <TableRow hover key={index}>
                 <TableCell>
-                  <Link style={{ textDecoration: "none" }} to={company._id}>
+                  <Link style={{ textDecoration: "none" }} to={company._id} >
                     {company._id}
                   </Link>
                 </TableCell>

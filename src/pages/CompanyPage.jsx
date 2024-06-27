@@ -1,5 +1,4 @@
 import React from "react";
-import ActCompany from "../components/action/ActCompany";
 import { Box, Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
@@ -10,13 +9,10 @@ export default function CompanyPage() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          pt: { xs: 14, sm: 20 },
-          pb: { xs: 8, sm: 12 },
+          pt: { xs: 14, sm: 20, md: 2},
+          pb: { xs: 8, sm: 12 , md: 4},
         }}
       >
-        <Box sx={{ width: "100%" }}>
-          <ActCompany />
-        </Box>
       </Container>
       <Outlet />
     </>

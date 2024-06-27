@@ -2,6 +2,7 @@ import React from "react";
 import Login from "../components/login/Login";
 import Register from "../components/register/Register";
 import AuthRouteCheck from "./AuthRouteCheck";
+import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 // import RecuiterRegister from "../recuiter/components/recuiterregister/RecuiterRegister";
 
 export default function authRoute() {
@@ -13,7 +14,11 @@ export default function authRoute() {
       {
         path: "/register",
         element: <Register />,
-      }
+      },
+      {
+        path: "/recruiter/signup",
+        element: <RecuiterRegister />,
+      },
       // ,{ path: "/register/recruiter", element: <RecuiterRegister /> }
     ],
   };

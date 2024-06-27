@@ -16,8 +16,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./ListItem";
-import { CssBaseline, Box, Divider } from "@mui/material";
+import { CssBaseline, Box, Divider, Avatar, MenuItem } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles"; // Updated import
+import Recruiter from "../../../components/header/subHeader/recruiter";
 
 function Copyright(props) {
   return (
@@ -25,10 +26,9 @@ function Copyright(props) {
       variant="body2"
       color="text.secondary"
       align="center"
-      {...props}
-    >
+      {...props}>
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="/">
         AceInterview
       </Link>{" "}
       {new Date().getFullYear()}
@@ -94,6 +94,18 @@ const defaultTheme = createTheme({
 });
 
 export default function Dashboard() {
+  const [isOpenProfile, setIsOpenProfile] = React.useState(false);
+
+  const handleMouseEnter = (section) => {
+    if (section === "info") {
+      setIsOpenProfile(true)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsOpenProfile(false);
+  };
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -107,8 +119,7 @@ export default function Dashboard() {
           <Toolbar
             sx={{
               pr: "24px", // keep right padding when drawer closed
-            }}
-          >
+            }}>
             <IconButton
               edge="start"
               color="inherit"
@@ -117,8 +128,7 @@ export default function Dashboard() {
               sx={{
                 marginRight: "36px",
                 ...(open && { display: "none" }),
-              }}
-            >
+              }}>
               <MenuIcon />
             </IconButton>
             <Typography
@@ -126,8 +136,7 @@ export default function Dashboard() {
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
-            >
+              sx={{ flexGrow: 1 }}>
               Dashboard
             </Typography>
             <IconButton color="inherit">
@@ -135,6 +144,12 @@ export default function Dashboard() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <MenuItem
+              onMouseEnter={() => handleMouseEnter("info")}
+              onMouseLeave={handleMouseLeave}>
+              <Avatar alt="User Avatar" src="" />
+              {isOpenProfile && <Recruiter />}
+            </MenuItem>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -144,8 +159,7 @@ export default function Dashboard() {
               alignItems: "center",
               justifyContent: "flex-end",
               px: [1],
-            }}
-          >
+            }}>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
@@ -167,8 +181,7 @@ export default function Dashboard() {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
-          }}
-        >
+          }}>
           <Toolbar />
           {/*Outlet*/}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -180,9 +193,7 @@ export default function Dashboard() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    
-                  }}
-                >
+                  }}>
                   <Outlet />
                 </Paper>
               </Grid>

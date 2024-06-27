@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Box, Grid } from "@mui/material"; // Import necessary Material-UI components
-import { RequestGet } from "../../../util/request";
+import {  RequestGet } from "../../../util/request";
 import { APIJOB } from "../../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 
@@ -12,7 +12,8 @@ const JobDetail = () => {
     const fetchJob = async () => {
       const response = await RequestGet(`${APIJOB}/${jobId}`);
       setJob(response);
-      console.log(response);
+
+      console.log(response.numberOfApplicants);
     };
     fetchJob();
   }, [jobId]); // Add jobId as a dependency
@@ -20,6 +21,7 @@ const JobDetail = () => {
   if (!job) {
     return <Typography>Loading...</Typography>;
   }
+
 
   return (
     <Container>
@@ -32,18 +34,18 @@ const JobDetail = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" paragraph>
-              {job.JobDescription}
+              {job.description.JobDescription}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" paragraph>
-              <strong>Candidate Requirements:</strong>{" "}
-              {job.CandidateRequirements}
+              <strong>Candidate Requirements:</strong>
+              {job.description.CandidateRequirements}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" paragraph>
-              <strong>Benefits:</strong> {job.Benefit}
+              <strong>Benefits:</strong> {job.description.Benefit}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -53,19 +55,19 @@ const JobDetail = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Type of Work:</strong>{" "}
+              <strong>Type of Work:</strong>
               {job.typeOfWork === 0 ? "Full-time" : "Part-time"}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body2">
-              <strong>Location:</strong>{" "}
+              <strong>Location:</strong>
               {`${job.location?.address}, ${job.location?.district}, ${job.location?.comune}, ${job.location?.province}`}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Salary Range:</strong>{" "}
+              <strong>Salary Range:</strong>
               {`${job.minSalary} - ${job.maxSalary}`}
             </Typography>
           </Grid>
@@ -76,7 +78,7 @@ const JobDetail = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Deadline:</strong>{" "}
+              <strong>Deadline:</strong>
               {new Date(job.deadline).toLocaleDateString()}
             </Typography>
           </Grid>
@@ -87,19 +89,19 @@ const JobDetail = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Status:</strong>{" "}
+              <strong>Status:</strong>
               {job.status === 0 ? "Active" : "Inactive"}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Created At:</strong>{" "}
+              <strong>Created At:</strong>
               {new Date(job.createdAt).toLocaleDateString()}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2">
-              <strong>Last Updated:</strong>{" "}
+              <strong>Last Updated:</strong>
               {new Date(job.updatedAt).toLocaleDateString()}
             </Typography>
           </Grid>

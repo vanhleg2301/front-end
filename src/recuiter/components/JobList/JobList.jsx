@@ -8,44 +8,70 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import "./JobList.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProvider";
 import { formatDate } from "../../../util/formatHelpers";
+import { RequestDelete } from "../../../util/request";
+import { APIJOB } from "../../../util/apiEndpoint";
 
 const JobList = () => {
-  // const { recuiterId } = useParams();
   const { userLogin } = useContext(AuthContext);
 
   const recruiterID = userLogin.user._id; // 611c9c198208053c147edc79
   const [jobs, setJobs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:9999/job/recruiter/${recruiterID}`)
+    fetch(`http://localhost:9999/${APIJOB}/recruiter/${recruiterID}`)
       .then((resp) => resp.json())
       .then((data) => {
-        const sortedCompanies = data.sort(
+        const sortedJobs = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setJobs(sortedCompanies);
-        console.log(data);
+        setJobs(sortedJobs);
+      console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [recruiterID]);
 
-  console.log(jobs.map((j) => j.deadline));
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredJobs = jobs.filter((job) =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const truncateTitle = (title) => {
     const words = title.split(' ');
     return words.length > 3 ? words.slice(0, 3).join(' ') + '...' : title;
   };
 
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure you want to delete this job?");
+    if (!confirmed) {
+      return; 
+    }
+    const response = await RequestDelete(`${APIJOB}/${id}`);
+    console.log(response);
+  }
+
   return (
     <Container>
-      <h2>List Job of Recuiter</h2>
+      <h2>List Job of Recruiter</h2>
+      <TextField
+        label="Search Jobs"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
       <TableContainer>
         <Table>
           <TableHead>
@@ -60,25 +86,25 @@ const JobList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {jobs.map((j) => (
-              <TableRow hover>
+            {filteredJobs.map((j, index) => (
+              <TableRow hover key={j._id}>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>
                   <Link style={{ textDecoration: "none" }} to={j._id}>
-                    {j._id}
+                    {truncateTitle(j.title)}
                   </Link>
                 </TableCell>
-                <TableCell>{truncateTitle(j.title)}</TableCell>
                 <TableCell>{j.minSalary}</TableCell>
                 <TableCell>{j.maxSalary}</TableCell>
                 <TableCell>{formatDate(j.deadline)}</TableCell>
-                <TableCell>{formatDate(j.deadline)}</TableCell>
+                <TableCell>{j.cvApplied}</TableCell>
                 <TableCell>
                   <Button color="primary" variant="contained">
                     Update
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button color="error" variant="contained">
+                  <Button color="error" variant="contained"onClick={handleDelete(j._id)} >
                     Delete
                   </Button>
                 </TableCell>

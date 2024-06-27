@@ -4,44 +4,45 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Link } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import BusinessIcon from '@mui/icons-material/Business';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export const mainListItems = (
   <React.Fragment>
     <ListItemButton component={Link} to="/recruiter">
       <ListItemIcon>
-        <PeopleIcon />
+        <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
     <ListItemButton component={Link} to="createjob">
       <ListItemIcon>
-        <BarChartIcon />
+        <AddIcon />
       </ListItemIcon>
       <ListItemText primary="Create job" />
     </ListItemButton>
     <ListItemButton component={Link} to="companyregister">
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <AppRegistrationIcon />
       </ListItemIcon>
       <ListItemText primary="Company sign up" />
     </ListItemButton>
     <ListItemButton component={Link} to="jobByRecruiter">
       <ListItemIcon>
-        <LayersIcon />
+        <FormatListBulletedIcon />
       </ListItemIcon>
       <ListItemText primary="Job list" />
     </ListItemButton>
     <ListItemButton component={Link} to="companyByRecruiter">
     <ListItemIcon>
-      <ShoppingCartIcon />
+      <BusinessIcon />
     </ListItemIcon>
-    <ListItemText primary="Company list" />
+    <ListItemText primary="Your company" />
   </ListItemButton>
   </React.Fragment>
 );

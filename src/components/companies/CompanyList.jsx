@@ -11,9 +11,11 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RequestGet } from "../../util/request";
+import ActCompany from "../action/ActCompany";
 
 export default function CompanyList() {
   const [companies, setCompanies] = useState([]);
+  const [searched, setSearched] = useState(false);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -27,9 +29,18 @@ export default function CompanyList() {
 
     fetchCompanies();
   }, []);
+
   return (
     <Container maxWidth={"lg"}>
       <Box p={3}>
+        <Box sx={{ width: "100%", mb: 4 }}>
+          <ActCompany
+            onSearch={(company) => {
+              setCompanies(company);
+              setSearched(true);
+            }}
+          />
+        </Box>
         <Divider />
         <Typography textAlign={"center"} variant="h4" gutterBottom>
           List Companies
@@ -59,7 +70,7 @@ export default function CompanyList() {
                       {company.companyName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      description
+                      {company.description}
                     </Typography>
                   </CardContent>
                 </Card>

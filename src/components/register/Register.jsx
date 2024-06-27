@@ -36,7 +36,6 @@ function Copyright(props) {
 
 export default function Register() {
   const [user, setUser] = React.useState(null);
-  const [selectedButton, setSelectedButton] = React.useState(1);
   const [formData, setFormData] = React.useState({
     username: "",
     email: "",
@@ -72,6 +71,11 @@ export default function Register() {
     }));
   };
 
+  const handleButtonClick = () => {
+    // Admin agree after that user can signup recruiter
+   navigate("/recruiter/signup")
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!formData.fullName) newErrors.fullName = "Full name is required";
@@ -80,10 +84,6 @@ export default function Register() {
     if (!formData.password) newErrors.password = "Password is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleButtonClick = (button) => {
-    setSelectedButton(button);
   };
 
   const handleSubmit = async (event) => {
@@ -95,7 +95,6 @@ export default function Register() {
       username: formData.username,
       email: formData.email,
       password: formData.password,
-      roleID: selectedButton === 1 ? 1 : 2,
     };
     console.log(payload);
     try {
@@ -111,7 +110,6 @@ export default function Register() {
         password: "",
         fullName: "",
       });
-      setSelectedButton(1); // Optionally reset the role selection
     } catch (error) {
       if (error.response) {
         console.error("Error response:", error.response.data);
@@ -212,28 +210,6 @@ export default function Register() {
                 helperText={errors.password}
               />
             </Grid>
-            <Grid container sx={{ textAlign: "center" }}>
-              <Grid item xs={6}>
-                <Button
-                  name="roleID"
-                  variant={selectedButton === 1 ? "contained" : "outlined"}
-                  sx={{ mt: 3, mb: 2, width: "80%" }}
-                  onClick={() => handleButtonClick(1)}>
-                  Applicant
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button
-                  // component={Link}
-                  // to="/register/recruiter"
-                  name="roleID"
-                  variant={selectedButton === 2 ? "contained" : "outlined"}
-                  sx={{ mt: 3, mb: 2, width: "80%" }}
-                  onClick={() => handleButtonClick(2)}>
-                  Recruiter
-                </Button>
-              </Grid>
-            </Grid>
           </Grid>
           <Button
             type="submit"
@@ -242,6 +218,19 @@ export default function Register() {
             sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
+          <Grid container sx={{ textAlign: "center" }}>
+            <Grid item xs={12}>
+              <Button
+                // component={Link}
+                // to="/register/recruiter"
+                name="roleID"
+                variant="contained"
+                sx={{ mt: 3, mb: 2, width: "40%" }}
+                onClick={() => handleButtonClick()}>
+                Be recruiter?
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
       <Box sx={{ display: "flex", mt: 5 }}>

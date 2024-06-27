@@ -10,6 +10,7 @@ import {
 import "./ChooseCompany.css";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
+import { UploadFile } from "@mui/icons-material";
 
 const ChooseCompany = () => {
   const navigate = useNavigate();
@@ -78,14 +79,14 @@ const ChooseCompany = () => {
     formData.append("taxNumber", taxNumber);
     formData.append("numberOfEmployees", numberOfEmployees);
     formData.append("companyStatus", companyStatus);
-  
+
     try {
       const response = await fetch("http://localhost:9999/company", {
         method: "POST",
         body: formData, // Gửi FormData chứa các trường và file
       });
       if (response.ok) {
-        console.log("response: ", response); 
+        console.log("response: ", response);
         alert("Create successful");
         navigate("/recruiter/companyByRecruiter");
       } else {
@@ -95,7 +96,6 @@ const ChooseCompany = () => {
       console.log(error.message);
     }
   };
-  
 
   return (
     <Container>
@@ -123,21 +123,47 @@ const ChooseCompany = () => {
 
         <Grid item xs={1}></Grid>
         <Grid item xs={5} className="padding-bot-10px padding-top-20px">
-          <Typography>Logo</Typography>
-          <input
-            name="logo"
-            type="file"
-            onChange={(e) => setLogoFile(e.target.files[0])}
-          />
+          <Typography>Format support: .png,.jpg,.jpeg</Typography>
+          <Button
+            sx={{
+              whiteSpace: "nowrap",
+              color: "white",
+            }}
+            variant="outlined"
+            component="label"
+            startIcon={<UploadFile />}>
+            Choose your logo
+            <input
+              name="logo"
+              type="file"
+              accept=".png,.jpg,.jpeg"
+              hidden
+              onChange={(e) => setLogoFile(e.target.files[0])}
+              disabled={Boolean(selectedCompany)}
+            />
+          </Button>
         </Grid>
 
         <Grid item xs={5} className="padding-bot-10px padding-top-20px">
-          <Typography>Business License</Typography>
-          <input
-            name="businessLicense"
-            type="file"
-            onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
-          />
+          <Typography>Format support: .doc,.docx,.pdf</Typography>
+          <Button
+            sx={{
+              whiteSpace: "nowrap",
+              color: "white",
+            }}
+            variant="outlined"
+            component="label"
+            startIcon={<UploadFile />}>
+            Choose your Business LicenseFile
+            <input
+              name="businessLicense"
+              type="file"
+              hidden
+              accept=".doc,.docx,.pdf"
+              onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
+              disabled={Boolean(selectedCompany)}
+            />
+          </Button>
         </Grid>
         <Grid item xs={1}></Grid>
 
