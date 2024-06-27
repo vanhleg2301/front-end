@@ -36,7 +36,7 @@ const CreateJob = () => {
   const [typeOfWork, setTypeOfWork] = useState(true);
   const [level, setLevel] = useState(1);
   const [deadline, setDeadline] = useState(null);
-
+  const [error, setError] = useState(null);
   useEffect(() => {
     fetch("http://localhost:9999/industry")
       .then((resp) => resp.json())
@@ -58,6 +58,11 @@ const CreateJob = () => {
     const minSalary = parseInt(inputminSalary);
     const maxSalary = parseInt(inputmaxSalary);
     const industry = inputindustry;
+
+    if(minSalary > maxSalary) {
+      setError("Min salary must be less than max salary");
+      return;
+    }
 
     if (inputgender === "Male") {
       setGender(true);
@@ -336,7 +341,7 @@ const CreateJob = () => {
 
           <Grid item xs={1} />
           <Grid item xs={11} className="padding-bot-10px padding-top-20px">
-            Mức lương
+            Mức lương {error}
           </Grid>
 
           <Grid item xs={1}></Grid>
@@ -359,6 +364,7 @@ const CreateJob = () => {
             />
           </Grid>
           <Grid item xs={1}></Grid>
+          
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
             <TextField

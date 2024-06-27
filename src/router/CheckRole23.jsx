@@ -18,10 +18,6 @@ const CheckRole23 = ({ roles }) => {
     }
   }, [roles, userRoleID, navigate]);
 
-  if (!login) {
-    return <Navigate to="/login" />;
-  }
-
   return <Outlet />;
 };
 

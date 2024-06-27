@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Container, Grid, IconButton, Link } from "@mui/material";
-import { Message, Description } from "@mui/icons-material";
+import { Box, Button, Container, Grid, IconButton } from "@mui/material";
+import { Description } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthProvider";
 import { RequestGet } from "../../util/request";
 import { APIAPPLY } from "../../util/apiEndpoint";
-import JobDetail from "./JobDetail";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function JobApplied() {
   const { userLogin } = useContext(AuthContext);
@@ -19,8 +18,10 @@ export default function JobApplied() {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
-        setJobApplied(response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-         console.log("response:", response);
+        setJobApplied(
+          response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        );
+        console.log("response:", response);
       } catch (error) {
         console.error("Error fetching job applied:", error);
       }
@@ -31,10 +32,10 @@ export default function JobApplied() {
   const handleOpenPdf = (fileURL) => {
     nagivation(`/profile/manager/${encodeURIComponent(fileURL)}`);
   };
-  
+
   return (
     <Container maxWidth={"lg"}>
-      <Box mb={3}>
+      <Box mb={3} mt={12}>
         <Typography variant="h5" component="h2">
           {jobApplied?.length} Job Applied
         </Typography>
@@ -61,7 +62,12 @@ export default function JobApplied() {
               </Grid>
               <Grid item md={7}>
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="h5" component="h2">
+                {}
+                  <Typography
+                    variant="h5"
+                    component={Link}
+                    to={`/jobs/${job._id}`}
+                    sx={{ textDecoration: "none", color: "black" }}>
                     {job.jobID?.title || "Title not available"}
                   </Typography>
                   <Typography color="textSecondary">
@@ -85,7 +91,10 @@ export default function JobApplied() {
                     height: "100%",
                   }}>
                   <IconButton>
-                    <Button variant="contained" startIcon={<Description />} onClick={() => handleOpenPdf(cv.fileURL)}>
+                    <Button
+                      variant="contained"
+                      startIcon={<Description />}
+                      onClick={() => handleOpenPdf(cv.fileURL)}>
                       View CV
                     </Button>
                   </IconButton>
@@ -95,7 +104,6 @@ export default function JobApplied() {
           </CardContent>
         </Card>
       ))}
-
     </Container>
   );
 }

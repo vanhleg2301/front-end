@@ -24,7 +24,7 @@ const JobList = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    console.log(userLogin);
+
     const fetchJobs = async () => {
       try {
         const response = await fetch(
@@ -35,13 +35,14 @@ const JobList = () => {
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setJobs(sortedJobs);
+        console.log(sortedJobs);
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchJobs();
-  }, [recruiterID]);
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -57,7 +58,9 @@ const JobList = () => {
   };
 
   const handleDelete = async (id) => {
+    const comfirmDelete = window.confirm("Are you sure to delete this job?");
     try {
+      if(!comfirmDelete) return;
       await RequestDelete(`${APIJOB}/${id}`);
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
     } catch (error) {
@@ -110,7 +113,10 @@ const JobList = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button color="error" variant="contained">
+                  <Button
+                    color="error"
+                    variant="contained"
+                    onClick={() => handleDelete(j._id)}>
                     Delete
                   </Button>
                 </TableCell>

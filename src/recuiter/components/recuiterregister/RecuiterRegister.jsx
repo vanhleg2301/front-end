@@ -26,6 +26,7 @@ const RecuiterRegister = () => {
   const [checked, setChecked] = useState(false);
   const [Unchecked, setUnchecked] = useState(true);
   const [checkErr, setCheckErr] = useState("");
+  const [error, setError] = useState(null);
   const roleID = 2;
 
   const handleSubmit = async (e) => {
@@ -48,6 +49,7 @@ const RecuiterRegister = () => {
 
     if (validatePhone(phone)) {
       console.log(validatePhone(phone));
+      setError("Phone number is invalid")
       return;
     }
 
@@ -167,6 +169,7 @@ const RecuiterRegister = () => {
               size="small"
               onChange={(e) => setPhone(e.target.value)}
             />
+            <label style={{ color: "red" }}>{error}</label>
           </Grid>
 
           <Grid item xs={10} className="margin-topbot-20px" >

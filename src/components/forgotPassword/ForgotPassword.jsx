@@ -3,14 +3,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Divider } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthProvider";
+import { RequestPost } from "../../util/request";
+import { APIUSER } from "../../util/apiEndpoint";
 
 function Copyright(props) {
   return (
@@ -22,7 +24,7 @@ function Copyright(props) {
       {"Copyright © "}
       <Typography color="inherit" component={Link} to="/">
         Ace Interview
-      </Typography>
+      </Typography>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -31,30 +33,26 @@ function Copyright(props) {
 
 export default function ForgotPassword() {
   const [email, setEmail] = React.useState("");
-
-  // const generatePassword = () => {
-  //   const length = 8;
-  //   const charset =
-  //     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //   let retVal = "";
-  //   for (let i = 0, n = charset.length; i < length; ++i) {
-  //     retVal += charset[Math.floor(Math.random() * n)];
-  //   }
-  //   return retVal;
-  // };
-
-  // const handleSubmit = async () => {
-  //   const newPassword = generatePassword();
-  //   // Send the new password to the user's email
-  //   await sendEmail(
-  //     email,
-  //     "Your new password",
-  //     `Your new password is: ${newPassword}`
-  //   );
-  //   console.log("send");
-  // };
-
-  // Rest of your component
+const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(JSON.stringify(email));
+    try {
+      // Gửi email với mật khẩu mới
+      const response = await RequestPost(
+        `${APIUSER}/forgot-password/sendmail`,
+        { email: email }
+      );
+      if (response) {
+        // console.log("New password: ", response.newpass);
+        alert(response.message);
+        // window.location.href = "https://mail.google.com/mail/u/1/#inbox"
+      }
+      console.log("Response: ", response);
+    } catch (error) {
+      console.error("Error sending email: ", error);
+    }
+  };
 
   return (
     <Grid container>
@@ -77,7 +75,7 @@ export default function ForgotPassword() {
             </Typography>
             <Box
               component="form"
-              // onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
               noValidate
               sx={{ mt: 1, width: "80%" }}>
               <TextField
@@ -89,6 +87,8 @@ export default function ForgotPassword() {
                 type="email"
                 id="email"
                 autoComplete="current-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <Button
                 type="submit"

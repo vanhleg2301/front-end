@@ -1,5 +1,47 @@
 import React from "react";
+import Chart from "../components/dashboard/chart.jsx";
+import { Container } from "@mui/system";
+import { Grid, Paper } from "@mui/material";
+import { Copyright } from "@mui/icons-material";
+import Deposits from "../components/dashboard/Deposits.jsx";
+import Orders from "../components/dashboard/Orders.jsx";
 
 export default function RecruiterPage() {
-  return <div>Home Recruiter</div>;
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={3}>
+        {/* Chart */}
+        <Grid item xs={12} md={8} lg={9}>
+          <Paper
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              height: 240,
+            }}>
+            <Chart />
+          </Paper>
+        </Grid>
+        {/* Recent Deposits */}
+        <Grid item xs={12} md={4} lg={3}>
+          <Paper
+            sx={{
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              height: 240,
+            }}>
+            <Deposits/>
+          </Paper>
+        </Grid>
+        {/* Recent Orders */}
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+            <Orders />
+          </Paper>
+        </Grid>
+      </Grid>
+      <Copyright sx={{ pt: 4 }} />
+    </Container>
+  );
 }

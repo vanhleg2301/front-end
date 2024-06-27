@@ -39,6 +39,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
           applicantId,
           jobId,
         });
+        // Gửi mail tự động đến Recruiter
         console.log(response);
         
         setApplied(true); // Đã áp dụng thành công

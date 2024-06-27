@@ -102,7 +102,8 @@ const ChooseCompany = () => {
       <Grid container>
         <Grid item xs={12} className="part" textAlign={"center"}>
           <Box>
-            Existed Company
+          <Typography variant="h4">Existed Company</Typography>
+            
             <Autocomplete
               disabled={Boolean(companyName)}
               value={selectedCompany}
@@ -169,7 +170,7 @@ const ChooseCompany = () => {
 
         <Grid item xs={1}></Grid>
         <Grid item xs={12} className="part" textAlign={"center"}>
-          New Company
+        <Typography variant="h4">New Company</Typography>
           <Grid container>
             <Grid item xs={3} className="padding-top-20px">
               Name
