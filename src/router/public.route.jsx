@@ -7,10 +7,7 @@ import JobList from "../components/jobs/JobList";
 import JobPage from "../pages/JobPage";
 import Job from "../components/jobs/Job";
 import CompanyPage from "../pages/CompanyPage";
-import MeetingPage from "../pages/MeetingPage";
-import HomeMeeting from "../components/meeting/HomeMeeting";
 import Home from "../pages/Home";
-import MeetingCall from "../components/meeting/MeetingCall";
 import CheckRole23 from "./CheckRole23";
 import React from "react";
 
@@ -28,11 +25,6 @@ export default function publicRoutes() {
           element: <CheckRole23 roles={[2, 3]} />,
           children: [
             { index: true, element: <Home /> },
-            {
-              path: "meeting",
-              element: <MeetingPage />,
-              children: [{ index: true, element: <HomeMeeting /> }],
-            },
             {
               path: "companies",
               element: <CompanyPage />,
@@ -54,6 +46,5 @@ export default function publicRoutes() {
         },
       ],
     },
-    { path: "/meeting/:id", element: <MeetingCall /> },
   ];
 }

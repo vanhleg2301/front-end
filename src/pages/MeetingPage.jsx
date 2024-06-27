@@ -8,10 +8,9 @@ export default function MeetingPage() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        pt: { xs: 14, sm: 20 },
-        pb: { xs: 8, sm: 12 },
-      }}
-    >
+        pt: { xs: 14, sm: 20, md: 10 },
+        pb: { xs: 8, sm: 12, md: 10 },
+      }}>
       <Outlet />
     </Container>
   );

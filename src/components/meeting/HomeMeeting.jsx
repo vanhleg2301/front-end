@@ -56,7 +56,7 @@ export default function HomeMeeting() {
   };
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: "2rem" }}>
+    <Container maxWidth="lg">
       <Paper elevation={3} style={{ padding: "5rem" }}>
         <Grid container spacing={5}>
           {/* Thông tin giới thiệu */}

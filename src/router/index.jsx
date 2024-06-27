@@ -52,7 +52,7 @@ export default createBrowserRouter([
           },
           {
             element: <CheckRole roles={[2]} />,
-            children: [RecruiterRoutes()],
+            children: RecruiterRoutes(),
           },
           {
             element: <CheckRole roles={[3]} />,
