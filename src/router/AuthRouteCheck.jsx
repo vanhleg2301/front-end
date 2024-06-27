@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default function AuthRouteCheck() {
+function AuthRouteCheck() {
   const accessToken = Cookies.get("accessToken");
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -12,3 +12,5 @@ export default function AuthRouteCheck() {
 
   return <Outlet />;
 }
+
+export default React.memo(AuthRouteCheck)

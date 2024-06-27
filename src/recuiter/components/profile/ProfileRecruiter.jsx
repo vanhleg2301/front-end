@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthProvider";
-import { APIUSER } from "../../../util/apiEndpoint";
 
 export default function ProfileRecruiter() {
   const { userLogin } = useContext(AuthContext);

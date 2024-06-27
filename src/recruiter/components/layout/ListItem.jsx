@@ -44,6 +44,12 @@ export const mainListItems = (
     </ListItemIcon>
     <ListItemText primary="Your company" />
   </ListItemButton>
+  <ListItemButton component={Link} to="profile">
+    <ListItemIcon>
+      <AccountCircleIcon />
+    </ListItemIcon>
+    <ListItemText primary="Your profile" />
+  </ListItemButton>
   </React.Fragment>
 );
 

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
 
-export default function CheckRole({ roles }) {
+const CheckRole = ({ roles }) => {
   const { login, userLogin } = useContext(AuthContext);
   const userRoleID = userLogin?.user?.roleID;
 
@@ -15,4 +15,6 @@ export default function CheckRole({ roles }) {
   } else {
     return <Navigate to="/login" />; // or a different fallback route
   }
-}
+};
+
+export default React.memo(CheckRole);

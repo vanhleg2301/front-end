@@ -10,33 +10,37 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import "./JobList.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProvider";
 import { formatDate } from "../../../util/formatHelpers";
 import { RequestDelete } from "../../../util/request";
 import { APIJOB } from "../../../util/apiEndpoint";
+import "./JobList.css";
 
 const JobList = () => {
   const { userLogin } = useContext(AuthContext);
-
-  const recruiterID = userLogin.user._id; // 611c9c198208053c147edc79
+  const recruiterID = userLogin.user._id;
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:9999/${APIJOB}/recruiter/${recruiterID}`)
-      .then((resp) => resp.json())
-      .then((data) => {
+    console.log(userLogin);
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:9999/${APIJOB}/recruiter/${recruiterID}`
+        );
+        const data = await response.json();
         const sortedJobs = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setJobs(sortedJobs);
-      console.log(data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      }
+    };
+
+    fetchJobs();
   }, [recruiterID]);
 
   const handleSearchChange = (e) => {
@@ -48,18 +52,18 @@ const JobList = () => {
   );
 
   const truncateTitle = (title) => {
-    const words = title.split(' ');
-    return words.length > 3 ? words.slice(0, 3).join(' ') + '...' : title;
+    const words = title.split(" ");
+    return words.length > 3 ? words.slice(0, 3).join(" ") + "..." : title;
   };
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this job?");
-    if (!confirmed) {
-      return; 
+    try {
+      await RequestDelete(`${APIJOB}/${id}`);
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
+    } catch (error) {
+      console.error("Failed to delete the job:", error);
     }
-    const response = await RequestDelete(`${APIJOB}/${id}`);
-    console.log(response);
-  }
+  };
 
   return (
     <Container>
@@ -82,7 +86,9 @@ const JobList = () => {
               <TableCell>MaxSalary</TableCell>
               <TableCell>Deadline</TableCell>
               <TableCell>CvApplied</TableCell>
-              <TableCell colSpan={2} sx={{textAlign:'center'}}>Function</TableCell>
+              <TableCell colSpan={2} sx={{ textAlign: "center" }}>
+                Function
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,7 +110,7 @@ const JobList = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button color="error" variant="contained"onClick={handleDelete(j._id)} >
+                  <Button color="error" variant="contained">
                     Delete
                   </Button>
                 </TableCell>

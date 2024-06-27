@@ -34,7 +34,7 @@ export default function Recruiter() {
         </IconButton>
         Dashboard
       </Link>
-      <Link to="/" className="dropdown-item">
+      <Link to="/recruiter" className="dropdown-item">
         <IconButton disabled>
           <MailOutlineIcon />
         </IconButton>

@@ -6,8 +6,7 @@ import Company from "../components/companies/Company";
 import Hero from "../components/hero/Hero";
 import Industries from "../components/industries/Industries";
 
-export default function Home() {
-
+const Home = () => {
   return (
     <Box sx={{ backgroundColor: "background.default" }}>
       <Box mt={15}></Box>
@@ -24,3 +23,5 @@ export default function Home() {
     </Box>
   );
 }
+
+export default React.memo(Home);
