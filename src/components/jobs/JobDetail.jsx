@@ -18,11 +18,11 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ScaleIcon from "@mui/icons-material/Scale";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CircularProgress from "@mui/material/CircularProgress";
-import { RequestGet } from "../../util/request";
+import { RequestGet, RequestPost } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatSalary } from "../../util/formatHelpers";
-import { APIAPPLY } from "../../util/apiEndpoint";
+import { APIAPPLY, APIUSER } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 
 export default function JobDetail() {
@@ -83,11 +83,33 @@ export default function JobDetail() {
       }
     };
 
+  //sendmail to recruiter
+    const sendMail = async () => {
+      try {
+        const response = await RequestPost(`${APIUSER}/sendmailJob`, {
+          applicantId: userLogin.user._id,
+          jobId: jobId 
+        })
+        if (response) {
+          console.log("Cv: ", response.cv);
+          console.log("Job: ", response.job);
+          console.log("Email of Recruiter: ", response.recruiterEmail);
+          alert(response.message);
+          // window.location.href = "https://mail.google.com/mail/u/1/#inbox"
+        }
+        console.log("Response: ", response);
+      } catch (error) {
+        console.error("Error checking if send Email:", error);
+      }
+    }
+    sendMail()
     checkIfApplied();
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
 
   
+
+
 
   // Company in jobDetail
 
