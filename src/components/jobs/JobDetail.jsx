@@ -22,7 +22,7 @@ import { RequestGet, RequestPost } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatSalary } from "../../util/formatHelpers";
-import { APIAPPLY, APIUSER } from "../../util/apiEndpoint";
+import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 
 export default function JobDetail() {
@@ -59,7 +59,7 @@ export default function JobDetail() {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`job/${jobId}`);
-        
+
         setJobDetail(response);
         // console.log(response);
       } catch (error) {
@@ -69,50 +69,25 @@ export default function JobDetail() {
 
     const checkIfApplied = async () => {
       try {
-        const appliedJobs = await RequestGet(`${APIAPPLY}/${userLogin.user._id}`);
-        const applied = appliedJobs.some((job) => job.jobID?._id=== jobId);
+        const appliedJobs = await RequestGet(
+          `${APIAPPLY}/${userLogin.user._id}`
+        );
+        const applied = appliedJobs.some((job) => job.jobID?._id === jobId);
         // console.log(appliedJobs.map((job) => job.jobID?.title))
         setIsApplied(applied);
-        if(applied){
-          setAlertMessage('You have successfully applied for this job.');
+        if (applied) {
+          setAlertMessage("You have successfully applied for this job.");
         }
         // console.log("applied:", applied);
-        
       } catch (error) {
         console.error("Error checking if job is applied:", error);
       }
     };
-
-  //sendmail to recruiter
-    const sendMail = async () => {
-      try {
-        const response = await RequestPost(`${APIUSER}/sendmailJob`, {
-          applicantId: userLogin.user._id,
-          jobId: jobId 
-        })
-        if (response) {
-          console.log("Cv: ", response.cv);
-          console.log("Job: ", response.job);
-          console.log("Email of Recruiter: ", response.recruiterEmail);
-          alert(response.message);
-          // window.location.href = "https://mail.google.com/mail/u/1/#inbox"
-        }
-        console.log("Response: ", response);
-      } catch (error) {
-        console.error("Error checking if send Email:", error);
-      }
-    }
-    sendMail()
     checkIfApplied();
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
 
-  
-
-
-
   // Company in jobDetail
-
 
   if (!jobDetail) {
     return (
@@ -123,14 +98,14 @@ export default function JobDetail() {
   }
   return (
     <Container>
-    {alertMessage && (
-      <Alert
-        variant="outlined"
-        severity="success"
-        sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
-        {alertMessage}
-      </Alert>
-    )}
+      {alertMessage && (
+        <Alert
+          variant='outlined'
+          severity='success'
+          sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
+          {alertMessage}
+        </Alert>
+      )}
       <Grid container spacing={0} sx={{ mb: 5 }}>
         {/*left*/}
         <Grid item xs={12} md={8}>
@@ -139,7 +114,7 @@ export default function JobDetail() {
               <Box sx={{ textAlign: "center" }}>
                 <Typography>{jobDetail.title}</Typography>
               </Box>
-              <Box display="flex" justifyContent="center">
+              <Box display='flex' justifyContent='center'>
                 <Grid container spacing={0} alignItems={"center"}>
                   <Grid item xs={12} md={4}>
                     <IconButton
@@ -149,8 +124,8 @@ export default function JobDetail() {
                         alignItems: "center",
                       }}>
                       <AttachMoneyIcon />
-                      <Typography variant="body1">Salary</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                      <Typography variant='body1'>Salary</Typography>
+                      <Typography variant='body2' sx={{ fontWeight: "bold" }}>
                         {formatSalary(jobDetail.minSalary, jobDetail.maxSalary)}
                       </Typography>
                     </IconButton>
@@ -163,8 +138,8 @@ export default function JobDetail() {
                         alignItems: "center",
                       }}>
                       <LocationSearchingIcon />
-                      <Typography variant="body1">Location</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                      <Typography variant='body1'>Location</Typography>
+                      <Typography variant='body2' sx={{ fontWeight: "bold" }}>
                         {jobDetail.location.comune},{" "}
                         {jobDetail.location.province}
                       </Typography>
@@ -178,8 +153,8 @@ export default function JobDetail() {
                         alignItems: "center",
                       }}>
                       <HourglassEmptyIcon />
-                      <Typography variant="body1">Exp</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                      <Typography variant='body1'>Exp</Typography>
+                      <Typography variant='body2' sx={{ fontWeight: "bold" }}>
                         {jobDetail.experience} years
                       </Typography>
                     </IconButton>
@@ -203,31 +178,29 @@ export default function JobDetail() {
 
               <Grid container>
                 <Grid item md={9}>
-                {isApplied ? (
-                  <Button
-                    sx={{ width: "90%", mr: 1 }}
-                    color="primary"
-                    variant="contained"
-                    disabled
-                  >
-                    Applied
-                  </Button>
-                ) : (
-                  <Button
-                    sx={{ width: "90%", mr: 1 }}
-                    color="primary"
-                    variant="contained"
-                    onClick={handleApply}
-                  >
-                    Apply
-                  </Button>
-                )}
+                  {isApplied ? (
+                    <Button
+                      sx={{ width: "90%", mr: 1 }}
+                      color='primary'
+                      variant='contained'
+                      disabled>
+                      Applied
+                    </Button>
+                  ) : (
+                    <Button
+                      sx={{ width: "90%", mr: 1 }}
+                      color='primary'
+                      variant='contained'
+                      onClick={handleApply}>
+                      Apply
+                    </Button>
+                  )}
                 </Grid>
                 <Grid item md={3}>
                   <Button
                     sx={{ width: "80%", mr: 1 }}
-                    color="primary"
-                    variant="outlined"
+                    color='primary'
+                    variant='outlined'
                     startIcon={<FavoriteBorderIcon />}>
                     Save
                   </Button>
@@ -244,17 +217,17 @@ export default function JobDetail() {
                 <Grid item md={4}>
                   <Box>
                     <img
-                      src="https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg"
-                      alt="Company Logo"
+                      src='https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg'
+                      alt='Company Logo'
                       style={{ width: "100%", height: "auto" }}
                     />
                   </Box>
                 </Grid>
-                <Grid item md={8} display="flex">
+                <Grid item md={8} display='flex'>
                   <Typography
-                    title="CompanyCompanyCompanyCompanyCompanyCompany
-                            CompanyCompanyCompanyCompanyCompanyCompany"
-                    variant="h6"
+                    title='CompanyCompanyCompanyCompanyCompanyCompany
+                            CompanyCompanyCompanyCompanyCompanyCompany'
+                    variant='h6'
                     style={{
                       whiteSpace: "nowrap",
                       overflow: "hidden",
@@ -268,31 +241,31 @@ export default function JobDetail() {
                 <Grid item md={12}>
                   <CardContent>
                     <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="flex-start">
-                      <Box display="flex" alignItems="center" mb={2}>
+                      display='flex'
+                      flexDirection='column'
+                      alignItems='flex-start'>
+                      <Box display='flex' alignItems='center' mb={2}>
                         <IconButton>
                           <ScaleIcon />
                         </IconButton>
                         <Box ml={1}>
-                          <Typography variant="body1">Scale</Typography>
+                          <Typography variant='body1'>Scale</Typography>
                           <Typography
-                            variant="body2"
+                            variant='body2'
                             sx={{ fontWeight: "bold" }}>
                             100 - 200
                           </Typography>
                         </Box>
                       </Box>
-                      <Box display="flex" alignItems="center">
+                      <Box display='flex' alignItems='center'>
                         <IconButton>
                           <LocationSearchingIcon />
                         </IconButton>
                         <Box ml={1}>
-                          <Typography variant="body1">Location:</Typography>
+                          <Typography variant='body1'>Location:</Typography>
                           <Typography
-                            title="Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh"
-                            variant="body2"
+                            title='Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh'
+                            variant='body2'
                             style={{
                               fontWeight: "bold",
                               whiteSpace: "nowrap",
@@ -322,51 +295,51 @@ export default function JobDetail() {
             <Box sx={{ width: "100%" }}>
               <Card sx={{ width: "100%", p: 3, borderTop: "1px solid gray" }}>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     Job description
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     {jobDetail.description.JobDescription}
                     <br />
                   </Typography>
 
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     Candidate Requirements
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     {jobDetail.description.CandidateRequirements}
                   </Typography>
 
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     Benefit
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     {jobDetail.description.Benefit}
                   </Typography>
 
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     Location working
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     - Hà Nội: PHÒNG KHÁM ĐA KHOA MIRAI: Tầng 2, Tòa 901B, Chung
                     cư Starlake, Xuân Tảo, Bắc Từ Liêm
                     <br />
                   </Typography>
 
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     Working time
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     - Thứ 2 - Thứ 7 (từ 08:00 đến 17:00)
                     <br />
                     - Nghỉ 2 thứ 7 trong tháng
                     <br />
                   </Typography>
 
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant='h6' gutterBottom>
                     How to apply
                   </Typography>
-                  <Typography variant="body2" component="div" gutterBottom>
+                  <Typography variant='body2' component='div' gutterBottom>
                     - Ứng viên nộp hồ sơ trực tuyến bằng cách bấm Ứng tuyển ngay
                     dưới đây.
                     <br />
@@ -374,28 +347,27 @@ export default function JobDetail() {
                     <br />
                   </Typography>
 
-                  <Grid container justifyContent="left">
-                  {isApplied ? (
+                  <Grid container justifyContent='left'>
+                    {isApplied ? (
+                      <Button
+                        sx={{ mt: 2 }}
+                        color='primary'
+                        variant='contained'
+                        disabled>
+                        Applied
+                      </Button>
+                    ) : (
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        sx={{ mt: 2 }}
+                        onClick={handleApply}>
+                        Apply now
+                      </Button>
+                    )}
                     <Button
-                      sx={{mt: 2 }}
-                      color="primary"
-                      variant="contained"
-                      disabled
-                    >
-                      Applied
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{ mt: 2 }}
-                      onClick={handleApply}>
-                      Apply now
-                    </Button>
-                  )}
-                    <Button
-                      variant="contained"
-                      color="primary"
+                      variant='contained'
+                      color='primary'
                       sx={{ mt: 2, ml: 3 }}>
                       <FavoriteIcon />
                       Save
@@ -410,9 +382,9 @@ export default function JobDetail() {
             <Box sx={{ width: "100%", mt: 5, ml: 6 }}>
               <Card sx={{ p: 3, borderTop: "1px solid gray" }}>
                 <Grid container spacing={2}>
-                  <Grid item md={12} display="flex">
+                  <Grid item md={12} display='flex'>
                     <Typography
-                      variant="h6"
+                      variant='h6'
                       style={{
                         whiteSpace: "nowrap",
                         overflow: "hidden",
@@ -425,33 +397,33 @@ export default function JobDetail() {
                   <Grid item md={12}>
                     <CardContent>
                       <Box
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start">
-                        <Box display="flex" alignItems="center" mb={2}>
+                        display='flex'
+                        flexDirection='column'
+                        alignItems='flex-start'>
+                        <Box display='flex' alignItems='center' mb={2}>
                           <IconButton>
                             <ScaleIcon />
                           </IconButton>
                           <Box ml={1}>
-                            <Typography variant="body1">
+                            <Typography variant='body1'>
                               Job position
                             </Typography>
                             <Typography
-                              variant="body2"
+                              variant='body2'
                               sx={{ fontWeight: "bold" }}>
                               Job position
                             </Typography>
                           </Box>
                         </Box>
-                        <Box display="flex" alignItems="center" mb={2}>
+                        <Box display='flex' alignItems='center' mb={2}>
                           <IconButton>
                             <LocationSearchingIcon />
                           </IconButton>
                           <Box ml={1}>
-                            <Typography variant="body1">Location</Typography>
+                            <Typography variant='body1'>Location</Typography>
                             <Typography
-                              title="Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh"
-                              variant="body2"
+                              title='Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh'
+                              variant='body2'
                               style={{
                                 fontWeight: "bold",
                                 whiteSpace: "nowrap",
@@ -465,14 +437,14 @@ export default function JobDetail() {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box display="flex" alignItems="center" mb={2}>
+                        <Box display='flex' alignItems='center' mb={2}>
                           <IconButton>
                             <LocationSearchingIcon />
                           </IconButton>
                           <Box ml={1}>
-                            <Typography variant="body1">Exp</Typography>
+                            <Typography variant='body1'>Exp</Typography>
                             <Typography
-                              variant="body2"
+                              variant='body2'
                               style={{
                                 fontWeight: "bold",
                                 whiteSpace: "nowrap",
@@ -483,16 +455,16 @@ export default function JobDetail() {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box display="flex" alignItems="center" mb={2}>
+                        <Box display='flex' alignItems='center' mb={2}>
                           <IconButton>
                             <LocationSearchingIcon />
                           </IconButton>
                           <Box ml={1}>
-                            <Typography variant="body1">
+                            <Typography variant='body1'>
                               Amount position
                             </Typography>
                             <Typography
-                              variant="body2"
+                              variant='body2'
                               style={{
                                 fontWeight: "bold",
                                 whiteSpace: "nowrap",
@@ -503,14 +475,14 @@ export default function JobDetail() {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box display="flex" alignItems="center">
+                        <Box display='flex' alignItems='center'>
                           <IconButton>
                             <LocationSearchingIcon />
                           </IconButton>
                           <Box ml={1}>
-                            <Typography variant="body1">Gender</Typography>
+                            <Typography variant='body1'>Gender</Typography>
                             <Typography
-                              variant="body2"
+                              variant='body2'
                               style={{
                                 fontWeight: "bold",
                                 whiteSpace: "nowrap",
@@ -528,9 +500,13 @@ export default function JobDetail() {
               </Card>
             </Box>
           </Grid>
-        </Grid> 
+        </Grid>
       </Grid>
-      <JobSavedChild open={openDialog} handleClose={handleCloseDialog} setIsApplied={setIsApplied}/>
+      <JobSavedChild
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        setIsApplied={setIsApplied}
+      />
     </Container>
   );
 }

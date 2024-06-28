@@ -9,7 +9,7 @@ import { UploadFile } from "@mui/icons-material";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { RequestPost } from "../../util/request";
-import { APIAPPLY } from "../../util/apiEndpoint";
+import { APIAPPLY, APIUSER } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import { useParams } from "react-router-dom";
 
@@ -41,9 +41,11 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
         });
         // Gửi mail tự động đến Recruiter
         console.log(response);
-        
         setApplied(true); // Đã áp dụng thành công
         setApplied(setIsApplied); // Đã áp dụng thành công
+
+        await sendmail(applicantId, jobId);
+
       } catch (error) {
         console.error("Error applying for job:", error);
         // Xử lý lỗi khi áp dụng công việc
@@ -54,26 +56,44 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
     handleClose();
   };
 
+  const sendmail = async (applicantId, jobId) => {
+    //sendmail to recruiter
+    try {
+      const response = await RequestPost(`${APIUSER}/sendmailJob`, {
+        applicantId: userLogin.user._id,
+        jobId: jobId,
+      });
+      if (response) {
+        console.log("Cv: ", response.cv);
+        console.log("Job: ", response.job);
+        console.log("Email of Recruiter: ", response.recruiterEmail);
+        console.log(response.message);
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
   return (
     <React.Fragment>
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
         sx={{ textAlign: "center" }}>
-        <DialogTitle id="alert-dialog-title" variant="h3">
+        <DialogTitle id='alert-dialog-title' variant='h3'>
           {"Form apply"}
         </DialogTitle>
         <DialogContent>
           <Paper elevation={3}>
             <Box sx={{ p: 4 }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant='h6' gutterBottom>
                 Title job
               </Typography>
               <Box sx={{ my: 2 }}>
                 <Paper elevation={0} sx={{ p: 2 }}>
-                  <Grid container spacing={2} alignItems="center">
+                  <Grid container spacing={2} alignItems='center'>
                     <Grid item xs={12} sm={12}>
                       <Typography>
                         Format support .doc, .docx, pdf size below 5MB
@@ -81,11 +101,11 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                       <Button
-                        variant="contained"
-                        component="label"
+                        variant='contained'
+                        component='label'
                         startIcon={<UploadFile />}>
                         Choose CV
-                        <input type="file" hidden onChange={handleFileChange} />
+                        <input type='file' hidden onChange={handleFileChange} />
                       </Button>
                     </Grid>
                   </Grid>
@@ -105,12 +125,12 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                     </Typography>
                   </Box>
                   <TextareaAutosize
-                    id="introduction"
-                    aria-label="Introduction"
+                    id='introduction'
+                    aria-label='Introduction'
                     value={textDes}
                     onChange={handleDes}
                     minRows={7}
-                    placeholder="Write your introduction here..."
+                    placeholder='Write your introduction here...'
                     style={{ width: "100%", resize: "vertical" }}
                   />
                 </Box>
@@ -122,12 +142,12 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
         <DialogActions>
           <Box sx={{ width: "100%", textAlign: "center" }}>
             {applied ? (
-              <Typography variant="body1" color="secondary">
+              <Typography variant='body1' color='secondary'>
                 You have already applied for this job. Wait recruiter check
               </Typography>
             ) : (
               <Button
-                variant="contained"
+                variant='contained'
                 onClick={handleApply}
                 sx={{ width: "90%" }}>
                 Apply

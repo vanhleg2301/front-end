@@ -22,7 +22,7 @@ export default function publicRoutes() {
       ),
       children: [
         {
-          element: <CheckRole23 roles={[2, 3]} />,
+          element: <CheckRole23 roles={[2]} />,
           children: [
             { index: true, element: <Home /> },
             {
