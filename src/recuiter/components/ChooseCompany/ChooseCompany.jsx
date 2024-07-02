@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const ChooseCompany = () => {
   const navigate = useNavigate();
-  const { recuiter } = useParams();
+  const { recuiters } = useParams();
 
   const [companies, setCompanies] = useState("");
   const [company, setCompany] = useState("");
@@ -18,8 +18,9 @@ const ChooseCompany = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
-  const [companyStatus, setCompanyStatus] = useState(1);
-  const [NumberOfEmployees, setNumberOfEmployees] = useState("");
+  const [companyStatus, setCompanyStatus] = useState("Bronze");
+  const [numberOfEmployees, setNumberOfEmployees] = useState("");
+
   useEffect(() => {
     fetch("http://localhost:9999/company")
       .then((resp) => resp.json())
@@ -33,16 +34,15 @@ const ChooseCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const numberOfEmployees = parseInt(NumberOfEmployees);
+    const NumberOfEmployees = parseInt(numberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
-    const recuiters = [];
     const newCompany = {
       companyName,
       email,
       phoneNumber,
       location,
       taxNumber,
-      numberOfEmployees,
+      NumberOfEmployees,
       companyStatus,
       recuiters,
     };
@@ -72,7 +72,7 @@ const ChooseCompany = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item xs={5.5} className="part">
+        <Grid item xs={12} className="part" textAlign={'center'}>
           Existed Company
           <Grid container>
             <Grid item xs={3} className="padding-top-20px">
@@ -91,7 +91,7 @@ const ChooseCompany = () => {
 
         <Grid item xs={1}></Grid>
 
-        <Grid item xs={5.5} className="part">
+        <Grid item xs={12} className="part" textAlign={'center'}>
           New Company
           <Grid container>
             <Grid item xs={3} className="padding-top-20px">
