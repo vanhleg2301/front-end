@@ -3,8 +3,10 @@ import { Box } from "@mui/material";
 import Peer from "peerjs";
 import { io } from "socket.io-client";
 import { AuthContext } from "../../../context/AuthProvider";
+import { useParams } from "react-router-dom";
 
 export default function Test({ playVideo, muteMic, screenShare }) {
+  const { roomId } = useParams();
   const { userLogin } = useContext(AuthContext);
   const [userDetail] = useState({
     id: userLogin.user._id,
@@ -19,8 +21,8 @@ export default function Test({ playVideo, muteMic, screenShare }) {
   const [remoteStream, setRemoteStream] = useState(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isMicMuted, setIsMicMuted] = useState(false);
-  const [error, setError] = useState(null); // State for handling errors
-  const [originalVideoTrack, setOriginalVideoTrack] = useState(null); // Add this at the beginning of your component
+  const [error, setError] = useState(null);
+  const [originalVideoTrack, setOriginalVideoTrack] = useState(null);
 
   useEffect(() => {
     let stream = null;
@@ -37,14 +39,14 @@ export default function Test({ playVideo, muteMic, screenShare }) {
             width: { min: 640, ideal: 1280, max: 1920 },
             height: { min: 480, ideal: 720, max: 1080 },
             frameRate: { ideal: 30, max: 60 },
-            facingMode: "user", // Use "environment" for the back camera
+            facingMode: "user",
           },
         });
         setMediaStream(stream);
         refVideo.current.srcObject = stream;
       } catch (err) {
         console.error("Error accessing media devices.", err);
-        setError(err); // Set error state for UI feedback
+        setError(err);
       }
     };
 
@@ -57,38 +59,40 @@ export default function Test({ playVideo, muteMic, screenShare }) {
     };
   }, []);
 
-  // Mic
+  useEffect(() => {
+    return () => {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [mediaStream]);
+
   useEffect(() => {
     if (mediaStream) {
       const audioTracks = mediaStream.getAudioTracks();
       audioTracks.forEach((track) => {
         track.enabled = !muteMic;
         setIsMicMuted(muteMic);
-        // console.log("muteMic", muteMic);
       });
     }
   }, [muteMic, mediaStream]);
 
-  // Camera
   useEffect(() => {
     if (mediaStream) {
       const videoTracks = mediaStream.getVideoTracks();
       videoTracks.forEach((track) => {
         track.enabled = playVideo;
         setIsVideoPlaying(playVideo);
-        // console.log("playVideo", playVideo);
       });
     }
   }, [playVideo, mediaStream]);
 
-  // Screen share
   useEffect(() => {
     if (refScreenShareVideo.current && mediaStreamShared) {
       refScreenShareVideo.current.srcObject = mediaStreamShared;
     }
   }, [mediaStreamShared]);
 
-  // Manage screen sharing
   useEffect(() => {
     if (screenShare) {
       shareScreen();
@@ -97,7 +101,6 @@ export default function Test({ playVideo, muteMic, screenShare }) {
     }
   }, [screenShare]);
 
-  // ShareScreen function
   const shareScreen = async () => {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
@@ -106,47 +109,52 @@ export default function Test({ playVideo, muteMic, screenShare }) {
       setMediaStreamShared(screenStream);
       refScreenShareVideo.current.srcObject = screenStream;
       const screenStreamTrack = screenStream.getVideoTracks()[0];
-      setOriginalVideoTrack(mediaStreamShared.getVideoTracks()[0]);
-      mediaStreamShared.removeTrack(mediaStreamShared.getVideoTracks()[0]);
-      mediaStreamShared.addTrack(screenStreamTrack);
+      setOriginalVideoTrack(mediaStream.getVideoTracks()[0]);
+      mediaStream.removeTrack(mediaStream.getVideoTracks()[0]);
+      mediaStream.addTrack(screenStreamTrack);
     } catch (err) {
       console.error("Error sharing screen", err);
     }
   };
-  // Stop screen sharing
+
   const stopScreenShare = () => {
     if (originalVideoTrack) {
-      // Remove the screen stream track
-      const screenStreamTrack = mediaStreamShared.getVideoTracks()[0];
-      mediaStreamShared.removeTrack(screenStreamTrack);
-      // Add back the original video track
-      mediaStreamShared.addTrack(originalVideoTrack);
-      setMediaStreamShared(mediaStreamShared);
+      const screenStreamTrack = mediaStream.getVideoTracks()[0];
+      mediaStream.removeTrack(screenStreamTrack);
+      mediaStream.addTrack(originalVideoTrack);
+      setMediaStreamShared(null);
       setOriginalVideoTrack(null);
     }
   };
 
-  // peerJs
+  const socket = io("/", { transports: ["websocket"] });
+
+  useEffect(() => {
+    socket.emit("join-room", roomId, userDetail.id);
+    socket.on("user-connected", (userId) => {
+      handleCallPeer(userId);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [roomId, userDetail.id]);
+
   useEffect(() => {
     const initializePeer = () => {
-      // const peerInstance = new Peer({
-      //   initializePeer: location.hash === "#init",
-      //   trickle: false,
-      //   stream: mediaStream,
-      // });
       const peerInstance = new Peer(userDetail.id, {
-        host: "/",
-        port: 9000,
+        host: "localhost",
+        port: 9999,
+        path: "/peerjs",
       });
-      console.log("peerInstance", peerInstance);
 
-      // peerInstance.on("signal", (data) => {
-      //   console.log("SIGNAL", data);
-      // });
+      peerInstance.on("signal", (data) => {
+        console.log("SIGNAL", data);
+      });
 
       peerInstance.on("open", (id) => {
         console.log("Peer connected with ID:", id);
-        socket.emit("join-room", "room-id", id);
+        socket.emit("join-room", roomId, id);
       });
 
       peerInstance.on("call", (call) => {
@@ -158,17 +166,16 @@ export default function Test({ playVideo, muteMic, screenShare }) {
         }
       });
 
-      // Handle data connection
       peerInstance.on("connection", (dataConnection) => {
         dataConnection.on("data", (data) => {
           console.log("Received data:", data);
         });
 
-        // Send data
         dataConnection.send("Hello!");
       });
 
       setPeer(peerInstance);
+      console.log("peerInstance", peerInstance);
     };
 
     if (!peer && mediaStream) {
@@ -180,14 +187,15 @@ export default function Test({ playVideo, muteMic, screenShare }) {
         peer.destroy();
       }
     };
-  }, [mediaStream, peer, userDetail.id]);
+  }, [mediaStream, peer, userDetail.id, roomId]);
 
   const handleCallPeer = (peerId) => {
+    console.log("peerId", peerId);
     if (peer && mediaStream) {
       const call = peer.call(peerId, mediaStream);
       if (!call) {
-        console.log("call fail: ", peer.call());
-        console.log("call fail: ", call);
+        console.log("call fail: peer.call()", peer.call());
+        console.log("call fail: call", call);
         return;
       }
       call.on("stream", (remoteStream) => {
@@ -197,19 +205,6 @@ export default function Test({ playVideo, muteMic, screenShare }) {
       console.error("Cannot call peer. Peer or media stream is not available.");
     }
   };
-
-  useEffect(() => {
-    const socket = io("/"); // Replace with your server URL
-    socket.emit("join-room", "room-id", userDetail.id); // Replace with your room ID
-
-    socket.on("user-connected", (userId) => {
-      handleCallPeer(userId);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [userDetail.id]);
 
   return (
     <Box
@@ -237,19 +232,12 @@ export default function Test({ playVideo, muteMic, screenShare }) {
           playsInline
         />
       )}
-      <button onClick={() => handleCallPeer("peerID-connect")}>
-        Call Peer
-      </button>
+      <button onClick={() => handleCallPeer("roomId")}>Call Peer</button>
 
       {screenShare && mediaStreamShared && (
         <video
           muted={isMicMuted}
-          // ref={refScreenShareVideo}
-          ref={(ref) => {
-            if (ref) {
-              ref.srcObject = mediaStreamShared;
-            }
-          }}
+          ref={refScreenShareVideo}
           autoPlay
           playsInline
         />

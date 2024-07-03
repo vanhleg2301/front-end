@@ -69,14 +69,14 @@ export default function FooterMeet({
     <>
       <FooterContainer>
         <LeftItem>
-          <Tooltip title="Meeting details">
+          <Tooltip title='Meeting details'>
             <IconButton>
               <AngleUpIcon />
             </IconButton>
           </Tooltip>
         </LeftItem>
         <CenterItem>
-          <Tooltip title="Toggle Audio" sx={{ mr: 1 }}>
+          <Tooltip title='Toggle Audio' sx={{ mr: 1 }}>
             <IconButton
               onClick={toggleAudio}
               style={
@@ -85,7 +85,7 @@ export default function FooterMeet({
               {isAudio ? <MicIcon /> : <MicOffIcon />}
             </IconButton>
           </Tooltip>
-          <Tooltip title="Video">
+          <Tooltip title='Video'>
             <IconButton
               onClick={toggleVideo}
               style={
@@ -94,12 +94,12 @@ export default function FooterMeet({
               {isVideo ? <VideoIcon /> : <VideocamOffIcon />}
             </IconButton>
           </Tooltip>
-          <Tooltip title="Caption">
+          <Tooltip title='Caption'>
             <IconButton onClick={disconnectCall}>
               <ClosedCaptioningIcon style={{ color: "#d93025" }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Presentation">
+          <Tooltip title='Presentation'>
             <IconButton onClick={togglePresenting}>
               {isPresenting ? (
                 <DesktopIcon style={{ color: "#d93025" }} />
@@ -108,21 +108,21 @@ export default function FooterMeet({
               )}
             </IconButton>
           </Tooltip>
-          <Tooltip title="Disconnect Call">
+          <Tooltip title='Disconnect Call'>
             <IconButton onClick={disconnectCall}>
               <PhoneIcon style={{ color: "#d93025" }} />
             </IconButton>
           </Tooltip>
         </CenterItem>
         <RightItem sx={{ pr: 7 }}>
-          <Tooltip title="People" sx={{ pr: 2 }}>
+          <Tooltip title='People' sx={{ pr: 2 }}>
             <IconButton onClick={togglePeople}>
-              <Badge badgeContent={(peopleCount = 4)} color="default">
+              <Badge badgeContent={(peopleCount = 4)} color='default'>
                 <PeopleOutlineIcon style={{ color: "" }} />
               </Badge>
             </IconButton>
           </Tooltip>
-          <Tooltip title="Messenger">
+          <Tooltip title='Messenger'>
             <IconButton onClick={toggleMessenger}>
               <MessageIcon style={{ color: "" }} />
             </IconButton>

@@ -134,7 +134,10 @@ export default function Act({ onSearch }) {
   };
 
   // Lọc location dựa trên giá trị tìm kiếm
-  const filteredLocations = locations.filter((location) =>
+  var data = locations.filter(function (element) {
+    return element !== undefined;
+  });
+  const filteredLocations = data.filter((location) =>
     location.toLowerCase().includes(locationSearch.toLowerCase())
   );
 
@@ -178,18 +181,18 @@ export default function Act({ onSearch }) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    variant="outlined"
+                    variant='outlined'
                     value={searchValue}
                     onChange={onChange}
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <SearchIcon />
                         </InputAdornment>
                       ),
                     }}
-                    placeholder="Recruitment position"
+                    placeholder='Recruitment position'
                     fullWidth
                   />
                 )}
@@ -198,14 +201,14 @@ export default function Act({ onSearch }) {
           </Grid>
           {/* Location*/}
           <Grid item xs={12} md={3}>
-            <FormControl variant="outlined" fullWidth>
+            <FormControl variant='outlined' fullWidth>
               <Select
                 value={selectedLocation}
                 onChange={handleLocationChange}
                 input={
                   <OutlinedInput
                     startAdornment={
-                      <InputAdornment position="start">
+                      <InputAdornment position='start'>
                         <LocationOnIcon /> Location:
                       </InputAdornment>
                     }
@@ -218,15 +221,15 @@ export default function Act({ onSearch }) {
                     padding: "8px",
                   }}>
                   <TextField
-                    placeholder="Search location"
+                    placeholder='Search location'
                     value={locationSearch}
-                    size="small"
+                    size='small'
                     onChange={handleSearchInLocation}
                     fullWidth
                   />
                 </Box>
 
-                <MenuItem value="" hidden>
+                <MenuItem value='' hidden>
                   ---
                 </MenuItem>
                 {filteredLocations.map((item, index) => (
@@ -239,20 +242,20 @@ export default function Act({ onSearch }) {
           </Grid>
           {/* EXP*/}
           <Grid item xs={12} md={3}>
-            <FormControl variant="outlined" fullWidth>
+            <FormControl variant='outlined' fullWidth>
               <Select
                 value={selectedExp}
                 onChange={handleExp}
                 input={
                   <OutlinedInput
                     startAdornment={
-                      <InputAdornment position="start">
+                      <InputAdornment position='start'>
                         <HourglassEmptyIcon /> Exp:
                       </InputAdornment>
                     }
                   />
                 }>
-                <MenuItem value="">---</MenuItem>
+                <MenuItem value=''>---</MenuItem>
                 <MenuItem value={0}>Less than 1 year</MenuItem>
                 <MenuItem value={1}>1 year</MenuItem>
                 <MenuItem value={2}>2 year</MenuItem>
@@ -266,14 +269,14 @@ export default function Act({ onSearch }) {
           </Grid>
           {/* Salary*/}
           <Grid item xs={12} md={3}>
-            <FormControl variant="outlined" fullWidth>
+            <FormControl variant='outlined' fullWidth>
               <Select
                 value={selectedValue}
                 onChange={handleChange}
                 input={
                   <OutlinedInput
                     startAdornment={
-                      <InputAdornment position="start">
+                      <InputAdornment position='start'>
                         <AttachMoneyIcon /> Salary:
                       </InputAdornment>
                     }
@@ -287,21 +290,21 @@ export default function Act({ onSearch }) {
                   }}>
                   <TextField
                     error={errorColor}
-                    placeholder="from"
+                    placeholder='from'
                     value={from}
                     onChange={(e) => setFrom(e.target.value)}
-                    size="small"
+                    size='small'
                     sx={{ marginRight: "8px" }}
                   />
                   <TextField
                     error={errorColor}
-                    placeholder="to"
+                    placeholder='to'
                     value={to}
                     onChange={(e) => setTo(e.target.value)}
-                    size="small"
+                    size='small'
                     sx={{ marginRight: "8px" }}
                   />
-                  <IconButton onClick={handleAddRange} color="primary">
+                  <IconButton onClick={handleAddRange} color='primary'>
                     <AttachMoneyIcon />
                   </IconButton>
                 </Box>
@@ -311,10 +314,10 @@ export default function Act({ onSearch }) {
                     {range}
                   </MenuItem>
                 ))}
-                <MenuItem value="" hidden>
+                <MenuItem value='' hidden>
                   ---
                 </MenuItem>
-                <MenuItem value="0 - 0">Deal</MenuItem>
+                <MenuItem value='0 - 0'>Deal</MenuItem>
                 {/* 
                 <MenuItem value="20-25">20 - 25</MenuItem>
                 <MenuItem value="25-30">25 - 30</MenuItem>
@@ -325,9 +328,9 @@ export default function Act({ onSearch }) {
           {/* Find*/}
           <Grid item xs={12} md={3}>
             <Button
-              type="submit"
-              variant="contained"
-              color="info"
+              type='submit'
+              variant='contained'
+              color='info'
               fullWidth
               sx={{ height: "54.55px" }}>
               Find

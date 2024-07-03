@@ -1,5 +1,5 @@
 import React from "react";
-import "../Header.css";
+import "../header.css";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
@@ -28,8 +28,7 @@ export default function Applicant() {
         top: "100%",
         left: "50%",
         transform: "translateX(-85%)",
-      }}
-    >
+      }}>
       <Link to="/profile/manager" className="dropdown-item">
         <IconButton disabled>
           <ContentPasteIcon />

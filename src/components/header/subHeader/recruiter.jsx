@@ -1,5 +1,5 @@
 import React from "react";
-import "../Header.css";
+import "../header.css";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";

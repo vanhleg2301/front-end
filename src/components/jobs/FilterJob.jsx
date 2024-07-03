@@ -38,6 +38,7 @@ export default function FilterJob() {
     const locations = jobs.map((job) => job.location.comune);
     return [...new Set(locations)];
   };
+
   const uniqueLocations = getUniqueLocations();
 
   const getPaginatedLocation = () => {
@@ -83,7 +84,7 @@ export default function FilterJob() {
         width: { sm: "left", md: "left" },
         textAlign: { sm: "left", md: "left" },
       }}>
-      <Typography component="h2" variant="h4" color="text.primary">
+      <Typography component='h2' variant='h4' color='text.primary'>
         Jobs List
       </Typography>
       <Box
@@ -95,13 +96,13 @@ export default function FilterJob() {
         <Box sx={{ display: "flex", width: "20%", mt: 2, mb: 2 }}>
           <FormControl sx={{ m: 1, minWidth: "100%" }}>
             <Select
-              labelId="location-select-label"
-              id="location-select"
+              labelId='location-select-label'
+              id='location-select'
               value={filter === "" ? "" : filter}
               displayEmpty
               autoWidth
               startAdornment={
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <FilterListIcon /> Filter by:
                 </InputAdornment>
               }
@@ -128,7 +129,7 @@ export default function FilterJob() {
                 </IconButton>
                 {getPaginatedLocation().map((comune, index) => (
                   <Button
-                    color="error"
+                    color='error'
                     key={index}
                     sx={{
                       m: 2,

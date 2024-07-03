@@ -3,7 +3,6 @@ import { Box, Paper } from "@mui/material";
 import FooterMeet from "./MeetUI/FooterMeet";
 import MeetMain from "./MeetUI/MeetMain";
 import MessengerAndPeople from "./MeetUI/MessengerAndPeople";
-import Test from "./MeetUI/Test";
 
 export default function MeetingCall() {
   const [isMessengerVisible, setIsMessengerVisible] = useState(false);
@@ -67,12 +66,12 @@ export default function MeetingCall() {
             boxShadow: 3,
             borderRadius: 3,
           }}>
-          {/*<MeetMain />*/}
+          {/*<MeetMain />
           <Test
             playVideo={isVideo}
             muteMic={!isAudio}
             screenShare={isPresenting}
-          />
+          />*/}
         </Paper>
       </Box>
 
