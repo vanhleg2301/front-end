@@ -146,7 +146,7 @@ const ChooseCompany = () => {
         </Grid>
 
         <Grid item xs={5} className="padding-bot-10px padding-top-20px">
-          <Typography>Format support: .doc,.docx,.pdf</Typography>
+          <Typography>Format support: .pdf</Typography>
           <Button
             sx={{
               whiteSpace: "nowrap",
@@ -160,7 +160,7 @@ const ChooseCompany = () => {
               name="businessLicense"
               type="file"
               hidden
-              accept=".doc,.docx,.pdf"
+              accept=".pdf"
               onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
               disabled={Boolean(selectedCompany)}
             />

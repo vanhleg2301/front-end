@@ -132,7 +132,7 @@ export default function UploadCv() {
                           fileName={selectedFile}
                           name="cvFile"
                           type="file"
-                          accept=".doc,.docx,.pdf"
+                          accept=".pdf"
                           hidden
                           onChange={handleFileChange}
                         />

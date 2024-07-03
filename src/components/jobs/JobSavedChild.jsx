@@ -110,7 +110,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose your cv
-                        <input type='file' accept=".doc,.docx,.pdf" hidden onChange={handleYourFile} />
+                        <input type='file' accept=".pdf" hidden onChange={handleYourFile} />
                       </Button>
                     </Grid>
                     <Grid item xs={6} sm={6}>
@@ -119,7 +119,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose CV
-                        <input type='file' accept=".doc,.docx,.pdf" hidden onChange={handleFileChange} />
+                        <input type='file' accept=".pdf" hidden onChange={handleFileChange} />
                       </Button>
                     </Grid>
                   </Grid>

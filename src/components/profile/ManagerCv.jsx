@@ -59,42 +59,49 @@ export default function ManagerCv() {
   };
 
   const getFileExtension = (fileURL) => {
-    return fileURL.split(".").pop().toLowerCase();
+    // Lấy phần cuối cùng của URL bằng cách tách theo dấu /
+    const fileNameWithParams = fileURL.split("/").pop();
+
+    // Lấy tên file từ phần cuối cùng của URL bằng cách tách theo dấu .
+    const fileName = fileNameWithParams.split(".").slice(0, -1).join(".");
+
+    return fileName;
   };
 
   const handleOpenPdf = (fileURL) => {
-    nagivation(`/profile/manager/${encodeURIComponent(fileURL)}`);
+    console.log("decodedURL:", fileURL);
+    window.open(fileURL, '_blank');
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth='md'>
       <Box mt={4}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant='h3' gutterBottom>
           Manage CVs
         </Typography>
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
           mb={2}>
-          <Typography variant="h5">
+          <Typography variant='h5'>
             <Button
               component={Link}
               to={`/profile/upload`}
-              variant="outlined"
+              variant='outlined'
               style={{ textDecoration: "none", color: "black" }}>
               Upload more CVs
             </Button>
           </Typography>
           {cvList.length === 0 && (
-            <Typography variant="body1">No CVs uploaded yet.</Typography>
+            <Typography variant='body1'>No CVs uploaded yet.</Typography>
           )}
         </Box>
         <Grid container spacing={2}>
           {cvList.map((cv) => (
             <Grid item key={cv._id} xs={12} sm={6} md={4}>
               <Card
-                variant="outlined"
+                variant='outlined'
                 sx={{
                   position: "relative", // Ensure relative positioning
                   height: 200,
@@ -122,9 +129,14 @@ export default function ManagerCv() {
                     padding: 1, // Adjust padding as needed
                   }}>
                   <Box
-                    sx={{ position: "absolute", right: 1, top: 0, m: 2 ,cursor:"pointer"}}
+                    sx={{
+                      position: "absolute",
+                      right: 1,
+                      top: 0,
+                      m: 2,
+                      cursor: "pointer",
+                    }}
                     onClick={() => handleOpenPdf(cv.fileURL)}>
-                    
                     View cv
                   </Box>
                   <Box
@@ -147,12 +159,12 @@ export default function ManagerCv() {
                         />
                       </Box>
                     )}
-                    <Typography variant="subtitle2" mt={3} ml={2}>
+                    <Typography variant='subtitle2' mt={3} ml={2}>
                       Update: {formatDate(cv.updatedAt)}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                       <Typography
-                        variant="subtitle2"
+                        variant='subtitle2'
                         mt={1}
                         sx={{ position: "absolute", pr: 7 }}>
                         {getFileExtension(cv.fileURL)}

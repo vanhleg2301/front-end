@@ -30,8 +30,10 @@ export default function JobApplied() {
   }, [userLogin.user._id]);
 
   const handleOpenPdf = (fileURL) => {
-    nagivation(`/profile/manager/${encodeURIComponent(fileURL)}`);
+    console.log("decodedURL:", fileURL);
+    window.open(fileURL, '_blank');
   };
+  
 
   return (
     <Container maxWidth={"lg"}>
@@ -78,6 +80,9 @@ export default function JobApplied() {
                     Applied on: {new Date(job.createdAt).toLocaleDateString()} -{" "}
                     {new Date(job.createdAt).toLocaleTimeString()}
                   </Typography>
+                  <Typography color="textSecondary">
+                    {job.textDes}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item md={2}>
@@ -94,7 +99,7 @@ export default function JobApplied() {
                     <Button
                       variant="contained"
                       startIcon={<Description />}
-                      onClick={() => handleOpenPdf(cv.fileURL)}>
+                      onClick={() => handleOpenPdf(job.fileURL)}>
                       View CV
                     </Button>
                   </IconButton>

@@ -26,7 +26,7 @@ export default function LoggedRoute() {
           { index: true, element: <Info /> },
           { path: "manager", element: <ManagerCv /> },
           { path: "upload", element: <UploadCv /> },
-          { path: "manager/:fileUrl", element: <CvDetail /> },
+          // { path: "manager/:fileUrl", element: <CvDetail /> },
         ],
       },
       { path: "/jobs/applied", element: <JobApplied /> },

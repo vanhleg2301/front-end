@@ -17,23 +17,22 @@ const getFileType = (url) => {
 
 export default function CvDetail() {
   const { fileUrl } = useParams();
-  const decodedFileUrl = decodeURIComponent(fileUrl);
 
-  const fileType = getFileType(decodedFileUrl);
+  const fileType = getFileType(fileUrl);
 
   return (
     <div style={{ height: "100vh" }}>
       {fileType === 'pdf' && (
         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js`}>
-          <Viewer fileUrl={decodedFileUrl || TEST_PDF_URL} />
+          <Viewer fileUrl={fileUrl || TEST_PDF_URL} />
         </Worker>
       )}
       {fileType === 'image' && (
-        <img src={decodedFileUrl} alt="Document" style={{ width: '100%', height: 'auto' }} />
+        <img src={fileUrl} alt="Document" style={{ width: '100%', height: 'auto' }} />
       )}
       {fileType === 'docx' && (
         <DocViewer
-          documents={[{ uri: decodedFileUrl || TEST_DOCX_URL }]}
+          documents={[{ uri: fileUrl || TEST_DOCX_URL }]}
           pluginRenderers={DocViewerRenderers}
           style={{ width: '100%', height: '100%' }}
         />
