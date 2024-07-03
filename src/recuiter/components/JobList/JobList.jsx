@@ -22,7 +22,6 @@ const JobList = () => {
   const recruiterID = userLogin.user._id;
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
   useEffect(() => {
 
     const fetchJobs = async () => {
@@ -106,7 +105,7 @@ const JobList = () => {
                 <TableCell>{j.minSalary}</TableCell>
                 <TableCell>{j.maxSalary}</TableCell>
                 <TableCell>{formatDate(j.deadline)}</TableCell>
-                <TableCell>{j.cvApplied}</TableCell>
+                <TableCell>{2}</TableCell>
                 <TableCell>
                   <Button color="primary" variant="contained">
                     Update

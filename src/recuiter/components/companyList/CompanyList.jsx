@@ -16,7 +16,7 @@ export default function CompanyList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await RequestGet(`${APICOMPANY}/`);
+        const response = await RequestGet(`${APICOMPANY}/com/${recruiterID}`);
         const sortedCompanies = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         if (response) {
           setCompanies(sortedCompanies);
@@ -31,7 +31,7 @@ export default function CompanyList() {
 
   return (
     <Container>
-      <h2>List company of Recuiter</h2>
+      <h2>List company of Recruiter</h2>
       <TableContainer>
         <Table>
           <TableHead>
@@ -58,7 +58,7 @@ export default function CompanyList() {
                 <TableCell>{company.companyName}</TableCell>
                 <TableCell>{company.location}</TableCell>
                 <TableCell>{company.taxNumber}</TableCell>
-                <TableCell>{company.NumberOfEmployees}</TableCell>
+                <TableCell>{parseInt(company.NumberOfEmployees)}</TableCell>
                 <TableCell>{company.businessLicense}</TableCell>
                 <TableCell>
                   <Button color="primary" variant="contained">

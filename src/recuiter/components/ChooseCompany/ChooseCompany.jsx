@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Autocomplete,
   Button,
@@ -11,8 +11,10 @@ import "./ChooseCompany.css";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import { UploadFile } from "@mui/icons-material";
+import { AuthContext } from "../../../context/AuthProvider";
 
 const ChooseCompany = () => {
+  const {userLogin} = useContext(AuthContext);
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null); // Tách biến company thành selectedCompany
@@ -70,6 +72,7 @@ const ChooseCompany = () => {
     const numberOfEmployees = parseInt(NumberOfEmployees);
     const location = `${newAddress}, ${newCommune}, ${newDistrict}, ${newProvince}`;
     const formData = new FormData();
+    formData.append("recruiterID", userLogin.user._id);
     formData.append("logo", logoFile); // Thêm file logo vào FormData
     formData.append("businessLicense", businessLicenseFile); // Thêm file businessLicense vào FormData
     formData.append("companyName", selectedCompany?.companyName || companyName); // Thêm tên công ty vào FormData
@@ -125,6 +128,7 @@ const ChooseCompany = () => {
         <Grid item xs={1}></Grid>
         <Grid item xs={5} className="padding-bot-10px padding-top-20px">
           <Typography>Format support: .png,.jpg,.jpeg</Typography>
+          <Typography>Selected file: {logoFile?.name}</Typography>
           <Button
             sx={{
               whiteSpace: "nowrap",
@@ -147,6 +151,7 @@ const ChooseCompany = () => {
 
         <Grid item xs={5} className="padding-bot-10px padding-top-20px">
           <Typography>Format support: .pdf</Typography>
+          <Typography>Selected file: {businessLicenseFile?.name}</Typography>
           <Button
             sx={{
               whiteSpace: "nowrap",
