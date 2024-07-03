@@ -34,16 +34,6 @@ export default function JobDetail() {
 
   const [alertMessage, setAlertMessage] = useState("");
 
-  useEffect(() => {
-    let timer;
-    if (alertMessage) {
-      timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [alertMessage]);
-
   // apply here
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog
 
@@ -59,9 +49,8 @@ export default function JobDetail() {
     const fetchJobDetail = async () => {
       try {
         const response = await RequestGet(`job/${jobId}`);
-
         setJobDetail(response);
-        // console.log(response);
+        
       } catch (error) {
         console.error("Error fetching job detail:", error);
       }
@@ -73,21 +62,31 @@ export default function JobDetail() {
           `${APIAPPLY}/${userLogin.user._id}`
         );
         const applied = appliedJobs.some((job) => job.jobID?._id === jobId);
-        // console.log(appliedJobs.map((job) => job.jobID?.title))
+       
         setIsApplied(applied);
         if (applied) {
           setAlertMessage("You have successfully applied for this job.");
         }
-        // console.log("applied:", applied);
+        
       } catch (error) {
         console.error("Error checking if job is applied:", error);
       }
     };
+
     checkIfApplied();
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
 
-  // Company in jobDetail
+  // alert 
+  useEffect(() => {
+    let timer;
+    if (alertMessage) {
+      timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [alertMessage]);
 
   if (!jobDetail) {
     return (

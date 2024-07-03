@@ -8,7 +8,7 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { RequestPost } from "../../util/request";
+import { RequestPost, RequestPostFile } from "../../util/request";
 import { APIAPPLY, APIUSER } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import { useParams } from "react-router-dom";
@@ -21,6 +21,8 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const [applied, setApplied] = React.useState(false); // State để kiểm tra đã áp dụng công việc hay chưa
   const { userLogin } = React.useContext(AuthContext);
 
+  const handleYourFile = () => {};
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -30,17 +32,16 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const handleDes = async (event) => {
     setTextDes(event.target.value);
   };
-  
-  const formData = { selectedFile, textDes };
-  console.log("formData: ", formData);
 
   const handleApply = async () => {
     const applicantId = userLogin.user._id;
     if (applicantId) {
       try {
-        const response = await RequestPost(`${APIAPPLY}/apply`, {
-          applicantId,
-          jobId,
+        const response = await RequestPostFile(`${APIAPPLY}/apply`, {
+         jobId, 
+         applicantId,
+         textDes,
+         cvFile: selectedFile,
         });
         // Gửi mail tự động đến Recruiter
         console.log(response);
@@ -76,7 +77,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
     }
   };
 
-  const handleYourFile = () => {};
+
 
   return (
     <React.Fragment>
@@ -109,7 +110,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose your cv
-                        <input type='file' hidden onChange={handleYourFile} />
+                        <input type='file' accept=".doc,.docx,.pdf" hidden onChange={handleYourFile} />
                       </Button>
                     </Grid>
                     <Grid item xs={6} sm={6}>
@@ -118,7 +119,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose CV
-                        <input type='file' hidden onChange={handleFileChange} />
+                        <input type='file' accept=".doc,.docx,.pdf" hidden onChange={handleFileChange} />
                       </Button>
                     </Grid>
                   </Grid>
