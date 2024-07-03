@@ -1,0 +1,15 @@
+.bottomContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .iconButton {
+    margin: 0 10px;
+  }
+  
+  .active {
+    color: red; /* Example: you can customize the active state color */
+  }
+  

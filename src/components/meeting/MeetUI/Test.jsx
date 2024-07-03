@@ -1,17 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
-import { Chance } from "chance";
 import Peer from "peerjs";
-import { io } from "socket.io-client";
 import { AuthContext } from "../../../context/AuthProvider";
 
 const chance = new Chance();
 
 export default function Test({ playVideo, muteMic, screenShare }) {
-  const [userDetail] = useState({
-    id: chance.guid(),
-    name: chance.name(),
-  });
+  const [userDetail] = useState({});
 
   const { userLogin } = useContext(AuthContext);
   const refVideo = useRef(null);

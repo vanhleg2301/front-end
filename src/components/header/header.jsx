@@ -210,17 +210,6 @@ function Header() {
                   </Box>
                 )}
               </MenuItem>
-              {/*Faq*/}
-              <MenuItem className="menu-item">
-                <Typography
-                  variant="body2"
-                  color="text.primary"
-                  component={Link}
-                  to="/meeting"
-                  sx={{ textDecoration: "none" }}>
-                  Meeting
-                </Typography>
-              </MenuItem>
             </Box>
           </Box>
           <Box

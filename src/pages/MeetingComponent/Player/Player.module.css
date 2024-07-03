@@ -1,0 +1,32 @@
+.playerContainer {
+  @apply relative overflow-hidden mb-5 h-full;
+  position: absolute;
+}
+
+.active {
+  @apply rounded-lg;
+  width: 50%;
+  align-items: center;
+}
+
+.notActive {
+  @apply rounded-md h-min;
+  right: 20px;
+  top: 20px;
+  width: 200px;
+  box-shadow: 5px 5px -1px rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
+}
+
+.icon {
+  @apply text-white absolute right-2 bottom-2;
+}
+
+.user {
+  @apply text-white;
+}
+
+.notPlaying {
+  @apply flex items-center justify-center;
+}
+

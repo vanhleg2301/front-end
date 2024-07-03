@@ -9,18 +9,30 @@ import CompanyList from "../recuiter/components/companyList/CompanyList";
 import CompanyDetail from "../recuiter/components/companyList/CompanyDetail";
 import JobDetail from "../recuiter/components/JobList/JobDetail";
 import ProfileRecruiter from "../recuiter/components/profile/ProfileRecruiter";
-import MeetingPage from "../pages/MeetingPage";
-import HomeMeeting from "../components/meeting/HomeMeeting";
-import MeetingCall from "../components/meeting/MeetingCall";
+import { SocketProvider } from "../context/socket";
+import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
+import Room from "../pages/MeetingPages/Room";
 
 export default function RecruiterRoutes() {
   return [
     {
-      path: "meeting",
-      element: <MeetingPage />,
-      children: [{ index: true, element: <HomeMeeting /> }],
+      path: "/meet",
+      element: (
+        <SocketProvider>
+          <Outlet />
+        </SocketProvider>
+      ),
+      children: [
+        {
+          index: true,
+          element: <HomeMeeting />,
+        },
+        {
+          path: ":roomId",
+          element: <Room />,
+        },
+      ],
     },
-    { path: "/meeting/:id", element: <MeetingCall /> },
     {
       path: "/recruiter",
       element: (

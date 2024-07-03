@@ -30,6 +30,9 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const handleDes = async (event) => {
     setTextDes(event.target.value);
   };
+  
+  const formData = { selectedFile, textDes };
+  console.log("formData: ", formData);
 
   const handleApply = async () => {
     const applicantId = userLogin.user._id;
@@ -44,8 +47,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
         setApplied(true); // Đã áp dụng thành công
         setApplied(setIsApplied); // Đã áp dụng thành công
 
-        await sendmail(applicantId, jobId);
-
+        // await sendmail(applicantId, jobId);
       } catch (error) {
         console.error("Error applying for job:", error);
         // Xử lý lỗi khi áp dụng công việc
@@ -60,8 +62,8 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
     //sendmail to recruiter
     try {
       const response = await RequestPost(`${APIUSER}/sendmailJob`, {
-        applicantId: userLogin.user._id,
-        jobId: jobId,
+        applicantId,
+        jobId,
       });
       if (response) {
         console.log("Cv: ", response.cv);
@@ -73,6 +75,8 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
       console.error("Error sending email:", error);
     }
   };
+
+  const handleYourFile = () => {};
 
   return (
     <React.Fragment>
@@ -99,7 +103,16 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         Format support .doc, .docx, pdf size below 5MB
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={6} sm={6}>
+                      <Button
+                        variant='contained'
+                        component='label'
+                        startIcon={<UploadFile />}>
+                        Choose your cv
+                        <input type='file' hidden onChange={handleYourFile} />
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
                       <Button
                         variant='contained'
                         component='label'
