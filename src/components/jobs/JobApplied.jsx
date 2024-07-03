@@ -66,7 +66,7 @@ export default function JobApplied() {
                   <Typography
                     variant="h5"
                     component={Link}
-                    to={`/jobs/${job._id}`}
+                    to={`/jobs/${job.jobID._id}`}
                     sx={{ textDecoration: "none", color: "black" }}>
                     {job.jobID?.title || "Title not available"}
                   </Typography>
