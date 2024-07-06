@@ -24,6 +24,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatSalary } from "../../util/formatHelpers";
 import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
+import { useSocket } from "../../context/socket";
 
 export default function JobDetail() {
   // Job detail
@@ -50,7 +51,6 @@ export default function JobDetail() {
       try {
         const response = await RequestGet(`job/${jobId}`);
         setJobDetail(response);
-        
       } catch (error) {
         console.error("Error fetching job detail:", error);
       }
@@ -62,12 +62,11 @@ export default function JobDetail() {
           `${APIAPPLY}/${userLogin.user._id}`
         );
         const applied = appliedJobs.some((job) => job.jobID?._id === jobId);
-       
+
         setIsApplied(applied);
         if (applied) {
           setAlertMessage("You have successfully applied for this job.");
         }
-        
       } catch (error) {
         console.error("Error checking if job is applied:", error);
       }
@@ -77,7 +76,7 @@ export default function JobDetail() {
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
 
-  // alert 
+  // alert
   useEffect(() => {
     let timer;
     if (alertMessage) {
@@ -87,6 +86,7 @@ export default function JobDetail() {
     }
     return () => clearTimeout(timer);
   }, [alertMessage]);
+
 
   if (!jobDetail) {
     return (

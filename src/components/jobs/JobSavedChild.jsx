@@ -12,6 +12,7 @@ import { RequestPost, RequestPostFile } from "../../util/request";
 import { APIAPPLY, APIUSER } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import { useParams } from "react-router-dom";
+import { useSocket } from "../../context/socket";
 
 export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const { jobId } = useParams();
@@ -20,6 +21,23 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
   const [textDes, setTextDes] = React.useState("");
   const [applied, setApplied] = React.useState(false); // State để kiểm tra đã áp dụng công việc hay chưa
   const { userLogin } = React.useContext(AuthContext);
+
+  const socket = useSocket();
+
+  React.useEffect(() => {
+    if (!socket) return;
+
+    const handleNotification = (data) => {
+      console.log(data);
+      alert(data); // Display notification message
+    };
+
+    socket.on("notification", handleNotification);
+
+    return () => {
+      socket.off("notification", handleNotification);
+    };
+  }, [socket]);
 
   const handleYourFile = () => {};
 
@@ -38,15 +56,22 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
     if (applicantId) {
       try {
         const response = await RequestPostFile(`${APIAPPLY}/apply`, {
-         jobId, 
-         applicantId,
-         textDes,
-         cvFile: selectedFile,
+          jobId,
+          applicantId,
+          textDes,
+          cvFile: selectedFile,
         });
+
         // Gửi mail tự động đến Recruiter
         console.log(response);
         setApplied(true); // Đã áp dụng thành công
         setApplied(setIsApplied); // Đã áp dụng thành công
+
+        socket.emit("applied", {
+          userId: userLogin.user._id,
+          jobId,
+          message: `${userLogin.user.email} has applied for the job.`,
+        });
 
         // await sendmail(applicantId, jobId);
       } catch (error) {
@@ -76,8 +101,6 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
       console.error("Error sending email:", error);
     }
   };
-
-
 
   return (
     <React.Fragment>
@@ -110,7 +133,12 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose your cv
-                        <input type='file' accept=".pdf" hidden onChange={handleYourFile} />
+                        <input
+                          type='file'
+                          accept='.pdf'
+                          hidden
+                          onChange={handleYourFile}
+                        />
                       </Button>
                     </Grid>
                     <Grid item xs={6} sm={6}>
@@ -119,7 +147,12 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
                         component='label'
                         startIcon={<UploadFile />}>
                         Choose CV
-                        <input type='file' accept=".pdf" hidden onChange={handleFileChange} />
+                        <input
+                          type='file'
+                          accept='.pdf'
+                          hidden
+                          onChange={handleFileChange}
+                        />
                       </Button>
                     </Grid>
                   </Grid>

@@ -34,7 +34,7 @@ const JobList = () => {
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setJobs(sortedJobs);
-        console.log(sortedJobs);
+        // console.log(sortedJobs);
       } catch (err) {
         console.log(err);
       }

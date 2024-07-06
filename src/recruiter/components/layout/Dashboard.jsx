@@ -136,13 +136,18 @@ export default function Dashboard() {
   const socket = useSocket();
 
   React.useEffect(() => {
-    if(!socket) return;
-    const testClick = () => {
-      console.log("hahahaha");
+    if (!socket) return;
+
+    const handleNotification = (message) => {
+      console.log(message);
+      alert(message);
+      setAnchorEl(null);
     };
-    socket.on("applied", testClick);
+
+    socket.on("notification", handleNotification);
+
     return () => {
-      socket.off("applied", testClick);
+      socket.off("notification", handleNotification);
     };
   }, [socket]);
 
@@ -191,7 +196,7 @@ export default function Dashboard() {
               onMouseLeave={handleMouseLeave}
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-              <MenuItem sx={{ p: 3 }}>
+              <MenuItem sx={{ p: 3 }} onClick={() => socket.emit("applied")}>
                 Notification 4
               </MenuItem>
             </Menu>

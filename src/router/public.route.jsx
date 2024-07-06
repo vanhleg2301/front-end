@@ -10,6 +10,7 @@ import CompanyPage from "../pages/CompanyPage";
 import Home from "../pages/Home";
 import CheckRole23 from "./CheckRole23";
 import React from "react";
+import { SocketProvider } from "../context/socket";
 
 export default function publicRoutes() {
   return [
@@ -38,7 +39,15 @@ export default function publicRoutes() {
               element: <JobPage />,
               children: [
                 { index: true, element: <Job /> },
-                { path: ":jobId", element: <JobDetail /> },
+                {
+                  path: ":jobId",
+                  element: (
+                    <SocketProvider>
+                      <Outlet />
+                    </SocketProvider>
+                  ),
+                  children: [{ index: true, element: <JobDetail /> }],
+                },
                 { path: "table", element: <JobList /> },
               ],
             },
