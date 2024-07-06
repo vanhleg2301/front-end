@@ -16,7 +16,26 @@ import {
 } from "@mui/material";
 import {} from "@mui/icons-material";
 const ReportManager = () => {
-  const [account, setAccount] = useState([]);
+  const [reports, setReports] = useState([]);
+  const handleDeactive = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9999/companies/${id}/deactive`,
+        {
+          method: "PATCH",
+        }
+      );
+
+      if (response.ok) {
+        window.alert("deactive successful");
+      } else {
+        window.alert("Failed to deactive item.");
+      }
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("An error occurred");
+    }
+  };
   return (
     <Container className="text-align-center">
       <Grid container justifyContent={"end"}>
@@ -39,30 +58,34 @@ const ReportManager = () => {
               <TableCell>Description</TableCell>
               <TableCell>Found by</TableCell>
               <TableCell>Found date</TableCell>
-              <TableCell colSpan={2} align="center" className="width30">
-                Action
-              </TableCell>
-              <TableCell></TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell>1234567</TableCell>
-              <TableCell>Company have problem</TableCell>
-              <TableCell>Problem when company X had a fake job</TableCell>
-              <TableCell>Nguyen Anh B</TableCell>
-              <TableCell>6/6/2024</TableCell>
-              <TableCell align="right">
-                <Button variant="contained" color="info">
-                  View Detail
-                </Button>
-              </TableCell>
-              <TableCell align="left">
-                <Button variant="contained" color="error">
-                  Remove
-                </Button>
-              </TableCell>
-            </TableRow>
+            {reports.map((r) => (
+              <TableRow hover>
+                <TableCell>{r._id}</TableCell>
+                <TableCell>{r.title}</TableCell>
+                <TableCell>{r.description}</TableCell>
+                <TableCell>{r.userId}</TableCell>
+                <TableCell>{r.foundDate}</TableCell>
+                <TableCell align="right">
+                  <Button variant="contained" color="info">
+                    View Detail
+                  </Button>
+                </TableCell>
+                <TableCell align="left">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={(e) => handleDeactive(e.target.value)}
+                    value={r._id}
+                  >
+                    Deactive
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

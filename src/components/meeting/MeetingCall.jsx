@@ -61,7 +61,6 @@ export default function MeetingCall() {
         <Paper
           sx={{
             position: "relative",
-            backgroundColor: "#4CAF50",
             height: "82vh",
             width: "90%",
             boxShadow: 3,

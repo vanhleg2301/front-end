@@ -23,10 +23,15 @@ const Player = (props) => {
           height='100%'
         />
       ) : (
-        <AccountCircleIcon />
+        <AccountCircleIcon
+          className={styles.accountIcon}
+          style={{
+            fontSize: "15rem",
+          }}
+        />
       )}
 
-      {!isActive ? muted ? <MicOff /> : <Mic /> : undefined}
+      {!isActive ? muted ? <MicOff /> : <Mic /> : null}
     </div>
   );
 };

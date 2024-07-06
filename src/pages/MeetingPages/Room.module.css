@@ -1,15 +1,65 @@
 .activePlayerContainer {
-    @apply absolute w-9/12 left-0 right-0 mx-auto;
-    top: 20px;
-    bottom: 50px;
-    height: calc(100vh - 20px - 100px);
+  @apply absolute w-9/12 left-0 right-0 mx-auto;
+  top: 20px;
+  bottom: 50px;
+  height: calc(100vh - 20px - 100px);
+  border-radius: 10px;
+}
+
+.inActivePlayerContainer {
+  @apply absolute flex flex-col overflow-y-auto;
+  width: 200px;
+  height: calc(10vh - 20px);
+  right: 20px;
+  top: 20px;
+}
+
+@media (max-width: 1200px) {
+  .activePlayerContainer {
+    height: calc(100vh - 40px);
   }
-  
+
   .inActivePlayerContainer {
-    @apply absolute flex flex-col overflow-y-auto;
-    width: 200px;
-    height: calc(10vh - 20px);
-    right: 20px;
-    top: 20px;
-    
+    width: 180px;
   }
+}
+
+@media (max-width: 992px) {
+  .activePlayerContainer {
+    height: calc(100vh - 60px);
+  }
+
+  .inActivePlayerContainer {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .activePlayerContainer {
+    height: calc(100vh - 80px);
+  }
+
+  .inActivePlayerContainer {
+    width: 140px;
+  }
+}
+
+@media (max-width: 576px) {
+  .activePlayerContainer {
+    height: calc(100vh - 100px);
+  }
+
+  .inActivePlayerContainer {
+    width: 120px;
+  }
+}
+
+@media (max-width: 360px) {
+  .activePlayerContainer {
+    height: calc(100vh - 120px);
+  }
+
+  .inActivePlayerContainer {
+    width: 100px;
+  }
+}

@@ -25,8 +25,8 @@ import {
   Menu,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles"; // Updated import
-import Recruiter from "../../../components/header/subHeader/recruiter";
-import { useSocket } from "../../../context/socket";
+import { useSocket } from "../../context/socket";
+import Admin from "../../components/header/subHeader/admin";
 
 function Copyright(props) {
   return (
@@ -199,7 +199,7 @@ export default function Dashboard() {
               onMouseEnter={() => handleMouseEnter("info")}
               onMouseLeave={handleMouseLeave}>
               <Avatar alt='User Avatar' src='' />
-              {isOpenProfile && <Recruiter />}
+              {isOpenProfile && <Admin />}
             </MenuItem>
           </Toolbar>
         </AppBar>

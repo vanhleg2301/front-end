@@ -19,7 +19,7 @@ const CompanyManager = () => {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9999/companies")
+    fetch("http://localhost:9999/company")
       .then((resp) => resp.json())
       .then((data) => {
         setCompanies(data);
@@ -28,6 +28,26 @@ const CompanyManager = () => {
         console.log(err);
       });
   }, []);
+
+  const handleDeactive = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9999/companies/${id}/deactive`,
+        {
+          method: "PATCH",
+        }
+      );
+
+      if (response.ok) {
+        window.alert("deactive successful");
+      } else {
+        window.alert("Failed to deactive item.");
+      }
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("An error occurred");
+    }
+  };
 
   return (
     <Container className="text-align-center">
@@ -75,35 +95,17 @@ const CompanyManager = () => {
                   </Button>
                 </TableCell>
                 <TableCell align="left">
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={(e) => handleDeactive(e.target.value)}
+                    value={c._id}
+                  >
                     Deactive
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell>1234567</TableCell>
-              <TableCell>Company A</TableCell>
-              <TableCell>
-                <Select value="Bronze">
-                  <MenuItem value={"Bronze"}>Bronze</MenuItem>
-                  <MenuItem value={"Silver"}>Silver</MenuItem>
-                  <MenuItem value={"Gold"}>Gold</MenuItem>
-                  <MenuItem value={"Platinum"}>Platinum</MenuItem>
-                  <MenuItem value={"Diamond"}>Diamond</MenuItem>
-                </Select>
-              </TableCell>
-              <TableCell align="right">
-                <Button variant="contained" color="info">
-                  View Detail
-                </Button>
-              </TableCell>
-              <TableCell align="left">
-                <Button variant="contained" color="error">
-                  Deactive
-                </Button>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

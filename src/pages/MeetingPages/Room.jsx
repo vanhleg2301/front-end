@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import Bottom from "../MeetingComponent/Bottom/Bottom";
 import { cloneDeep } from "lodash";
 import CopySection from "../MeetingComponent/CopySection/CopySection";
+import FooterMeet from "../MeetingComponent/Bottom/FooterMeet";
+import MessengerAndPeople from "../MeetingComponent/Bottom/MessengerAndPeople";
+import { Box } from "@mui/system";
+import { Grid } from "@mui/material";
 
 const Room = () => {
   const socket = useSocket();
@@ -26,6 +30,36 @@ const Room = () => {
   } = usePlayer(myId, roomId, peer);
 
   const [users, setUsers] = useState([]);
+
+  const [isMessengerVisible, setIsMessengerVisible] = useState(false);
+  const [isPeopleVisible, setIsPeopleVisible] = useState(false);
+
+  const [isVideo, setIsVideo] = useState(true);
+  const [isAudio, setIsAudio] = useState(true);
+  const [isPresenting, setIsPresenting] = useState(false);
+  const [isCopySectionVisible, setIsCopySectionVisible] = useState(true);
+
+  const toggleMessenger = () => {
+    setIsMessengerVisible(!isMessengerVisible);
+    if (isPeopleVisible) {
+      setIsPeopleVisible(false);
+    }
+  };
+
+  const togglePeople = () => {
+    setIsPeopleVisible(!isPeopleVisible);
+    if (isMessengerVisible) {
+      setIsMessengerVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCopySectionVisible(false);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!socket || !peer || !stream) return;
@@ -137,38 +171,71 @@ const Room = () => {
 
   return (
     <>
-      <div className={styles.activePlayerContainer}>
-        {playerHighlighted && (
-          <Player
-            url={playerHighlighted.url}
-            muted={playerHighlighted.muted}
-            playing={playerHighlighted.playing}
-            isActive
-          />
-        )}
-      </div>
-      <div className={styles.inActivePlayerContainer}>
-        {Object.keys(nonHighlightedPlayers).map((playerId) => {
-          const { url, muted, playing } = nonHighlightedPlayers[playerId];
-          return (
-            <Player
-              key={playerId}
-              url={url}
-              muted={muted}
-              playing={playing}
-              isActive={false}
-            />
-          );
-        })}
-      </div>
-      <CopySection roomId={roomId} />
-      <Bottom
-        muted={playerHighlighted?.muted}
-        playing={playerHighlighted?.playing}
-        toggleAudio={toggleAudio}
-        toggleVideo={toggleVideo}
-        leaveRoom={leaveRoom}
-      />
+      <Box sx={{ backgroundColor: "#303030", margin: -1 }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            transition: "margin-right 0.3s ease-in-out", // Smooth transition
+            marginRight: isMessengerVisible || isPeopleVisible ? "25%" : "0", // Adjust margin instead of transform
+          }}>
+          <Box
+            sx={{
+              position: "relative",
+              backgroundColor: "#303030",
+              width: "90%",
+              mt: 2,
+              boxShadow: 3,
+              borderRadius: 2,
+            }}>
+            <Box className={styles.activePlayerContainer}>
+              {playerHighlighted && (
+                <Player
+                  url={playerHighlighted.url}
+                  muted={playerHighlighted.muted}
+                  playing={playerHighlighted.playing}
+                  isActive
+                />
+              )}
+            </Box>
+
+            <Box className={styles.inActivePlayerContainer}>
+              {Object.keys(nonHighlightedPlayers).map((playerId) => {
+                const { url, muted, playing } = nonHighlightedPlayers[playerId];
+                return (
+                  <Player
+                    key={playerId}
+                    url={url}
+                    muted={muted}
+                    playing={playing}
+                    isActive={false}
+                  />
+                );
+              })}
+            </Box>
+            {isCopySectionVisible && <CopySection roomId={roomId} />}
+          </Box>
+        </Box>
+        <FooterMeet
+          muted={playerHighlighted?.muted}
+          playing={playerHighlighted?.playing}
+          toggleAudio={toggleAudio}
+          toggleVideo={toggleVideo}
+          leaveRoom={leaveRoom}
+          toggleMessenger={toggleMessenger}
+          togglePeople={togglePeople}
+          peopleCount={4}
+        />
+        <MessengerAndPeople
+          mess={isMessengerVisible}
+          people={isPeopleVisible}
+          close={() => {
+            setIsMessengerVisible(false);
+            setIsPeopleVisible(false);
+          }}
+        />
+      </Box>
     </>
   );
 };

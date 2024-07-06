@@ -27,7 +27,7 @@ export default function Admin() {
         transform: "translateX(-85%)",
       }}
     >
-      <Link to="/" className="dropdown-item">
+      <Link to="/admin" className="dropdown-item">
         <IconButton disabled>
           <MailOutlineIcon />
         </IconButton>

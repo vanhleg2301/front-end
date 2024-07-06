@@ -1,19 +1,23 @@
+/* Base styles */
 .playerContainer {
   @apply relative overflow-hidden mb-5 h-full;
   position: absolute;
+  border-radius: 20px;
 }
 
 .active {
   @apply rounded-lg;
-  width: 50%;
+  top: 20px;
+  left: 20px;
+  width: 40%;
   align-items: center;
 }
 
 .notActive {
   @apply rounded-md h-min;
-  right: 20px;
+  left: 550px;
   top: 20px;
-  width: 200px;
+  width: 40%;
   box-shadow: 5px 5px -1px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
 }
@@ -30,3 +34,70 @@
   @apply flex items-center justify-center;
 }
 
+.accountIcon {
+  font-size: 100px; /* Adjust the size as needed */
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .active, .notActive {
+    width: 45%;
+  }
+
+  .notActive {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 992px) {
+  .active, .notActive {
+    width: 50%;
+    left: 25%;
+    transform: translateX(-25%);
+  }
+
+  .notActive {
+    left: 75%;
+    transform: translateX(-75%);
+  }
+}
+
+@media (max-width: 768px) {
+  .active, .notActive {
+    width: 60%;
+    left: 20%;
+    transform: translateX(-20%);
+  }
+
+  .notActive {
+    left: 80%;
+    transform: translateX(-80%);
+  }
+}
+
+@media (max-width: 576px) {
+  .active, .notActive {
+    width: 80%;
+    left: 10%;
+    transform: translateX(-10%);
+  }
+
+  .notActive {
+    left: 90%;
+    transform: translateX(-90%);
+  }
+}
+
+@media (max-width: 360px) {
+  .active, .notActive {
+    width: 90%;
+    left: 5%;
+    transform: translateX(-5%);
+  }
+
+  .notActive {
+    left: 95%;
+    transform: translateX(-95%);
+  }
+}
