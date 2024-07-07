@@ -24,21 +24,6 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
 
   const socket = useSocket();
 
-  React.useEffect(() => {
-    if (!socket) return;
-
-    const handleNotification = (data) => {
-      console.log(data);
-      alert(data); // Display notification message
-    };
-
-    socket.on("notification", handleNotification);
-
-    return () => {
-      socket.off("notification", handleNotification);
-    };
-  }, [socket]);
-
   const handleYourFile = () => {};
 
   const handleFileChange = (event) => {

@@ -105,6 +105,7 @@ export default function Dashboard() {
   const [isOpenProfile, setIsOpenProfile] = React.useState(false);
   const [isOpentNotification, setIsOpenNotification] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+const [countNotification, setCountNotification] = React.useState(0);
 
   const handleMouseEnter = (section) => {
     if (section === "info") {
@@ -138,10 +139,10 @@ export default function Dashboard() {
   React.useEffect(() => {
     if (!socket) return;
 
-    const handleNotification = (message) => {
-      console.log(message);
-      alert(message);
-      setAnchorEl(null);
+    const handleNotification = (data) => {
+      console.log(data);
+      console.log(data.message); // Display notification message
+      setCountNotification(countNotification + 1); // Update notification count
     };
 
     socket.on("notification", handleNotification);
@@ -184,7 +185,7 @@ export default function Dashboard() {
               onClick={handleNotificationClick}
               onMouseEnter={() => handleMouseEnter("notification")}
               onMouseLeave={handleMouseLeave}>
-              <Badge badgeContent={4} color='secondary'>
+              <Badge badgeContent={countNotification} color='secondary'>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -196,7 +197,7 @@ export default function Dashboard() {
               onMouseLeave={handleMouseLeave}
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-              <MenuItem sx={{ p: 3 }} onClick={() => socket.emit("applied")}>
+              <MenuItem sx={{ p: 3 }} >
                 Notification 4
               </MenuItem>
             </Menu>

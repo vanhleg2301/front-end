@@ -39,7 +39,7 @@ export default function JobList() {
           }}
         />
       </div>
-      <h2>Job List</h2>
+      <h2>List job</h2>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
