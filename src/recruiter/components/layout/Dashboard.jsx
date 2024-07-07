@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -11,7 +11,6 @@ import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -105,7 +104,8 @@ export default function Dashboard() {
   const [isOpenProfile, setIsOpenProfile] = React.useState(false);
   const [isOpentNotification, setIsOpenNotification] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-const [countNotification, setCountNotification] = React.useState(0);
+  const [countNotification, setCountNotification] = React.useState(0);
+  const [notificationDetail, setNotificationDetail] = React.useState([]);
 
   const handleMouseEnter = (section) => {
     if (section === "info") {
@@ -142,7 +142,18 @@ const [countNotification, setCountNotification] = React.useState(0);
     const handleNotification = (data) => {
       console.log(data);
       console.log(data.message); // Display notification message
-      setCountNotification(countNotification + 1); // Update notification count
+
+      // Save notification in session storage
+      const storedNotifications =
+        JSON.parse(sessionStorage.getItem("notifications")) || [];
+      storedNotifications.push(data);
+      sessionStorage.setItem(
+        "notifications",
+        JSON.stringify(storedNotifications)
+      );
+
+      setCountNotification(storedNotifications.length); // Update notification count
+      setNotificationDetail(storedNotifications); // Update notification detail
     };
 
     socket.on("notification", handleNotification);
@@ -151,6 +162,14 @@ const [countNotification, setCountNotification] = React.useState(0);
       socket.off("notification", handleNotification);
     };
   }, [socket]);
+
+  React.useEffect(() => {
+    // Retrieve notifications from session storage on component mount
+    const storedNotifications =
+      JSON.parse(sessionStorage.getItem("notifications")) || [];
+    setCountNotification(storedNotifications.length);
+    setNotificationDetail(storedNotifications);
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -197,9 +216,26 @@ const [countNotification, setCountNotification] = React.useState(0);
               onMouseLeave={handleMouseLeave}
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-              <MenuItem sx={{ p: 3 }} >
-                Notification 4
-              </MenuItem>
+              {notificationDetail.length > 0 ? (
+                notificationDetail.map((notification, index) => {
+                  const message =
+                    notification.message.length > 30
+                      ? notification.message.slice(0, 30) + "..."
+                      : notification.message;
+                  return (
+                    <MenuItem
+                    title={`${notification.message}`}
+                      key={index}
+                      sx={{ p: 3 }}
+                      component={Link}
+                      to={`jobByRecruiter/${notification.jobId}`}>
+                      {message}
+                    </MenuItem>
+                  );
+                })
+              ) : (
+                <MenuItem sx={{ p: 3 }}>No notifications</MenuItem>
+              )}
             </Menu>
             <MenuItem
               onMouseEnter={() => handleMouseEnter("info")}

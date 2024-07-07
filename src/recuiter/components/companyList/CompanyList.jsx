@@ -3,7 +3,15 @@ import { AuthContext } from "../../../context/AuthProvider";
 import { RequestGet } from "../../../util/request";
 import { APICOMPANY } from "../../../util/apiEndpoint";
 import { Container } from "@mui/system";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function CompanyList() {
@@ -17,7 +25,9 @@ export default function CompanyList() {
     const fetchData = async () => {
       try {
         const response = await RequestGet(`${APICOMPANY}/com/${recruiterID}`);
-        const sortedCompanies = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sortedCompanies = response.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         if (response) {
           setCompanies(sortedCompanies);
         }
@@ -49,19 +59,19 @@ export default function CompanyList() {
           <TableBody>
             {companies.map((company, index) => (
               <TableRow hover key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{company.logo}</TableCell>
                 <TableCell>
-                  <Link style={{ textDecoration: "none" }} to={company._id} >
-                    {company._id}
+                  <Link style={{ textDecoration: "none" }} to={company._id}>
+                    {company.companyName}
                   </Link>
                 </TableCell>
-                <TableCell>{company.logo}</TableCell>
-                <TableCell>{company.companyName}</TableCell>
                 <TableCell>{company.location}</TableCell>
                 <TableCell>{company.taxNumber}</TableCell>
                 <TableCell>{parseInt(company.NumberOfEmployees)}</TableCell>
                 <TableCell>{company.businessLicense}</TableCell>
                 <TableCell>
-                  <Button color="primary" variant="contained">
+                  <Button color='primary' variant='contained'>
                     Update
                   </Button>
                 </TableCell>

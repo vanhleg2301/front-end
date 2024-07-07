@@ -48,14 +48,14 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
         });
 
         // Gửi mail tự động đến Recruiter
-        console.log(response);
+        console.log(response.jobApplied.fileURL);
         setApplied(true); // Đã áp dụng thành công
         setApplied(setIsApplied); // Đã áp dụng thành công
 
         socket.emit("applied", {
           userId: userLogin.user._id,
           jobId,
-          message: `${userLogin.user.email} has applied for the job.`,
+          message: `${userLogin.user.email} has applied for some job.`,
         });
 
         // await sendmail(applicantId, jobId);

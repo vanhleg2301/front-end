@@ -14,7 +14,7 @@ import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../../context/AuthProvider";
 
 const ChooseCompany = () => {
-  const {userLogin} = useContext(AuthContext);
+  const { userLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null); // Tách biến company thành selectedCompany
@@ -103,10 +103,10 @@ const ChooseCompany = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item xs={12} className="part" textAlign={"center"}>
+        <Grid item xs={12} className='part' textAlign={"center"}>
           <Box>
-          <Typography variant="h4">Existed Company</Typography>
-            
+            <Typography variant='h4'>Existed Company</Typography>
+
             <Autocomplete
               disabled={Boolean(companyName)}
               value={selectedCompany}
@@ -116,8 +116,8 @@ const ChooseCompany = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select a company"
-                  variant="outlined"
+                  label='Select a company'
+                  variant='outlined'
                 />
               )}
               fullWidth
@@ -125,166 +125,185 @@ const ChooseCompany = () => {
           </Box>
         </Grid>
 
-        <Grid item xs={1}></Grid>
-        <Grid item xs={5} className="padding-bot-10px padding-top-20px">
-          <Typography>Format support: .png,.jpg,.jpeg</Typography>
-          <Typography>Selected file: {logoFile?.name}</Typography>
-          <Button
-            sx={{
-              whiteSpace: "nowrap",
-              color: "white",
-            }}
-            variant="outlined"
-            component="label"
-            startIcon={<UploadFile />}>
-            Choose your logo
-            <input
-              name="logo"
-              type="file"
-              accept=".png,.jpg,.jpeg"
-              hidden
-              onChange={(e) => setLogoFile(e.target.files[0])}
-              disabled={Boolean(selectedCompany)}
-            />
-          </Button>
-        </Grid>
-
-        <Grid item xs={5} className="padding-bot-10px padding-top-20px">
-          <Typography>Format support: .pdf</Typography>
-          <Typography>Selected file: {businessLicenseFile?.name}</Typography>
-          <Button
-            sx={{
-              whiteSpace: "nowrap",
-              color: "white",
-            }}
-            variant="outlined"
-            component="label"
-            startIcon={<UploadFile />}>
-            Choose your Business LicenseFile
-            <input
-              name="businessLicense"
-              type="file"
-              hidden
-              accept=".pdf"
-              onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
-              disabled={Boolean(selectedCompany)}
-            />
-          </Button>
-        </Grid>
-        <Grid item xs={1}></Grid>
-
-        <Grid item xs={1}></Grid>
-        <Grid item xs={12} className="part" textAlign={"center"}>
-        <Typography variant="h4">New Company</Typography>
-          <Grid container>
-            <Grid item xs={3} className="padding-top-20px">
-              Name
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => {
-                  setCompanyName(e.target.value);
-                  setSelectedCompany(null); // Reset selectedCompany khi người dùng thay đổi companyName
-                }}
-                className="width100pc"
+        <Grid container hidden={Boolean(selectedCompany)}>
+          <Grid item xs={12}  hidden={Boolean(selectedCompany)}>
+            <Typography variant='h4' textAlign={"center"}>
+              New Company
+            </Typography>
+          </Grid>
+          <Grid item xs={1}></Grid>
+          <Grid
+            item
+            xs={5}
+            className='padding-bot-10px padding-top-20px'
+            hidden={Boolean(selectedCompany)}>
+            <Typography>Format support: .png,.jpg,.jpeg</Typography>
+            <Typography>Selected file: {logoFile?.name}</Typography>
+            <Button
+              sx={{
+                whiteSpace: "nowrap",
+                color: "white",
+              }}
+              variant='outlined'
+              component='label'
+              startIcon={<UploadFile />}>
+              Choose your logo
+              <input
+                name='logo'
+                type='file'
+                accept='.png,.jpg,.jpeg'
+                hidden
+                onChange={(e) => setLogoFile(e.target.files[0])}
                 disabled={Boolean(selectedCompany)}
               />
-            </Grid>
+            </Button>
+          </Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Email
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setEmail(e.target.value)}
+          <Grid
+            item
+            xs={5}
+            className='padding-bot-10px padding-top-20px'
+            hidden={Boolean(selectedCompany)}>
+            <Typography>Format support: .pdf</Typography>
+            <Typography>Selected file: {businessLicenseFile?.name}</Typography>
+            <Button
+              sx={{
+                whiteSpace: "nowrap",
+                color: "white",
+              }}
+              variant='outlined'
+              component='label'
+              startIcon={<UploadFile />}>
+              Choose your Business LicenseFile
+              <input
+                name='businessLicense'
+                type='file'
+                hidden
+                accept='.pdf'
+                onChange={(e) => setBusinessLicenseFile(e.target.files[0])}
                 disabled={Boolean(selectedCompany)}
-                className="width100pc"></TextField>
-            </Grid>
+              />
+            </Button>
+          </Grid>
+          <Grid item xs={1}></Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Phone number
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc"></TextField>
-            </Grid>
+          <Grid item xs={1}></Grid>
+          <Grid
+            item
+            xs={12}
+            className='part'
+            textAlign={"center"}
+            hidden={Boolean(selectedCompany)}>
+            <Grid container>
+              <Grid item xs={3} className='padding-top-20px'>
+                Name
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => {
+                    setCompanyName(e.target.value);
+                    setSelectedCompany(null); // Reset selectedCompany khi người dùng thay đổi companyName
+                  }}
+                  className='width100pc'
+                  disabled={Boolean(selectedCompany)}
+                />
+              </Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Address
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setNewAddress(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
-            </Grid>
-            <Grid item xs={3} className="padding-top-20px">
-              Commune
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setNewCommune(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
-            </Grid>
-            <Grid item xs={3} className="padding-top-20px">
-              District
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setNewDistrict(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
-            </Grid>
+              <Grid item xs={3} className='padding-top-20px'>
+                Email
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc'></TextField>
+              </Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Province
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setNewProvince(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
-            </Grid>
+              <Grid item xs={3} className='padding-top-20px'>
+                Phone number
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc'></TextField>
+              </Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Tax Number
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setTaxNumber(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
-            </Grid>
+              <Grid item xs={3} className='padding-top-20px'>
+                Address
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setNewAddress(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
+              <Grid item xs={3} className='padding-top-20px'>
+                Commune
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setNewCommune(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
+              <Grid item xs={3} className='padding-top-20px'>
+                District
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setNewDistrict(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
 
-            <Grid item xs={3} className="padding-top-20px">
-              Number of Employees
-            </Grid>
-            <Grid item xs={9} className="padding-top-20px">
-              <TextField
-                variant="outlined"
-                size="small"
-                onChange={(e) => setNumberOfEmployees(e.target.value)}
-                disabled={Boolean(selectedCompany)}
-                className="width100pc padding-top-20px"></TextField>
+              <Grid item xs={3} className='padding-top-20px'>
+                Province
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setNewProvince(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
+
+              <Grid item xs={3} className='padding-top-20px'>
+                Tax Number
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setTaxNumber(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
+
+              <Grid item xs={3} className='padding-top-20px'>
+                Number of Employees
+              </Grid>
+              <Grid item xs={9} className='padding-top-20px'>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  onChange={(e) => setNumberOfEmployees(e.target.value)}
+                  disabled={Boolean(selectedCompany)}
+                  className='width100pc padding-top-20px'></TextField>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -294,12 +313,12 @@ const ChooseCompany = () => {
         <Grid
           item
           xs={6}
-          className="padding-topbot-10px padding-right-20px"
+          className='padding-topbot-10px padding-right-20px'
           align={"end"}>
-          <Button variant="outlined">Hủy</Button>
+          <Button variant='outlined'>Hủy</Button>
         </Grid>
-        <Grid item xs={6} className="padding-topbot-10px" align={"start"}>
-          <Button variant="contained" onClick={handleSubmit}>
+        <Grid item xs={6} className='padding-topbot-10px' align={"start"}>
+          <Button variant='contained' onClick={handleSubmit}>
             Hoàn tất
           </Button>
         </Grid>
