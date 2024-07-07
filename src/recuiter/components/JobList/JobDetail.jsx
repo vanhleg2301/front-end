@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Typography,
@@ -19,13 +19,17 @@ import { RequestGet } from "../../../util/request";
 import { APIJOB } from "../../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
+import { useSocket } from "../../../context/socket";
+import { AuthContext } from "../../../context/AuthProvider";
 
 const JobDetail = () => {
+  const { userLogin } = useContext(AuthContext);
   const { jobId } = useParams(); // Get the jobId from the URL params
   const [job, setJob] = useState(null); // Declare a state variable for job, initialize with null
   const [dataJob, setDataJob] = useState(null);
   const [reload, setReload] = useState(false);
-  
+  const [accepted, setAccepted] = useState(false); // State to track if job is accepted
+
   useEffect(() => {
     const fetchJob = async () => {
       const response = await RequestGet(`${APIJOB}/${jobId}`);
@@ -41,7 +45,6 @@ const JobDetail = () => {
     fetchCvOfJob();
   }, [jobId, reload]); // Add jobId as a dependency
 
-
   const handleReload = () => {
     setReload(!reload);
   };
@@ -49,6 +52,23 @@ const JobDetail = () => {
   const handleOpenFile = (fileURL) => {
     console.log("decodedURL:", fileURL);
     window.open(fileURL, "_blank");
+  };
+
+  const socket = useSocket();
+
+  const handleAccept = async () => {
+    try {
+      socket.emit("accept_applied", {
+        timeMeeting: new Date(),
+        linkMeeting: "321",
+        userId: userLogin.user._id,
+        message: `Recruiter accepted your cv in ${job.title}`,
+      });
+
+      setAccepted(true); // Set accepted to true after accepting
+    } catch (error) {
+      console.error("handleAccept fail:", error);
+    }
   };
 
   if (!job) {
@@ -175,14 +195,30 @@ const JobDetail = () => {
                           </Button>
                         </TableCell>
                         <TableCell>
-                          <Button color='primary' variant='contained'>
-                            Pick
-                          </Button>
+                          {accepted ? (
+                            <Button variant="outlined" disabled>
+                              Accepted
+                            </Button>
+                          ) : (
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={handleAccept}
+                            >
+                              Accept
+                            </Button>
+                          )}
                         </TableCell>
-                        <TableCell>
-                          <Button color='error' variant='contained'>
-                            Reject
-                          </Button>
+                        <TableCell >
+                          {accepted ? (
+                            <Button variant="outlined" disabled>
+                              Reject
+                            </Button>
+                          ) : (
+                            <Button color="error" variant="contained">
+                              Reject
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))

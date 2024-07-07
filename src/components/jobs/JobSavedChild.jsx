@@ -55,6 +55,7 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
         socket.emit("applied", {
           userId: userLogin.user._id,
           jobId,
+          createdAt,
           message: `${userLogin.user.email} has applied for some job.`,
         });
 

@@ -12,27 +12,10 @@ import ProfileRecruiter from "../recuiter/components/profile/ProfileRecruiter";
 import { SocketProvider } from "../context/socket";
 import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
 import Room from "../pages/MeetingPages/Room";
+import CheckRole13 from "./CheckRole13";
 
 export default function RecruiterRoutes() {
   return [
-    {
-      path: "/meet",
-      element: (
-        <SocketProvider>
-          <Outlet />
-        </SocketProvider>
-      ),
-      children: [
-        {
-          index: true,
-          element: <HomeMeeting />,
-        },
-        {
-          path: ":roomId",
-          element: <Room />,
-        },
-      ],
-    },
     {
       path: "/recruiter",
       element: (

@@ -11,6 +11,9 @@ import Home from "../pages/Home";
 import CheckRole23 from "./CheckRole23";
 import React from "react";
 import { SocketProvider } from "../context/socket";
+import Room from "../pages/MeetingPages/Room";
+import CheckRole13 from "./CheckRole13";
+import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
 
 export default function publicRoutes() {
   return [
@@ -50,6 +53,29 @@ export default function publicRoutes() {
                 },
                 { path: "table", element: <JobList /> },
               ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: "/meet",
+      element: (
+        <SocketProvider>
+          <Outlet />
+        </SocketProvider>
+      ),
+      children: [
+        {
+          element: <CheckRole13 roles={[0]} />,
+          children: [
+            {
+              index: true,
+              element: <HomeMeeting />,
+            },
+            {
+              path: ":roomId",
+              element: <Room />,
             },
           ],
         },

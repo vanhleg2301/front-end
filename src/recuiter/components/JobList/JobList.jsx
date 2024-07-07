@@ -84,8 +84,7 @@ const JobList = () => {
             <TableRow>
               <TableCell>No.</TableCell>
               <TableCell>Title</TableCell>
-              <TableCell>MinSalary</TableCell>
-              <TableCell>MaxSalary</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>MinSalary - MaxSalary</TableCell>
               <TableCell>Deadline</TableCell>
               <TableCell>CvApplied</TableCell>
               <TableCell colSpan={2} sx={{ textAlign: "center" }}>
@@ -102,8 +101,7 @@ const JobList = () => {
                     {truncateTitle(j.title)}
                   </Link>
                 </TableCell>
-                <TableCell>{j.minSalary}</TableCell>
-                <TableCell>{j.maxSalary}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{j.minSalary} - {j.maxSalary}</TableCell>
                 <TableCell>{formatDate(j.deadline)}</TableCell>
                 <TableCell>{2}</TableCell>
                 <TableCell>

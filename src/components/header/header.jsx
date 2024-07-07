@@ -18,12 +18,12 @@ import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 import HeaderRight from "./HeaderRight";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AuthContext } from "../../context/AuthProvider";
 import Applicant from "./subHeader/applicant";
 import Recruiter from "./subHeader/recruiter";
 import Admin from "./subHeader/admin";
 import "./header.css";
+import Notification from "./Notification";
 
 const logoStyle = {
   width: "30px",
@@ -86,7 +86,7 @@ function Header() {
 
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       sx={{
         boxShadow: 0,
         backgroundColor: "transparent",
@@ -121,8 +121,8 @@ function Header() {
             <Box
               sx={{ ml: 2, textDecoration: "none", color: "blue" }}
               component={Link}
-              to="/">
-              <img src={"mon.png"} style={logoStyle} alt="logo" />
+              to='/'>
+              <img src={"mon.png"} style={logoStyle} alt='logo' />
             </Box>
 
             <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
@@ -131,25 +131,25 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("jobs")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item">
-                <Typography variant="body2" color="text.primary">
+                className='menu-item'>
+                <Typography variant='body2' color='text.primary'>
                   Jobs
                 </Typography>
                 {isOpen && (
-                  <Box className="dropdown-content">
-                    <Link to="/jobs" className="dropdown-item">
+                  <Box className='dropdown-content'>
+                    <Link to='/jobs' className='dropdown-item'>
                       <IconButton disabled>
                         <SearchIcon />
                       </IconButton>
                       Find job
                     </Link>
-                    <Link to="/jobs/applied" className="dropdown-item">
+                    <Link to='/jobs/applied' className='dropdown-item'>
                       <IconButton disabled>
                         <WorkOutlineIcon />
                       </IconButton>
                       Job applied
                     </Link>
-                    <Link to="/jobs/saved" className="dropdown-item">
+                    <Link to='/jobs/saved' className='dropdown-item'>
                       <IconButton disabled>
                         <FavoriteBorderIcon />
                       </IconButton>
@@ -163,19 +163,19 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("companies")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item">
-                <Typography variant="body2" color="text.primary">
+                className='menu-item'>
+                <Typography variant='body2' color='text.primary'>
                   Companies
                 </Typography>
                 {isOpenCompany && (
-                  <Box className="dropdown-content">
-                    <Link to="/companies" className="dropdown-item">
+                  <Box className='dropdown-content'>
+                    <Link to='/companies' className='dropdown-item'>
                       <IconButton disabled>
                         <EmojiTransportationIcon />
                       </IconButton>
                       Companies
                     </Link>
-                    <Link to="/companies" className="dropdown-item">
+                    <Link to='/companies' className='dropdown-item'>
                       <IconButton disabled>
                         <AutoAwesomeOutlinedIcon />
                       </IconButton>
@@ -189,19 +189,19 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter("tools")}
                 onMouseLeave={handleMouseLeave}
                 sx={{ py: "6px", px: "12px" }}
-                className="menu-item">
-                <Typography variant="body2" color="text.primary">
+                className='menu-item'>
+                <Typography variant='body2' color='text.primary'>
                   Tools
                 </Typography>
                 {isOpenTools && (
-                  <Box className="dropdown-content">
-                    <Link to="/" className="dropdown-item">
+                  <Box className='dropdown-content'>
+                    <Link to='/' className='dropdown-item'>
                       <IconButton disabled>
                         <BuildCircleIcon />
                       </IconButton>
                       MBTI test
                     </Link>
-                    <Link to="/" className="dropdown-item">
+                    <Link to='/' className='dropdown-item'>
                       <IconButton disabled>
                         <BuildCircleIcon />
                       </IconButton>
@@ -231,21 +231,11 @@ function Header() {
                       backgroundColor: "inherit", // Keeps the background color unchanged
                     },
                   }}>
-                  <Badge badgeContent={5} color="primary">
-                    <MailIcon color="action" />
+                  <Badge badgeContent={5} color='primary'>
+                    <MailIcon color='action' />
                   </Badge>
                 </MenuItem>
-                <MenuItem
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                      backgroundColor: "inherit", // Keeps the background color unchanged
-                    },
-                  }}>
-                  <Badge badgeContent={4} color="primary">
-                    <NotificationsIcon color="action" />
-                  </Badge>
-                </MenuItem>
+                <Notification/>
                 {/* Avatar */}
                 <MenuItem
                   sx={{
@@ -254,7 +244,7 @@ function Header() {
                   }}
                   onMouseEnter={() => handleMouseEnter("info")}
                   onMouseLeave={handleMouseLeave}>
-                  <Avatar alt="User Avatar" src="" />
+                  <Avatar alt='User Avatar' src='' />
                   {isOpenProfile &&
                     (role === "applicant" ? (
                       <Applicant />
@@ -268,19 +258,19 @@ function Header() {
             ) : (
               <Box>
                 <Button
-                  color="primary"
-                  variant="text"
-                  size="small"
+                  color='primary'
+                  variant='text'
+                  size='small'
                   component={Link}
-                  to="/login">
+                  to='/login'>
                   Sign in
                 </Button>
                 <Button
-                  color="info"
-                  variant="contained"
-                  size="small"
+                  color='info'
+                  variant='contained'
+                  size='small'
                   component={Link}
-                  to="/register">
+                  to='/register'>
                   Sign up
                 </Button>
               </Box>
