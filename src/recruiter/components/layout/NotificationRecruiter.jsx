@@ -37,11 +37,12 @@ export default function NotificationRecruiter() {
   const socket = useSocket();
 
   const getSaveNotification = async (userId) => {
-    const response = await RequestGet(
-      `${NOTIFICATION}/${userId}`
-    );
-    console.log("SavedNotification:", response);
-    return response;
+    try {
+      const response = await RequestGet(`${NOTIFICATION}/${userId}`);
+      return response;
+    } catch (error) {
+      console.log("SaveNotification fail:", error);
+    }
   };
 
   React.useEffect(() => {

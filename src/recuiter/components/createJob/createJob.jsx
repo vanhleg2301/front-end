@@ -11,6 +11,8 @@ import {
 import "./createJob.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProvider";
+import { toast, ToastContainer } from "react-toastify";
+import { Box } from "@mui/system";
 
 const CreateJob = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const CreateJob = () => {
   const [level, setLevel] = useState(1);
   const [deadline, setDeadline] = useState(null);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     fetch("http://localhost:9999/industry")
       .then((resp) => resp.json())
@@ -59,7 +62,7 @@ const CreateJob = () => {
     const maxSalary = parseInt(inputmaxSalary);
     const industry = inputindustry;
 
-    if(minSalary > maxSalary) {
+    if (minSalary > maxSalary) {
       setError("Min salary must be less than max salary");
       return;
     }
@@ -87,6 +90,7 @@ const CreateJob = () => {
     } else {
       setTypeOfWork(false);
     }
+
     const newJob = {
       recruitersID,
       title,
@@ -110,11 +114,21 @@ const CreateJob = () => {
         body: JSON.stringify(newJob),
       });
       console.log(newJob);
+      if (response.status === 403) {
+        toast.error(
+          <Box sx={{cursor: 'pointer'}} onClick={() => (navigate("/upgrade"))}>
+          Your post limit has been reached. 
+          click here and go to upgrade now!
+          </Box>,
+          {
+            autoClose: 5000, // Automatically close the toast after 5 seconds
+          }
+        );
+        return;
+      }
       if (response.ok) {
-        alert("Create successful");
+        toast.success("Create successful");
         navigate("/recruiter/jobByRecruiter");
-      } else {
-        throw new Error("Create failed");
       }
     } catch (error) {
       console.log(error.message);
@@ -139,20 +153,21 @@ const CreateJob = () => {
 
   return (
     <Container>
-      <div className="part">
+      <ToastContainer />
+      <div className='part'>
         <Grid container>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} className="padding-bot-20px">
+          <Grid item xs={10} className='padding-bot-20px'>
             Tiêu đề tuyển dụng
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={10}>
             <TextField
-              variant="standard"
-              label="Tiêu đề"
-              size="small"
-              className="width100pc"
+              variant='standard'
+              label='Tiêu đề'
+              size='small'
+              className='width100pc'
               onChange={(e) => setTitle(e.target.value)}
             />
           </Grid>
@@ -160,20 +175,18 @@ const CreateJob = () => {
         </Grid>
       </div>
 
-      <div className="part">
+      <div className='part'>
         <Grid container>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} className="padding-bot-20px">
-            Mô tả công việc
-          </Grid>
+          <Grid item xs={10} className='padding-bot-20px'></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={10} marginBottom={2}>
             <TextField
-              variant="standard"
-              label="Mô tả công việc"
-              size="small"
-              className="width100pc"
+              variant='standard'
+              label='Mô tả công việc'
+              size='small'
+              className='width100pc'
               multiline
               onChange={(e) => setJobDescription(e.target.value)}
             />
@@ -183,10 +196,10 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={10} marginBottom={2}>
             <TextField
-              variant="standard"
-              label="Yêu cầu công việc"
-              size="small"
-              className="width100pc"
+              variant='standard'
+              label='Yêu cầu công việc'
+              size='small'
+              className='width100pc'
               multiline
               onChange={(e) => setCandidateRequirements(e.target.value)}
             />
@@ -196,10 +209,10 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={10}>
             <TextField
-              variant="standard"
-              label="Quyền lợi"
-              size="small"
-              className="width100pc"
+              variant='standard'
+              label='Quyền lợi'
+              size='small'
+              className='width100pc'
               multiline
               onChange={(e) => setBenefit(e.target.value)}
             />
@@ -208,10 +221,10 @@ const CreateJob = () => {
         </Grid>
       </div>
 
-      <div className="part">
+      <div className='part'>
         <Grid container>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} className="padding-bot-20px">
+          <Grid item xs={10} className='padding-bot-20px'>
             Ngành nghề
           </Grid>
           <Grid item xs={1}></Grid>
@@ -219,9 +232,9 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={10}>
             <Select
-              size="small"
+              size='small'
               value={inputindustry}
-              className="width100pc"
+              className='width100pc'
               onChange={(e) => setInputIndustry(e.target.value)}>
               {industries.map((i) => (
                 <MenuItem key={i._id} value={i._id}>
@@ -234,21 +247,21 @@ const CreateJob = () => {
         </Grid>
       </div>
 
-      <div className="part">
+      <div className='part'>
         <Grid container>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} className="padding-bot-20px">
+          <Grid item xs={10} className='padding-bot-20px'>
             Thông tin chung
           </Grid>
           <Grid item xs={1}></Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={4} className="padding-bot-10px">
+          <Grid item xs={4} className='padding-bot-10px'>
             Số lượng tuyển
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
-          <Grid item xs={4} className="padding-bot-10px">
+          <Grid item xs={4} className='padding-bot-10px'>
             Loại công việc
           </Grid>
           <Grid item xs={1}></Grid>
@@ -256,8 +269,8 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
             <TextField
-              size="small"
-              className="width100pc"
+              size='small'
+              className='width100pc'
               onChange={(e) =>
                 setInputApplicantNumber(e.target.value)
               }></TextField>
@@ -266,9 +279,9 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
             <Select
-              size="small"
+              size='small'
               value={inputtypeOfWork}
-              className="width100pc"
+              className='width100pc'
               onChange={(e) => setInputTypeOfWork(e.target.value)}>
               <MenuItem value={"Full time"}>Full time</MenuItem>
               <MenuItem value={"Part time"}>Part time</MenuItem>
@@ -277,25 +290,25 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Giới tính
           </Grid>
           <Grid item xs={1}></Grid>
 
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Cấp bậc
           </Grid>
           <Grid item xs={1}></Grid>
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Kinh nghiệm (năm)
           </Grid>
 
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <Select
-              size="small"
+              size='small'
               value={inputgender}
-              className="width100pc"
+              className='width100pc'
               onChange={(e) => setInputGender(e.target.value)}>
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>
@@ -304,9 +317,9 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <Select
-              size="small"
+              size='small'
               value={inputlevel}
-              className="width100pc"
+              className='width100pc'
               onChange={(e) => setInputLevel(e.target.value)}>
               <MenuItem value={"Intern"}>Intern</MenuItem>
               <MenuItem value={"Fresher"}>Fresher</MenuItem>
@@ -318,39 +331,44 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <TextField
-              variant="outlined"
-              label="Kinh nghiệm"
-              className="width100pc"
-              size="small"
-              onChange={(e) => setInputExperience(e.target.value)}
+              variant='outlined'
+              label='Kinh nghiệm'
+              className='width100pc'
+              size='small'
+              onChange={(e) =>
+                setInputExperience(e.target.value.replace(/\D/g, ""))
+              }
             />
           </Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={10} className='padding-bot-10px padding-top-20px'>
             <Typography>Deadline</Typography>
             <TextField
-              variant="standard"
-              type="datetime-local"
-              size="small"
-              className="width100pc"
+              variant='standard'
+              type='datetime-local'
+              size='small'
+              className='width100pc'
               onChange={(e) => setDeadline(e.target.value)}
+              inputProps={{
+                min: new Date().toISOString().slice(0, 16),
+              }}
             />
           </Grid>
           <Grid item xs={1}></Grid>
 
           <Grid item xs={1} />
-          <Grid item xs={11} className="padding-bot-10px padding-top-20px">
-            Mức lương {error}
+          <Grid item xs={11} className='padding-bot-10px padding-top-20px'>
+            Mức lương <Typography color="error">{error}</Typography>
           </Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={4} className="padding-bot-10px">
+          <Grid item xs={4} className='padding-bot-10px'>
             Từ
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
-          <Grid item xs={4} className="padding-bot-10px">
+          <Grid item xs={4} className='padding-bot-10px'>
             Đến
           </Grid>
           <Grid item xs={1}></Grid>
@@ -358,50 +376,50 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
             <TextField
-              size="small"
-              className="width100pc"
+              size='small'
+              className='width100pc'
               onChange={(e) => setInputMinSalary(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
-          
+
           <Grid item xs={1}></Grid>
           <Grid item xs={4}>
             <TextField
-              size="small"
-              className="width100pc"
+              size='small'
+              className='width100pc'
               onChange={(e) => setInputMaxSalary(e.target.value)}
             />
           </Grid>
           <Grid item xs={1}></Grid>
 
           <Grid item xs={1} />
-          <Grid item xs={11} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={11} className='padding-bot-10px padding-top-20px'>
             Địa điểm làm việc
           </Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Tỉnh/thành phố
           </Grid>
           <Grid item xs={1}></Grid>
 
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Quận/huyện
           </Grid>
           <Grid item xs={1}></Grid>
-          <Grid item xs={3} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={3} className='padding-bot-10px padding-top-20px'>
             Xã/phường
           </Grid>
 
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <TextField
-              variant="outlined"
-              label="Tỉnh/thành"
-              className="width100pc"
-              size="small"
-              name="province"
+              variant='outlined'
+              label='Tỉnh/thành'
+              className='width100pc'
+              size='small'
+              name='province'
               onChange={(e) => {
                 setProvince(e.target.value);
               }}
@@ -410,11 +428,11 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <TextField
-              variant="outlined"
-              label="Quận/huyện"
-              className="width100pc"
-              size="small"
-              name="district"
+              variant='outlined'
+              label='Quận/huyện'
+              className='width100pc'
+              size='small'
+              name='district'
               onChange={(e) => {
                 setDistrict(e.target.value);
               }}
@@ -423,11 +441,11 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
             <TextField
-              variant="outlined"
-              label="Xã/phường"
-              className="width100pc"
-              size="small"
-              name="commune"
+              variant='outlined'
+              label='Xã/phường'
+              className='width100pc'
+              size='small'
+              name='commune'
               onChange={(e) => {
                 setCommune(e.target.value);
               }}
@@ -435,24 +453,23 @@ const CreateJob = () => {
           </Grid>
 
           <Grid item xs={1}></Grid>
-          <Grid item xs={11} className="padding-bot-10px padding-top-20px">
+          <Grid item xs={11} className='padding-bot-10px padding-top-20px'>
             Địa chỉ
           </Grid>
 
           <Grid item xs={1}></Grid>
           <Grid item xs={11}>
             <TextField
-              variant="outlined"
-              label="Địa chỉ"
-              className="width100pc"
-              size="small"
-              name="address"
+              variant='outlined'
+              label='Địa chỉ'
+              className='width100pc'
+              size='small'
+              name='address'
               onChange={(e) => {
                 setAddress(e.target.value);
               }}
             />
           </Grid>
-
         </Grid>
       </div>
 
@@ -460,12 +477,12 @@ const CreateJob = () => {
         <Grid
           item
           xs={6}
-          className="padding-topbot-10px padding-right-20px"
+          className='padding-topbot-10px padding-right-20px'
           align={"end"}>
-          <Button variant="outlined">Hủy</Button>
+          <Button variant='outlined'>Hủy</Button>
         </Grid>
-        <Grid item xs={6} className="padding-topbot-10px" align={"start"}>
-          <Button variant="contained" onClick={handleSubmit}>
+        <Grid item xs={6} className='padding-topbot-10px' align={"start"}>
+          <Button variant='contained' onClick={handleSubmit}>
             Hoàn tất
           </Button>
         </Grid>

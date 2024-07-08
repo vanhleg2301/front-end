@@ -79,10 +79,17 @@ const JobDetail = () => {
   };
 
   const saveNotification = async (messAccept) => {
-    const response = await RequestPost(`${NOTIFICATION}/${selectedApplicant}`, {
-      message: messAccept,
-    });
-    console.log("SaveNotification successfully:", response);
+    try {
+      const response = await RequestPost(
+        `${NOTIFICATION}/${selectedApplicant}`,
+        {
+          message: messAccept,
+        }
+      );
+      console.log("SaveNotification successfully:", response);
+    } catch (error) {
+      console.log("SaveNotification fail:", error);
+    }
   };
 
   const handleAccept = async () => {
@@ -111,11 +118,13 @@ const JobDetail = () => {
     try {
       socket.emit("reject_applied", {
         rejected: true,
-        userId: selectedApplicant,
+        userId: applicant,
         message: `Recruiter rejected your cv in ${job.title}`,
       });
 
       saveNotification(`Recruiter rejected your cv in ${job.title}`);
+      toast.success("Rejected successfully");
+      console.log("Rejected successfully");
 
       setReload(!reload); // Reload the data
     } catch (error) {
@@ -175,7 +184,7 @@ const JobDetail = () => {
                           <Button
                             color='error'
                             variant='contained'
-                            onClick={() => handleReject(j)}>
+                            onClick={() => handleReject(j.applicantID._id)}>
                             Reject
                           </Button>
                         </TableCell>
@@ -214,6 +223,9 @@ const JobDetail = () => {
                 timeMeeting: e.target.value,
               })
             }
+            inputProps={{
+              min: new Date().toISOString().slice(0, 16),
+            }}
           />
           <TextField
             margin='dense'

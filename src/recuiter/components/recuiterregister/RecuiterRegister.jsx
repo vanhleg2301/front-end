@@ -27,7 +27,6 @@ const RecuiterRegister = () => {
   const [Unchecked, setUnchecked] = useState(true);
   const [checkErr, setCheckErr] = useState("");
   const [error, setError] = useState(null);
-  const roleID = 2;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +35,6 @@ const RecuiterRegister = () => {
       password,
       email,
       fullName,
-      roleID,
       phone,
     };
     console.log(newRecuiter);

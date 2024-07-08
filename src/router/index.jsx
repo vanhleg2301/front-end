@@ -22,7 +22,7 @@ const AuthLayout = () => {
 };
 
 export const clearAuthCookies = () => {
-  const expiresIn = 30 * 60; // 24 hours in seconds
+  const expiresIn = 30 * 60; 
   // const GMT7 = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
   const expirationDate = new Date(Date.now() + expiresIn * 1000);
   console.log("expirationDate: ", expirationDate);
