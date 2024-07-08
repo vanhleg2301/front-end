@@ -13,6 +13,11 @@ import {
   TextField,
   Button,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { RequestGet } from "../../../util/request";
@@ -21,14 +26,20 @@ import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
 import { useSocket } from "../../../context/socket";
 import { AuthContext } from "../../../context/AuthProvider";
+import Detail from "./Detail";
 
 const JobDetail = () => {
   const { userLogin } = useContext(AuthContext);
   const { jobId } = useParams(); // Get the jobId from the URL params
   const [job, setJob] = useState(null); // Declare a state variable for job, initialize with null
   const [dataJob, setDataJob] = useState(null);
-  const [reload, setReload] = useState(false);
-  const [accepted, setAccepted] = useState(false); // State to track if job is accepted
+  const [reload, setReload] = useState(false); // State for reloading the data
+  const [openDialog, setOpenDialog] = useState(false); // State for dialog
+  const [selectedApplicant, setSelectedApplicant] = useState(null); // State for selected applicant
+  const [meetingDetails, setMeetingDetails] = useState({
+    timeMeeting: "",
+    linkMeeting: "",
+  });
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -56,124 +67,55 @@ const JobDetail = () => {
 
   const socket = useSocket();
 
+  const handleOpenDialog = (applicantId) => {
+    setSelectedApplicant(applicantId);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedApplicant(null);
+  };
+
+
   const handleAccept = async () => {
+    if (!meetingDetails.timeMeeting || !meetingDetails.linkMeeting) {
+      alert("Please enter meeting details");
+      return;
+    }
     try {
       socket.emit("accept_applied", {
-        timeMeeting: new Date(),
-        linkMeeting: "321",
-        userId: userLogin.user._id,
+        timeMeeting: meetingDetails.timeMeeting,
+        linkMeeting: meetingDetails.linkMeeting,
+        userId: selectedApplicant,
         message: `Recruiter accepted your cv in ${job.title}`,
       });
-
-      setAccepted(true); // Set accepted to true after accepting
+      console.log("Accepted successfully");
+      setOpenDialog(false); // Close the dialog after accepting
     } catch (error) {
       console.error("handleAccept fail:", error);
     }
   };
 
-  const handleReject = async () => {
+  const handleReject = async (applicant) => {
     try {
       socket.emit("reject_applied", {
         rejected: true,
         message: `Recruiter rejected your cv in ${job.title}`,
       });
 
-      setAccepted(true); // Set accepted to true after accepting
+      setReload(!reload); // Reload the data
     } catch (error) {
       console.error("handleAccept fail:", error);
     }
   };
 
-  if (!job) {
-    return <Typography>Loading...</Typography>;
-  }
-
   return (
     <Container>
+      {/*Job List*/}
+      <Detail />
+      {/*View Cv List*/}
       <Box mt={3} p={3} boxShadow={3} borderRadius={2}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant='h4' gutterBottom>
-              {job.title}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='body1' paragraph>
-              {job.description.JobDescription}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='body1' paragraph>
-              <strong>Candidate Requirements:</strong>
-              {job.description.CandidateRequirements}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='body1' paragraph>
-              <strong>Benefits:</strong> {job.description.Benefit}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Industry:</strong> {job.industry}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Type of Work:</strong>
-              {job.typeOfWork === 0 ? "Full-time" : "Part-time"}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='body2'>
-              <strong>Location:</strong>
-              {`${job.location?.address}, ${job.location?.district}, ${job.location?.comune}, ${job.location?.province}`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Salary Range:</strong>
-              {`${job.minSalary} - ${job.maxSalary}`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Experience Required:</strong> {`${job.experience} years`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Deadline:</strong>
-              {new Date(job.deadline).toLocaleDateString()}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Number of Applicants:</strong> {job.numberOfApplicants}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Status:</strong>
-              {job.status === 0 ? "Active" : "Inactive"}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Created At:</strong>
-              {new Date(job.createdAt).toLocaleDateString()}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body2'>
-              <strong>Last Updated:</strong>
-              {new Date(job.updatedAt).toLocaleDateString()}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box mt={3} p={3} boxShadow={3} borderRadius={2}>
-        {/*View Cv List*/}
         <Typography variant='h4'>List cv of job</Typography>
         <IconButton size='small' aria-label='reload' onClick={handleReload}>
           <RefreshIcon />
@@ -208,32 +150,20 @@ const JobDetail = () => {
                           </Button>
                         </TableCell>
                         <TableCell>
-                          {accepted ? (
-                            <Button variant='outlined' disabled>
-                              Accepted
-                            </Button>
-                          ) : (
-                            <Button
-                              color='primary'
-                              variant='contained'
-                              onClick={handleAccept}>
-                              Accept
-                            </Button>
-                          )}
+                          <Button
+                            color='primary'
+                            variant='contained'
+                            onClick={() => handleOpenDialog(j.applicantID._id)}>
+                            Accept
+                          </Button>
                         </TableCell>
                         <TableCell>
-                          {accepted ? (
-                            <Button variant='outlined' disabled>
-                              Reject
-                            </Button>
-                          ) : (
-                            <Button
-                              color='error'
-                              variant='contained'
-                              onClick={handleReject}>
-                              Reject
-                            </Button>
-                          )}
+                          <Button
+                            color='error'
+                            variant='contained'
+                            onClick={() => handleReject(j)}>
+                            Reject
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))
@@ -250,6 +180,48 @@ const JobDetail = () => {
           </Grid>
         </Grid>
       </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Meeting detail</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter the date, time, and link for the meeting.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='timeMeeting'
+            type='datetime-local'
+            fullWidth
+            variant='standard'
+            value={meetingDetails.timeMeeting}
+            onChange={(e) =>
+              setMeetingDetails({
+                ...meetingDetails,
+                timeMeeting: e.target.value,
+              })
+            }
+          />
+          <TextField
+            margin='dense'
+            id='linkMeeting'
+            label='Meeting Link'
+            type='text'
+            fullWidth
+            variant='standard'
+            value={meetingDetails.linkMeeting}
+            onChange={(e) =>
+              setMeetingDetails({
+                ...meetingDetails,
+                linkMeeting: e.target.value,
+              })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleAccept}>Accept</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

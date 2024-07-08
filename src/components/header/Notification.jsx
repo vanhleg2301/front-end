@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSocket } from "../../context/socket";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../util/formatHelpers";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function Notification() {
+  const {userLogin} = useContext(AuthContext);
   const socket = useSocket();
   const [isOpentNotification, setIsOpenNotification] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -38,11 +40,14 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    console.log("socket from notification:", socket);
     if (!socket) return;
 
     const handleNotificationApplicant = (data) => {
-      console.log("Received notification:", data);
+      
+      if(data.userId !== userLogin.user._id){
+        console.log("Received notification:", data.userId, '?', userLogin.user._id);
+        return null;
+      }
       // Save notification in session storage
       const storedNotifications =
         JSON.parse(sessionStorage.getItem("notification_applicant")) || [];
