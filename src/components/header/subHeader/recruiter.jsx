@@ -29,31 +29,31 @@ export default function Recruiter() {
       }}
     >
       <Link to="/upgrade" className="dropdown-item">
-        <IconButton disabled>
+        <IconButton>
           <ManageAccountsIcon />
         </IconButton>
         Buy package
       </Link>
       <Link to="/meet" className="dropdown-item">
-        <IconButton disabled>
+        <IconButton>
           <ManageAccountsIcon />
         </IconButton>
         Meeting
       </Link>
       <Link to="/recruiter" className="dropdown-item">
-        <IconButton disabled>
+        <IconButton>
           <MailOutlineIcon />
         </IconButton>
         Setting notification
       </Link>
       <Link to="/forgot" className="dropdown-item">
-        <IconButton disabled>
+        <IconButton>
           <QuestionMarkIcon />
         </IconButton>
         Forgot password
       </Link>
       <Box className="dropdown-item" onClick={handleLogout}>
-        <IconButton disabled>
+        <IconButton>
           <LogoutIcon />
         </IconButton>
         Logout

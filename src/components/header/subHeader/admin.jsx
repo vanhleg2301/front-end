@@ -20,27 +20,26 @@ export default function Admin() {
   };
   return (
     <Box
-      className="dropdown-content"
+      className='dropdown-content'
       sx={{
         top: "100%",
         left: "50%",
         transform: "translateX(-85%)",
-      }}
-    >
-      <Link to="/admin" className="dropdown-item">
-        <IconButton disabled>
+      }}>
+      <Link to='/admin' className='dropdown-item'>
+        <IconButton>
           <MailOutlineIcon />
         </IconButton>
         DashBoard
       </Link>
-      <Link to="/forgot" className="dropdown-item">
-        <IconButton disabled>
+      <Link to='/forgot' className='dropdown-item'>
+        <IconButton>
           <QuestionMarkIcon />
         </IconButton>
         Forgot password
       </Link>
-      <Box className="dropdown-item" onClick={handleLogout}>
-        <IconButton disabled>
+      <Box className='dropdown-item' onClick={handleLogout}>
+        <IconButton>
           <LogoutIcon />
         </IconButton>
         Logout

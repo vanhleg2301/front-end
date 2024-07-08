@@ -23,45 +23,38 @@ export default function Applicant() {
   };
   return (
     <Box
-      className="dropdown-content"
+      className='dropdown-content'
       sx={{
         top: "100%",
         left: "50%",
         transform: "translateX(-85%)",
-      }}
-    >
-      <Link to="/profile/manager" className="dropdown-item">
-        <IconButton disabled>
+      }}>
+      <Link to='/profile/manager' className='dropdown-item'>
+        <IconButton>
           <ContentPasteIcon />
         </IconButton>
         Manage Cv
       </Link>
-      <Link to="/profile/upload" className="dropdown-item">
-        <IconButton disabled>
+      <Link to='/profile/upload' className='dropdown-item'>
+        <IconButton>
           <PublishOutlinedIcon />
         </IconButton>
         Upload
       </Link>
-      <Link to="/profile" className="dropdown-item">
-        <IconButton disabled>
+      <Link to='/profile' className='dropdown-item'>
+        <IconButton>
           <ManageAccountsIcon />
         </IconButton>
         Information
       </Link>
-      <Link to="/" className="dropdown-item">
-        <IconButton disabled>
-          <MailOutlineIcon />
-        </IconButton>
-        Setting notification
-      </Link>
-      <Link to="/forgot" className="dropdown-item">
-        <IconButton disabled>
+      <Link to='/forgot' className='dropdown-item'>
+        <IconButton>
           <QuestionMarkIcon />
         </IconButton>
         Forgot password
       </Link>
-      <Box className="dropdown-item" onClick={handleLogout}>
-        <IconButton disabled>
+      <Box className='dropdown-item' onClick={handleLogout}>
+        <IconButton>
           <LogoutIcon />
         </IconButton>
         Logout
