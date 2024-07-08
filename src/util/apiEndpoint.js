@@ -5,3 +5,4 @@ export const APIUSER = "user";
 export const APICV = "cv";
 export const APIMEET = "meeting";
 export const APIAPPLY = "appliedjobs";
+export const NOTIFICATION = "notification";

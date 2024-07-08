@@ -12,9 +12,12 @@ import {
 import { Link } from "react-router-dom";
 import { formatDate } from "../../util/formatHelpers";
 import { AuthContext } from "../../context/AuthProvider";
+import { toast } from "react-toastify";
+import { RequestGet } from "../../util/request";
+import { NOTIFICATION } from "../../util/apiEndpoint";
 
 export default function Notification() {
-  const {userLogin} = useContext(AuthContext);
+  const { userLogin } = useContext(AuthContext);
   const socket = useSocket();
   const [isOpentNotification, setIsOpenNotification] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,26 +42,46 @@ export default function Notification() {
     setAnchorEl(null);
   };
 
+  const getSaveNotification = async (userId) => {
+    const response = await RequestGet(
+      `${NOTIFICATION}/${userId}`
+    );
+    console.log("SavedNotification:", response);
+    return response;
+  };
+
+  useEffect(() => {
+    const fetchInitialNotifications = async () => {
+      const savedNotification = await getSaveNotification(userLogin.user._id);
+      if (savedNotification) {
+        setCountNotification(savedNotification.length);
+        setNotificationDetail(savedNotification);
+      }
+    };
+
+    fetchInitialNotifications();
+  }, [userLogin.user._id]);
+
   useEffect(() => {
     if (!socket) return;
 
-    const handleNotificationApplicant = (data) => {
-      
-      if(data.userId !== userLogin.user._id){
-        console.log("Received notification:", data.userId, '?', userLogin.user._id);
-        return null;
+    const handleNotificationApplicant = async (data) => {
+      if (data.userId !== userLogin.user._id) {
+        return;
       }
-      // Save notification in session storage
-      const storedNotifications =
-        JSON.parse(sessionStorage.getItem("notification_applicant")) || [];
-      storedNotifications.push(data);
-      sessionStorage.setItem(
-        "notification_applicant",
-        JSON.stringify(storedNotifications)
-      );
 
-      setCountNotification(storedNotifications.length); // Update notification count
-      setNotificationDetail(storedNotifications); // Update notification detail
+      const savedNotification = await getSaveNotification(data.userId);
+      console.log("SavedNotification:", savedNotification);
+
+      if (savedNotification) {
+        toast.info("You have a new notification", { autoClose: 3000 });
+
+        setCountNotification((prevCount) => prevCount + 1); // Update notification count
+        setNotificationDetail((prevNotifications) => [
+          ...prevNotifications,
+          ...savedNotification, // Assuming the response contains an array of notifications
+        ]); 
+      }
     };
 
     socket.on("notification_for_applicant", handleNotificationApplicant);
@@ -66,15 +89,7 @@ export default function Notification() {
     return () => {
       socket.off("notification_for_applicant", handleNotificationApplicant);
     };
-  }, [socket]);
-
-  useEffect(() => {
-    // Retrieve notifications from session storage on component mount
-    const storedNotifications =
-      JSON.parse(sessionStorage.getItem("notification_applicant")) || [];
-    setCountNotification(storedNotifications.length);
-    setNotificationDetail(storedNotifications);
-  }, []);
+  }, [socket, userLogin.user._id]);
 
   return (
     <>
@@ -131,7 +146,6 @@ export default function Notification() {
                       </Button>
                     </>
                   )}
-                  
                 </MenuItem>
               );
             })

@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { APICV } from "../../util/apiEndpoint";
 import { RequestPostFile } from "../../util/request";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UploadCv() {
   const { userLogin } = useContext(AuthContext);
@@ -21,17 +22,6 @@ export default function UploadCv() {
   const [fileName, setFileName] = useState("");
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-
-  useEffect(() => {
-    let timer;
-    if (alertMessage) {
-      timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [alertMessage]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -69,7 +59,7 @@ export default function UploadCv() {
           setErrorSnackbarOpen(true);
         } else {
           console.log("Upload successful:", response);
-          setAlertMessage("Upload successful");
+          toast.success("Upload successful.");
           setSelectedFile(null);
           setFileName("");
         }
@@ -90,14 +80,7 @@ export default function UploadCv() {
 
   return (
     <>
-      {alertMessage && (
-        <Alert
-          variant="outlined"
-          severity="success"
-          sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
-          {alertMessage}
-        </Alert>
-      )}
+    <ToastContainer />
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           <Paper elevation={3}>

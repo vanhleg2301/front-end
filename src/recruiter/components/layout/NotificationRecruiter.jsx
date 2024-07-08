@@ -4,8 +4,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/AuthProvider";
+import { RequestGet } from "../../../util/request";
+import { NOTIFICATION } from "../../../util/apiEndpoint";
 
 export default function NotificationRecruiter() {
+  const { userLogin } = React.useContext(AuthContext);
   const [isOpentNotification, setIsOpenNotification] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [countNotification, setCountNotification] = React.useState(0);
@@ -31,24 +36,42 @@ export default function NotificationRecruiter() {
 
   const socket = useSocket();
 
+  const getSaveNotification = async (userId) => {
+    const response = await RequestGet(
+      `${NOTIFICATION}/${userId}`
+    );
+    console.log("SavedNotification:", response);
+    return response;
+  };
+
+  React.useEffect(() => {
+    const fetchInitialNotifications = async () => {
+      const savedNotification = await getSaveNotification(userLogin.user._id);
+      if (savedNotification) {
+        setCountNotification(savedNotification.length);
+        setNotificationDetail(savedNotification);
+      }
+    };
+
+    fetchInitialNotifications();
+  }, [userLogin.user._id]);
+
   React.useEffect(() => {
     if (!socket) return;
 
-    const handleNotification = (data) => {
+    const handleNotification = async (data) => {
       console.log(data);
       console.log(data.message); // Display notification message
 
-      // Save notification in session storage
-      const storedNotifications =
-        JSON.parse(sessionStorage.getItem("notifications")) || [];
-      storedNotifications.push(data);
-      sessionStorage.setItem(
-        "notifications",
-        JSON.stringify(storedNotifications)
-      );
+      const savedNotification = await getSaveNotification(userLogin.user._id);
 
-      setCountNotification(storedNotifications.length); // Update notification count
-      setNotificationDetail(storedNotifications); // Update notification detail
+      toast.info("You have a new notification", { autoClose: 3000 });
+
+      setCountNotification((prevCount) => prevCount + 1); // Update notification count
+      setNotificationDetail((prevNotifications) => [
+        ...prevNotifications,
+        ...savedNotification,
+      ]); // Update notification detail
     };
 
     socket.on("notification", handleNotification);
@@ -56,15 +79,7 @@ export default function NotificationRecruiter() {
     return () => {
       socket.off("notification", handleNotification);
     };
-  }, [socket]);
-
-  React.useEffect(() => {
-    // Retrieve notifications from session storage on component mount
-    const storedNotifications =
-      JSON.parse(sessionStorage.getItem("notifications")) || [];
-    setCountNotification(storedNotifications.length);
-    setNotificationDetail(storedNotifications);
-  }, []);
+  }, [socket, userLogin.user._id]);
 
   return (
     <>

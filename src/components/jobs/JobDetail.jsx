@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -15,16 +14,16 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import ScaleIcon from "@mui/icons-material/Scale";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CircularProgress from "@mui/material/CircularProgress";
-import { RequestGet, RequestPost } from "../../util/request";
+import { RequestGet } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { formatSalary } from "../../util/formatHelpers";
 import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
-import { useSocket } from "../../context/socket";
+import JobDetailCompany from "./JobDetailCompany";
+import JobDetailMoreInfor from "./JobDetailMoreInfor";
 
 export default function JobDetail() {
   // Job detail
@@ -32,8 +31,6 @@ export default function JobDetail() {
   const { jobId } = useParams();
   const [jobDetail, setJobDetail] = useState();
   const [isApplied, setIsApplied] = useState();
-
-  const [alertMessage, setAlertMessage] = useState("");
 
   // apply here
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog
@@ -64,9 +61,6 @@ export default function JobDetail() {
         const applied = appliedJobs.some((job) => job.jobID?._id === jobId);
 
         setIsApplied(applied);
-        if (applied) {
-          setAlertMessage("You have successfully applied for this job.");
-        }
       } catch (error) {
         console.error("Error checking if job is applied:", error);
       }
@@ -75,18 +69,6 @@ export default function JobDetail() {
     checkIfApplied();
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
-
-  // alert
-  useEffect(() => {
-    let timer;
-    if (alertMessage) {
-      timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [alertMessage]);
-
 
   if (!jobDetail) {
     return (
@@ -97,15 +79,7 @@ export default function JobDetail() {
   }
   return (
     <Container>
-      {alertMessage && (
-        <Alert
-          variant='outlined'
-          severity='success'
-          sx={{ position: "fixed", bottom: "10px", left: "10px" }}>
-          {alertMessage}
-        </Alert>
-      )}
-      <Grid container spacing={0} sx={{ mb: 5 }}>
+      <Grid container spacing={0} sx={{ mb: 5, mt: -5 }}>
         {/*left*/}
         <Grid item xs={12} md={8}>
           <Box sx={{ width: "100%" }}>
@@ -208,91 +182,12 @@ export default function JobDetail() {
             </Card>
           </Box>
         </Grid>
-        {/*right*/}
-        <Grid item xs={12} md={4}>
-          <Box sx={{ width: "100%", ml: 6 }}>
-            <Card sx={{ p: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item md={4}>
-                  <Box>
-                    <img
-                      src='https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg'
-                      alt='Company Logo'
-                      style={{ width: "100%", height: "auto" }}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item md={8} display='flex'>
-                  <Typography
-                    title='CompanyCompanyCompanyCompanyCompanyCompany
-                            CompanyCompanyCompanyCompanyCompanyCompany'
-                    variant='h6'
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}>
-                    CompanyCompanyCompanyCompanyCompanyCompany
-                    CompanyCompanyCompanyCompanyCompanyCompany
-                  </Typography>
-                </Grid>
-
-                <Grid item md={12}>
-                  <CardContent>
-                    <Box
-                      display='flex'
-                      flexDirection='column'
-                      alignItems='flex-start'>
-                      <Box display='flex' alignItems='center' mb={2}>
-                        <IconButton>
-                          <ScaleIcon />
-                        </IconButton>
-                        <Box ml={1}>
-                          <Typography variant='body1'>Scale</Typography>
-                          <Typography
-                            variant='body2'
-                            sx={{ fontWeight: "bold" }}>
-                            100 - 200
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box display='flex' alignItems='center'>
-                        <IconButton>
-                          <LocationSearchingIcon />
-                        </IconButton>
-                        <Box ml={1}>
-                          <Typography variant='body1'>Location:</Typography>
-                          <Typography
-                            title='Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh'
-                            variant='body2'
-                            style={{
-                              fontWeight: "bold",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              maxWidth: "20%", // Adjust this value as needed
-                            }}>
-                            Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho
-                            Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh,
-                            Ha Noi, Ho Chi Minh
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Grid>
-                <Grid item md={12} textAlign={"center"}>
-                  <Button>View company</Button>
-                </Grid>
-              </Grid>
-            </Card>
-          </Box>
-        </Grid>
+        <JobDetailCompany />
         <Grid container spacing={0}>
           {/*left description*/}
           <Grid item xs={12} md={8}>
-            <Box sx={{ width: "100%" }}>
-              <Card sx={{ width: "100%", p: 3, borderTop: "1px solid gray" }}>
+            <Box sx={{ width: "100%", marginTop: -7 }} >
+              <Card sx={{p: 3, borderTop: "1px solid gray" }}>
                 <CardContent>
                   <Typography variant='h6' gutterBottom>
                     Job description
@@ -376,129 +271,7 @@ export default function JobDetail() {
               </Card>
             </Box>
           </Grid>
-          {/*right more information*/}
-          <Grid item xs={12} md={4}>
-            <Box sx={{ width: "100%", mt: 5, ml: 6 }}>
-              <Card sx={{ p: 3, borderTop: "1px solid gray" }}>
-                <Grid container spacing={2}>
-                  <Grid item md={12} display='flex'>
-                    <Typography
-                      variant='h6'
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}>
-                      More information
-                    </Typography>
-                  </Grid>
-
-                  <Grid item md={12}>
-                    <CardContent>
-                      <Box
-                        display='flex'
-                        flexDirection='column'
-                        alignItems='flex-start'>
-                        <Box display='flex' alignItems='center' mb={2}>
-                          <IconButton>
-                            <ScaleIcon />
-                          </IconButton>
-                          <Box ml={1}>
-                            <Typography variant='body1'>
-                              Job position
-                            </Typography>
-                            <Typography
-                              variant='body2'
-                              sx={{ fontWeight: "bold" }}>
-                              Job position
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box display='flex' alignItems='center' mb={2}>
-                          <IconButton>
-                            <LocationSearchingIcon />
-                          </IconButton>
-                          <Box ml={1}>
-                            <Typography variant='body1'>Location</Typography>
-                            <Typography
-                              title='Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh'
-                              variant='body2'
-                              style={{
-                                fontWeight: "bold",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                maxWidth: "20%", // Adjust this value as needed
-                              }}>
-                              Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi,
-                              Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi
-                              Minh, Ha Noi, Ho Chi Minh
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box display='flex' alignItems='center' mb={2}>
-                          <IconButton>
-                            <LocationSearchingIcon />
-                          </IconButton>
-                          <Box ml={1}>
-                            <Typography variant='body1'>Exp</Typography>
-                            <Typography
-                              variant='body2'
-                              style={{
-                                fontWeight: "bold",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                              }}>
-                              Exp
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box display='flex' alignItems='center' mb={2}>
-                          <IconButton>
-                            <LocationSearchingIcon />
-                          </IconButton>
-                          <Box ml={1}>
-                            <Typography variant='body1'>
-                              Amount position
-                            </Typography>
-                            <Typography
-                              variant='body2'
-                              style={{
-                                fontWeight: "bold",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                              }}>
-                              1
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box display='flex' alignItems='center'>
-                          <IconButton>
-                            <LocationSearchingIcon />
-                          </IconButton>
-                          <Box ml={1}>
-                            <Typography variant='body1'>Gender</Typography>
-                            <Typography
-                              variant='body2'
-                              style={{
-                                fontWeight: "bold",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                              }}>
-                              None
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Box>
-          </Grid>
+          <JobDetailMoreInfor />
         </Grid>
       </Grid>
       <JobSavedChild

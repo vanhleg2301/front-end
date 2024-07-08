@@ -1,7 +1,6 @@
 import axios from "axios";
 import { ENDPOINT } from "./constants";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 
 // Helper function to get the access token from localStorage
 const getAccessToken = () => Cookies.get("accessToken");

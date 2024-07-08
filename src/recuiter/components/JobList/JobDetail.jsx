@@ -20,13 +20,14 @@ import {
   DialogActions,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { RequestGet } from "../../../util/request";
-import { APIJOB } from "../../../util/apiEndpoint";
+import { RequestGet, RequestPost } from "../../../util/request";
+import { APIJOB, NOTIFICATION } from "../../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
 import { useSocket } from "../../../context/socket";
 import { AuthContext } from "../../../context/AuthProvider";
 import Detail from "./Detail";
+import { toast, ToastContainer } from "react-toastify";
 
 const JobDetail = () => {
   const { userLogin } = useContext(AuthContext);
@@ -77,12 +78,19 @@ const JobDetail = () => {
     setSelectedApplicant(null);
   };
 
+  const saveNotification = async (messAccept) => {
+    const response = await RequestPost(`${NOTIFICATION}/${selectedApplicant}`, {
+      message: messAccept,
+    });
+    console.log("SaveNotification successfully:", response);
+  };
 
   const handleAccept = async () => {
     if (!meetingDetails.timeMeeting || !meetingDetails.linkMeeting) {
-      alert("Please enter meeting details");
+      toast.error("Please enter meeting details");
       return;
     }
+
     try {
       socket.emit("accept_applied", {
         timeMeeting: meetingDetails.timeMeeting,
@@ -90,7 +98,9 @@ const JobDetail = () => {
         userId: selectedApplicant,
         message: `Recruiter accepted your cv in ${job.title}`,
       });
-      console.log("Accepted successfully");
+
+      saveNotification(`Recruiter accepted your cv in ${job.title}`);
+      toast.success("Accepted successfully");
       setOpenDialog(false); // Close the dialog after accepting
     } catch (error) {
       console.error("handleAccept fail:", error);
@@ -101,8 +111,11 @@ const JobDetail = () => {
     try {
       socket.emit("reject_applied", {
         rejected: true,
+        userId: selectedApplicant,
         message: `Recruiter rejected your cv in ${job.title}`,
       });
+
+      saveNotification(`Recruiter rejected your cv in ${job.title}`);
 
       setReload(!reload); // Reload the data
     } catch (error) {
@@ -112,6 +125,7 @@ const JobDetail = () => {
 
   return (
     <Container>
+      <ToastContainer />
       {/*Job List*/}
       <Detail />
       {/*View Cv List*/}
