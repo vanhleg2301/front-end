@@ -9,17 +9,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import { useNavigate } from "react-router-dom";
+import { generateRoomId } from "../../util/formatHelpers";
 
 export default function HomeMeeting() {
   const [roomId, setRoomId] = useState("");
   const navigate = useNavigate();
 
   const createAndJoin = () => {
-    const roomId = uuidv4();
+    const roomId = generateRoomId();
     navigate(`${roomId}`);
   };
 

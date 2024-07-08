@@ -1,9 +1,24 @@
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
+
+export const getRandomLetter = () => {
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  return letters[Math.floor(Math.random() * letters.length)];
+}
+
+export const generateRoomId = () => {
+  let roomId = uuidv4()
+    .replace(/-/g, "")
+    .substring(0, 10)
+    .replace(/(\w{3})(\w{4})(\w{3})/, "$1-$2-$3");
+
+  roomId = roomId.replace(/\d/g, getRandomLetter);
+  return roomId;
+}
 
 export const formatDate = (timestamp) => {
   return moment(timestamp).format("h:mm A, MMMM Do YYYY");
 };
-
 
 // format description
 export const formatDescription = (description) => {

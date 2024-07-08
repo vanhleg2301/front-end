@@ -110,24 +110,28 @@ export default function Notification() {
                     gap: 1,
                   }}>
                   <Typography variant='body2'>{message} </Typography>
-                  <Typography variant='body2'>
-                    And you have a meeting at:{" "}
-                    {formatDate(notification.timeMeeting)}
-                  </Typography>
-
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    size='small'
-                    component={Link}
-                    to={`/meet/${notification.linkMeeting}`}>
-                    Meet link
-                  </Button>
+                  {!notification.rejected && (
+                    <>
+                      <Typography variant='body2'>
+                        And you have a meeting at:{" "}
+                        {formatDate(notification.timeMeeting)}
+                      </Typography>
+                      <Button
+                        variant='outlined'
+                        color='primary'
+                        size='small'
+                        component={Link}
+                        to={`/meet/${notification.linkMeeting}`}>
+                        Meet link
+                      </Button>
+                    </>
+                  )}
+                  
                 </MenuItem>
               );
             })
         ) : (
-          <MenuItem sx={{ p: 5 }}>No notifications</MenuItem>
+          <MenuItem sx={{ p: 5 }}>No notifications now</MenuItem>
         )}
       </Menu>
     </>

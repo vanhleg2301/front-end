@@ -101,12 +101,12 @@ export default function NotificationRecruiter() {
                   sx={{ p: 3 }}
                   component={Link}
                   to={`jobByRecruiter/${notification.jobId}`}>
-                  {message} at {formatDate(notification.createdAt)}
+                  {message} at {formatDate(notification.updatedAt)}
                 </MenuItem>
               );
             })
         ) : (
-          <MenuItem sx={{ p: 3 }}>No notifications</MenuItem>
+          <MenuItem sx={{ p: 3 }}>No notifications now</MenuItem>
         )}
       </Menu>
     </>

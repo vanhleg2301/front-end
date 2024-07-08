@@ -71,6 +71,19 @@ const JobDetail = () => {
     }
   };
 
+  const handleReject = async () => {
+    try {
+      socket.emit("reject_applied", {
+        rejected: true,
+        message: `Recruiter rejected your cv in ${job.title}`,
+      });
+
+      setAccepted(true); // Set accepted to true after accepting
+    } catch (error) {
+      console.error("handleAccept fail:", error);
+    }
+  };
+
   if (!job) {
     return <Typography>Loading...</Typography>;
   }
@@ -196,26 +209,28 @@ const JobDetail = () => {
                         </TableCell>
                         <TableCell>
                           {accepted ? (
-                            <Button variant="outlined" disabled>
+                            <Button variant='outlined' disabled>
                               Accepted
                             </Button>
                           ) : (
                             <Button
-                              color="primary"
-                              variant="contained"
-                              onClick={handleAccept}
-                            >
+                              color='primary'
+                              variant='contained'
+                              onClick={handleAccept}>
                               Accept
                             </Button>
                           )}
                         </TableCell>
-                        <TableCell >
+                        <TableCell>
                           {accepted ? (
-                            <Button variant="outlined" disabled>
+                            <Button variant='outlined' disabled>
                               Reject
                             </Button>
                           ) : (
-                            <Button color="error" variant="contained">
+                            <Button
+                              color='error'
+                              variant='contained'
+                              onClick={handleReject}>
                               Reject
                             </Button>
                           )}
