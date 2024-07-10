@@ -17,34 +17,43 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useScript from "react-script-hook";
 import { createPaymentLink } from "../PaymentApi/payosApi";
 import { AuthContext } from "../../context/AuthProvider";
-import QRCode from "qrcode.react";
 
 export default function PaymentPage() {
-  const {userLogin} = useContext(AuthContext);
+  const { userLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { packageName, pricePackage, descriptionPackage } =
+  const { packageName, pricePackage, descriptionPackage, quantity } =
     location.state || {};
-  // console.log("packageName: ", location.state);
 
-  const [openUICustomLoading, setOpenUICustomLoading] = useState(false);
   const [redirectLoading, setRedirectLoading] = useState(false);
   const [openDialogLoading, setOpenDialogLoading] = useState(false);
   const [selectedBank, setSelectedBank] = useState("");
   const [listBank, setListBank] = useState([]);
   const productNameRef = useRef("");
   const descriptionRef = useRef("");
-  const priceRef = useRef(1000);
   const buyerName = userLogin.user.fullName;
 
   const RETURN_URL = `${window.location.href}/result`;
   const CANCEL_URL = `${window.location.href}/result`;
 
+  // Load PayOS script
   const PAYOS_SCRIPT = process.env.REACT_APP_PAYOS_SCRIPT;
   const [loading, error] = useScript({
     src: PAYOS_SCRIPT,
     checkForExisting: true,
+    onload: () => {
+      console.log("hi");
+    },
+    onerror: () => {
+      console.error("Error loading PayOS script");
+    },
   });
+
+  useEffect(() => {
+    if (!loading && !error) {
+      console.log("PayOS script is ready to use");
+    }
+  }, [loading, error]);
 
   useEffect(() => {
     const fetchListBank = async () => {
@@ -77,13 +86,13 @@ export default function PaymentPage() {
         buyerName: buyerName,
         description: descriptionPackage,
         productName: packageName,
-        // price: Number(pricePackage),
-        amount: Number(pricePackage),
+        price: Number(pricePackage),
+        amount: quantity,
         returnUrl: RETURN_URL,
         cancelUrl: CANCEL_URL,
       });
       const response = await createPaymentLink(body);
-      // console.log("response: ", response);
+      console.log("response from payment page: ", response.data);
 
       if (response.error != 0) throw new Error("Call Api failed: ");
       callbackFunction(response.data);
@@ -95,33 +104,20 @@ export default function PaymentPage() {
     }
   };
 
-  // const openUICustom = (checkoutResponse) => {};
-
   const redirectPaymentLink = async function (checkoutResponse) {
     if (checkoutResponse) {
       let url = checkoutResponse.checkoutUrl;
       if (
         checkoutResponse.checkoutUrl.startsWith(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
+          "http://localhost:5173/payment/pay"
         )
       ) {
         url = checkoutResponse.checkoutUrl.replace(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a",
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
+          "http://localhost:5173/payment/pay",
+          "http://localhost:5173/payment/pay"
         );
       }
-
-      if (
-        checkoutResponse.checkoutUrl.startsWith(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
-        )
-      ) {
-        url = checkoutResponse.checkoutUrl.replace(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a",
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
-        );
-      }
-      window.location.href = url;
+      navigate("pay", { state: { checkoutResponse } });
     }
   };
 
@@ -131,42 +127,44 @@ export default function PaymentPage() {
       let url = checkoutResponse.checkoutUrl;
       if (
         checkoutResponse.checkoutUrl.startsWith(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
+          "http://localhost:5173/payment/pay"
         )
       ) {
         url = checkoutResponse.checkoutUrl.replace(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a",
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
+          "http://localhost:5173/payment/pay",
+          "http://localhost:5173/payment/pay"
         );
       }
-      if (
-        checkoutResponse.checkoutUrl.startsWith(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
-        )
-      ) {
-        url = checkoutResponse.checkoutUrl.replace(
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a",
-          "https://pay.payos.vn/web/87dc4cd8892e40409c9ea9d667ee467a"
+      console.log("PayOSCheckout object: ", window.PayOSCheckout);
+      console.log(
+        "PayOSCheckout object: ",
+        typeof window.PayOSCheckout.usePayOS
+      );
+      if (typeof window.PayOSCheckout.usePayOS === "function") {
+        let { open } = window.PayOSCheckout.usePayOS({
+          RETURN_URL: RETURN_URL,
+          ELEMENT_ID: "config_root",
+          CHECKOUT_URL: url,
+          orderCode: checkoutResponse.orderCode,
+          qrCode: checkoutResponse.qrCode,
+          onExit: (eventData) => {
+            console.log("onExit eventData: ", eventData);
+          },
+          onSuccess: (eventData) => {
+            console.log("onSuccess eventData: ", eventData);
+            window.location.href = `${RETURN_URL}?orderCode=${eventData.orderCode}`;
+          },
+          onCancel: (eventData) => {
+            console.log("onCancel eventData: ", eventData);
+            window.location.href = `${CANCEL_URL}?orderCode=${eventData.orderCode}`;
+          },
+        });
+        open();
+      } else {
+        console.error(
+          "PayOSCheckout is not defined or usePayOS is not a function"
         );
       }
-      // console.log(url);
-      let { open } = window.PayOSCheckout.usePayOS({
-        RETURN_URL: RETURN_URL,
-        ELEMENT_ID: "config_root",
-        CHECKOUT_URL: url,
-        onExit: (eventData) => {
-          console.log(eventData);
-        },
-        onSuccess: (eventData) => {
-          console.log(eventData);
-          window.location.href = `${RETURN_URL}?orderCode=${eventData.orderCode}`;
-        },
-        onCancel: (eventData) => {
-          console.log(eventData);
-          window.location.href = `${CANCEL_URL}?orderCode=${eventData.orderCode}`;
-        },
-      });
-      open();
     }
   };
 
@@ -194,6 +192,23 @@ export default function PaymentPage() {
                 variant='outlined'
                 defaultValue={packageName}
                 inputRef={productNameRef}
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+              />
+            </Box>
+          </Box>
+          <Box component='div' sx={{ marginTop: "20px", marginBottom: "20px" }}>
+            <Box component='div' sx={{ width: "100%", marginTop: "10px" }}>
+              <TextField
+                id='outlined-basic'
+                label='Amount'
+                variant='outlined'
+                defaultValue={quantity}
+                InputProps={{
+                  readOnly: true,
+                }}
                 fullWidth
               />
             </Box>
@@ -204,8 +219,10 @@ export default function PaymentPage() {
                 id='outlined-basic'
                 label='Price package'
                 variant='outlined'
-                defaultValue={pricePackage}
-                inputRef={priceRef}
+                defaultValue={pricePackage * quantity}
+                InputProps={{
+                  readOnly: true,
+                }}
                 fullWidth
               />
             </Box>
@@ -243,6 +260,9 @@ export default function PaymentPage() {
                 variant='outlined'
                 defaultValue={descriptionPackage}
                 inputRef={descriptionRef}
+                InputProps={{
+                  readOnly: true,
+                }}
                 fullWidth
               />
             </Box>

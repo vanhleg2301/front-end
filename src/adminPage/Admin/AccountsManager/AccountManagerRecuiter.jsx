@@ -18,7 +18,7 @@ const AccountManagerRecuiter = () => {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9999/user")
+    fetch("http://localhost:9999/user/user")
       .then((resp) => resp.json())
       .then((data) => {
         setRecuiters(data.filter((a) => a.roleID === 2));

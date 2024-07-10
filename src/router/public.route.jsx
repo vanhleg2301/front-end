@@ -14,19 +14,21 @@ import { SocketProvider } from "../context/socket";
 import Room from "../pages/MeetingPages/Room";
 import CheckRole13 from "./CheckRole13";
 import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
+import WaitingAccepted from "../pages/WaitingAccepted";
 
 export default function publicRoutes() {
   return [
     {
-      path: "/",
-      element: (
-        <Layout>
-          <Outlet />
-        </Layout>
-      ),
+      element: <CheckRole23 roles={[2, 3]} />,
       children: [
         {
-          element: <CheckRole23 roles={[2, 3]} />,
+          path: "/",
+          element: (
+            <Layout>
+              <Outlet />
+            </Layout>
+          ),
+
           children: [
             { index: true, element: <Home /> },
             {
@@ -80,6 +82,10 @@ export default function publicRoutes() {
           ],
         },
       ],
+    },
+    {
+      path: "/waiting-accepted",
+      element: <WaitingAccepted />,
     },
   ];
 }

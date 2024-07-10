@@ -1,5 +1,5 @@
-import React from "react";
-import { Paper, Typography, Button, Grid, Box } from "@mui/material";
+import React, { useState } from "react";
+import { Paper, Typography, Button, Grid, Box, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const packages = [
     description: "Bronze package",
     create: 3,
     update: 3,
-    price: "3000",
+    price: "2000",
   },
   {
     name: "Silver",
@@ -29,6 +29,16 @@ const packages = [
 
 const Subscription = () => {
   const navigate = useNavigate();
+  const [quantity, setQuantity] = useState({}); // State to store quantity for each package
+
+  // Initialize quantity for each package to default of 1
+  useState(() => {
+    const initialQuantity = {};
+    packages.forEach(pkg => {
+      initialQuantity[pkg.name] = 1;
+    });
+    setQuantity(initialQuantity);
+  });
 
   const handleBuyPackage = (pkg) => {
     navigate("/payment", {
@@ -36,8 +46,24 @@ const Subscription = () => {
         packageName: pkg.name,
         pricePackage: pkg.price,
         descriptionPackage: pkg.description,
+        quantity: quantity[pkg.name], // Include quantity for the selected package
       },
     });
+  };
+
+  const handleChangeQuantity = (event, pkg) => {
+    const value = parseInt(event.target.value);
+    if (!isNaN(value) && value > 0) {
+      setQuantity({
+        ...quantity,
+        [pkg.name]: value,
+      });
+    } else {
+      setQuantity({
+        ...quantity,
+        [pkg.name]: 1, // Default to 1 if invalid input
+      });
+    }
   };
 
   return (
@@ -60,6 +86,14 @@ const Subscription = () => {
                   Number of update: {pkg.update}
                 </Typography>
                 <Typography variant='body1'>Price: ${pkg.price}</Typography>
+                <TextField
+                  type="number"
+                  label="Quantity"
+                  value={quantity[pkg.name]}
+                  onChange={(event) => handleChangeQuantity(event, pkg)}
+                  inputProps={{ min: 1 }} // Ensure quantity is positive
+                  sx={{ marginTop: 2 }}
+                />
                 <Button
                   variant='contained'
                   color='primary'

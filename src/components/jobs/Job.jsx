@@ -130,7 +130,7 @@ export default function Job() {
 
       <Container sx={{ mt: 2, mb: 2 }}>
         {/*Filter*/}
-        <FilterJob />
+         {/* <FilterJob /> */}
         {/* content list job */}
         <Grid container spacing={2}>
           {paginatedData.length === 0 ? (

@@ -6,6 +6,9 @@ import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import Payment from "../pages/PaymentPage/Payment";
 import Result from "../pages/PaymentPage/Result";
 import Subscription from "../pages/SubscriptionPage/Subscription";
+import { SocketProvider } from "../context/socket";
+import BankPayment from "../pages/PaymentComponents/BankPayment";
+import Transactions from "../pages/PaymentComponents/Transactions";
 
 export default function Public() {
   return {
@@ -14,9 +17,23 @@ export default function Public() {
       { path: "/forgot", element: <ForgotPassword /> },
       { path: "/rules", element: <RulePage /> },
       { path: "/upgrade", element: <Subscription /> },
-      { path: "/payment", element: <PaymentPage /> },
-      { path: "/payment/pay", element: <Payment /> },
-      { path: "/payment/result", element: <Result /> },
+
+      {
+        path: "/payment",
+        element: (
+          <SocketProvider>
+            <Outlet />
+          </SocketProvider>
+        ),
+        children: [
+          { index: true, element: <PaymentPage /> },
+          { path: "/payment/pay", element: <Payment /> },
+          { path: "/payment/qr", element: <BankPayment /> },
+          { path: "/payment/result", element: <Result /> },
+          { path: "/payment/transactions", element: <Transactions /> },
+        ],
+      },
+
       // Define more child routes as needed
     ],
   };

@@ -75,7 +75,9 @@ export default function Login() {
           navigate("/");
         }
         if (response.user.roleID === 2) {
-          navigate("/recruiter");
+          if(response.user.isActive === true){navigate("/recruiter");}
+          if(response.user.isActive === false){navigate("/waiting-accepted");}
+          
         }
         if (response.user.roleID === 3) {
           navigate("/admin");

@@ -1,34 +1,36 @@
-import { Box, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  CircularProgress,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import QRCode from "qrcode.react";
-
-import { cancelOrder, getListBank } from "../api/payosApi";
+import QRCode from "react-qr-code";
 import io from "socket.io-client";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { CircularProgress } from "react-cssfx-loading";
 import CheckIcon from "@mui/icons-material/Check";
-import { useNavigate } from "react-router-dom";
 import DownloadIcon from "@mui/icons-material/Download";
 import ShareIcon from "@mui/icons-material/Share";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toJpeg } from "html-to-image";
-
+import { cancelOrder, getListBank } from "../PaymentApi/payosApi";
+import { useSocket } from "../../context/socket";
 
 const BankPayment = ({ props }) => {
   const [open, setOpen] = useState(false);
   const [openQR, setOpenQR] = useState(false);
   const [isCheckout, setIsCheckout] = useState(false);
   const [bank, setBank] = useState(null);
+  const navigate = useNavigate();
   const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
-  const navigate = useNavigate();
   const handleCopyText = (textToCopy) => {
-    // Tạo một textarea ẩn để Copy nội dung
     toast.success("Copy thành công");
     navigator.clipboard.writeText(textToCopy);
   };
@@ -37,12 +39,13 @@ const BankPayment = ({ props }) => {
     cancelOrder(props.orderCode).then((res) => {
       console.log(res);
     });
-    navigate("/result", {
+    navigate("/payment/result", {
       state: {
         orderCode: props.orderCode,
       },
     });
   };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -50,14 +53,14 @@ const BankPayment = ({ props }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const downloadQRCode = async () => {
     var node = document.getElementById("my-node");
 
-    toJpeg(node, {quality: 0.95})
+    toJpeg(node, { quality: 0.95 })
       .then(function (dataUrl) {
-        // download(dataUrl, "my-node.png");
-        const link = document.createElement('a');
-        link.download =  `${props.accountNumber}_${props.bin}_${props.amount}_${props.orderCode}_Qrcode.png`;
+        const link = document.createElement("a");
+        link.download = `${props.accountNumber}_${props.bin}_${props.amount}_${props.orderCode}_Qrcode.png`;
         link.href = dataUrl;
         link.click();
         link.remove();
@@ -66,6 +69,7 @@ const BankPayment = ({ props }) => {
         console.error("oops, something went wrong!", error);
       });
   };
+
   useEffect(() => {
     if (!props?.bin) return;
     (async () => {
@@ -82,251 +86,207 @@ const BankPayment = ({ props }) => {
         socket.emit("leaveOrderRoom", props.orderCode);
 
         setTimeout(() => {
-          navigate("/result", {
+          navigate("/payment/result", {
             state: {
               orderCode: props.orderCode,
             },
           });
         }, 3000);
       }
-
-      // Cập nhật trạng thái đơn hàng trên giao diện người dùng
     });
 
     socket.emit("joinOrderRoom", props.orderCode);
 
-    // Gửi yêu cầu rời khỏi phòng orderId khi component bị hủy
     return () => {
       socket.emit("leaveOrderRoom", props.orderCode);
     };
   }, []);
-  return (
-    <Box
-      component={"div"}
-      sx={{ flex: 3, borderWidth: 0.5, alignItems: "center" }}
-      className="!border-gray-200 !border-solid rounded-2xl shadow p-5 !bg-gradient-to-r from-purple-300 to-blue-400 flex flex-col !w-full"
-    >
-      <Typography className="!text-xl !font-bold text-gray-700 pb-5">
-        Thanh toán qua ngân hàng
-      </Typography>
-      <Box
-        component={"div"}
-        className="flex lg:flex-row w-full gap-10 md:flex-col sm:flex-row flex-col"
-      >
-        <Box
-          component={"div"}
-          className="flex flex-row self-center w-8/12 xl:w-4/12 2xl:w-3/12"
-        >
-          <Button className="w-full h-full" onClick={() => setOpenQR(true)}>
-            <QRCode
-              value={props.qrCode}
-              level="M"
-              includeMargin={true}
-              renderAs="svg"
-              fgColor={"#25174E"}
-              bgColor="transparent"
-              style={{ borderRadius: 10, width: "100%", height: "100%" }}
-              className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
-            />
-          </Button>
-        </Box>
-        <Box component={"div"} className="flex flex-col gap-5">
-          <Box component={"div"} className="flex flex-row gap-2">
-            <img src={bank?.logo} width={100} height={55} />
-            <Box component={"div"} className="flex flex-col">
-              <Typography className="text-gray-900 text-opacity-70 !text-sm">
-                Ngân hàng
-              </Typography>
-              <Typography className="text-gray-800 !text-sm !font-bold">
-                {bank?.name}
-              </Typography>
-            </Box>
-          </Box>
-          <Box component={"div"} className="flex flex-col gap-2">
-            <Box component={"div"} className="flex flex-row">
-              <Box component={"div"} className="flex flex-col">
-                <Typography className="text-gray-900 text-opacity-70 !text-sm">
-                  Chủ tài khoản:
-                </Typography>
-                <Typography className="text-gray-800 !text-sm !font-bold">
-                  {props.accountName}
-                </Typography>
-              </Box>
-            </Box>
-            <Box component={"div"} className="flex flex-row">
-              <Box
-                component={"div"}
-                className="flex flex-col"
-                sx={{ flex: 11 }}
-              >
-                <Typography className="text-gray-900 text-opacity-70 !text-sm">
-                  Số tài khoản :
-                </Typography>
-                <Typography className="text-gray-800 !text-sm !font-bold">
-                  {props.accountNumber}
-                </Typography>
-              </Box>
-              <Button
-                variant="contained"
-                size="small"
-                className="h-7 !bg-purple-200 !object-right !ml-auto !my-auto"
-                sx={{ flex: 2 }}
-                onClick={() => handleCopyText(props.accountNumber)}
-              >
-                <Typography className="!text-xs !font-bold text-gray-600 normal-case">
-                  Copy
-                </Typography>
-              </Button>
-            </Box>
-            <Box component={"div"} className="flex flex-row">
-              <Box
-                component={"div"}
-                className="flex flex-col"
-                sx={{ flex: 11 }}
-              >
-                <Typography className="text-gray-900 text-opacity-70 !text-sm">
-                  Số tiền :
-                </Typography>
-                <Typography className="text-gray-800 !text-sm !font-bold">
-                  {props.amount} vnd
-                </Typography>
-              </Box>
-              <Button
-                variant="contained"
-                size="small"
-                className="h-7 !bg-purple-200 !object-right !ml-auto !my-auto"
-                sx={{ flex: 2 }}
-                onClick={() => handleCopyText(props.amount)}
-              >
-                <Typography className="!text-xs !font-bold text-gray-600 normal-case">
-                  Copy
-                </Typography>
-              </Button>
-            </Box>
-            <Box component={"div"} className="flex flex-row">
-              <Box
-                component={"div"}
-                className="flex flex-col"
-                sx={{ flex: 11 }}
-              >
-                <Typography className="text-gray-900 text-opacity-70 !text-sm">
-                  Nội dung :
-                </Typography>
-                <Typography className="text-gray-800 !text-sm !font-bold ">
-                  {props.description}
-                </Typography>
-              </Box>
-              <Button
-                variant="contained"
-                size="small"
-                sx={{ flex: 2 }}
-                className="h-7 !bg-purple-200 !object-right !ml-auto !my-auto"
-                onClick={() => handleCopyText(props.description)}
-              >
-                <Typography className="!text-xs !font-bold text-gray-600 normal-case">
-                  Copy
-                </Typography>
-              </Button>
-            </Box>
-          </Box>
 
-          <Typography className="!text-sm text-gray-700">
-            Lưu ý : Nhập chính xác nội dung{" "}
-            <span className="!font-bold">{props.description}</span> khi chuyển
-            khoản
-          </Typography>
-          <Box component={"div"} className="flex flex-row gap-5 items-center">
-            {!isCheckout && (
-              <>
-                <CircularProgress color="gray" width="30px" height="30px" />
-                <Typography className="!text-lg text-gray-700">
-                  Đơn hàng đang chờ được thanh toán
-                </Typography>
-              </>
-            )}
-            {isCheckout && (
-              <>
-                <CheckIcon width={30} height={30} color="success" />
-                <Typography className="!text-lg text-gray-700">
-                  Đơn hàng đã được thanh toán thành công
-                </Typography>
-              </>
-            )}
-          </Box>
-        </Box>
-      </Box>
-      <Typography className="!text-sm text-gray-700 p-5">
-        Mở App Ngân hàng bất kỳ để quét mã VietQR hoặc chuyển khoản chính xác
-        nội dung bên trên
-      </Typography>
-      <Button
-        variant="contained"
-        onClick={handleClickOpen}
-        className="!bg-white h-10 w-40"
-      >
-        <Typography className={"normal-case !font-bold text-gray-700"}>
-          Hủy thanh toán
+  // Add conditional rendering based on props.qrCode existence
+  if (!props || !props.qrCode) {
+    return <div>Loading...</div>; // or handle the loading state or error state
+  }
+
+  return (
+    <Paper>
+      <Box
+        sx={{
+          flex: 3,
+          borderWidth: 0.5,
+          alignItems: "center",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          backgroundColor: "#f5f5f5",
+          borderRadius: 2,
+          padding: 5,
+          boxShadow: 3,
+        }}>
+        <Typography
+          variant='h6'
+          fontWeight='bold'
+          color='textPrimary'
+          gutterBottom>
+          Thanh toán qua ngân hàng
         </Typography>
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" className="self-center">{"Huỷ bỏ đơn hàng"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description" sx={{color: "text.primary"}}>
-            Bạn có chắc muốn huỷ đơn hàng hay không?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Huỷ bỏ</Button>
-          <Button onClick={cancelOrderHandle} autoFocus>
-            Xác nhận
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/*Dialog for Qr Code*/}
-      <Dialog open={openQR} onClose={() => setOpenQR(false)}>
-        <Box
-          component={"div"}
-          className="p-20 flex flex-col justify-center items-center gap-5"
-        >
-          <Typography className="text-center">
-            Mở App Ngân hàng bất kỳ để quét mã VietQR
-          </Typography>
-          <QRCode
-            id="my-node"
-            value={props.qrCode}
-            level="M"
-            includeMargin={true}
-            renderAs="svg"
-            fgColor={"#25174E"}
-            bgColor="transparent"
-            style={{ borderRadius: 10, width: "100%", height: "100%" }}
-            className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
-          />
-          <Box component={"div"} className="flex flex-row gap-10 pt-10">
-            <Button
-              variant="outlined"
-              startIcon={<DownloadIcon />}
-              color="inherit"
-              onClick={downloadQRCode}
-            >
-              <Typography className="normal-case">Tải xuống</Typography>
-            </Button>
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<ShareIcon />}
-            >
-              <Typography className="normal-case">Chia sẻ</Typography>
+        <Box display='flex' flexDirection={{ xs: "column", md: "row" }} gap={2}>
+          <Box display='flex' justifyContent='center' flex={1}>
+            <Button onClick={() => setOpenQR(true)}>
+              <QRCode
+                value={props.qrCode}
+                size={200} // Kích thước của mã QR
+                bgColor='#FFFFFF' // Màu nền của mã QR
+                fgColor='#25174E' // Màu của dữ liệu mã QR
+                level='M' // Mức độ sửa lỗi, có thể là L, M, Q, H
+                includeMargin={true} // Bao gồm lề xung quanh mã QR
+                renderAs='svg' // Định dạng đầu ra của mã QR
+                style={{ borderRadius: 10, width: "100%", height: "100%" }} // Tùy chỉnh CSS cho mã QR
+              />
             </Button>
           </Box>
+          <Box display='flex' flexDirection='column' flex={2} gap={2}>
+            <Box display='flex' gap={2} alignItems='center'>
+              <img src={bank?.logo} width={100} height={55} alt='Bank Logo' />
+              <Box>
+                <Typography color='textSecondary'>Ngân hàng</Typography>
+                <Typography fontWeight='bold' color='textPrimary'>
+                  {bank?.name}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display='flex' flexDirection='column' gap={1}>
+              <Box display='flex' alignItems='center'>
+                <Box flex={1}>
+                  <Typography color='textSecondary'>Chủ tài khoản:</Typography>
+                  <Typography fontWeight='bold' color='textPrimary'>
+                    {props.accountName}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box display='flex' alignItems='center'>
+                <Box flex={1}>
+                  <Typography color='textSecondary'>Số tài khoản :</Typography>
+                  <Typography fontWeight='bold' color='textPrimary'>
+                    {props.accountNumber}
+                  </Typography>
+                </Box>
+                <Button
+                  variant='outlined'
+                  size='small'
+                  onClick={() => handleCopyText(props.accountNumber)}>
+                  Copy
+                </Button>
+              </Box>
+              <Box display='flex' alignItems='center'>
+                <Box flex={1}>
+                  <Typography color='textSecondary'>Số tiền :</Typography>
+                  <Typography fontWeight='bold' color='textPrimary'>
+                    {props.price} vnd
+                  </Typography>
+                </Box>
+                <Button
+                  variant='outlined'
+                  size='small'
+                  onClick={() => handleCopyText(props.amount)}>
+                  Copy
+                </Button>
+              </Box>
+              <Box display='flex' alignItems='center'>
+                <Box flex={1}>
+                  <Typography color='textSecondary'>Nội dung :</Typography>
+                  <Typography fontWeight='bold' color='textPrimary'>
+                    {props.description}
+                  </Typography>
+                </Box>
+                <Button
+                  variant='outlined'
+                  size='small'
+                  onClick={() => handleCopyText(props.description)}>
+                  Copy
+                </Button>
+              </Box>
+            </Box>
+            <Typography color='textPrimary'>
+              Lưu ý : Nhập chính xác nội dung{" "}
+              <strong>{props.description}</strong> khi chuyển khoản
+            </Typography>
+            <Box display='flex' alignItems='center' gap={2}>
+              {!isCheckout ? (
+                <>
+                  <CircularProgress size={24} />
+                  <Typography variant='body1' color='textPrimary'>
+                    Đơn hàng đang chờ được thanh toán
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <CheckIcon color='success' />
+                  <Typography variant='body1' color='textPrimary'>
+                    Đơn hàng đã được thanh toán thành công
+                  </Typography>
+                </>
+              )}
+            </Box>
+          </Box>
         </Box>
-      </Dialog>
-    </Box>
+        <Button
+          variant='contained'
+          color='error'
+          onClick={handleClickOpen}
+          style={{ marginTop: 16 }}>
+          Hủy thanh toán
+        </Button>
+
+        {/*Dialog*/}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{"Huỷ bỏ đơn hàng"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Bạn có chắc muốn huỷ đơn hàng hay không?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Huỷ bỏ</Button>
+            <Button onClick={cancelOrderHandle} autoFocus>
+              Xác nhận
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/*Dialog for QR Code*/}
+        <Dialog open={openQR} onClose={() => setOpenQR(false)}>
+          <Box
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            padding={3}
+            gap={2}>
+            <Typography>Mở App Ngân hàng bất kỳ để quét mã VietQR</Typography>
+            <QRCode
+              id='my-node'
+              value={props.qrCode}
+              level='M'
+              includeMargin={true}
+              renderAs='svg'
+              fgColor={"#25174E"}
+              bgColor='transparent'
+              style={{ borderRadius: 10, width: "100%", height: "100%" }}
+            />
+            <Box display='flex' gap={2}>
+              <Button
+                variant='outlined'
+                startIcon={<DownloadIcon />}
+                onClick={downloadQRCode}>
+                Tải xuống
+              </Button>
+              <Button variant='outlined' startIcon={<ShareIcon />}>
+                Chia sẻ
+              </Button>
+            </Box>
+          </Box>
+        </Dialog>
+      </Box>
+    </Paper>
   );
 };
 

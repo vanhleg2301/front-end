@@ -18,7 +18,7 @@ const AccountsManagerApplicant = () => {
   const [applicants, setApplicants] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9999/user")
+    fetch("http://localhost:9999/user/user")
       .then((resp) => resp.json())
       .then((data) => {
         setApplicants(data.filter((a) => a.roleID === 1));
