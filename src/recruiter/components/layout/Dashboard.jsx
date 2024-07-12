@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems, secondaryListItems } from "./ListItem";
+import MainListItems, {  secondaryListItems } from "./ListItem";
 import {
   CssBaseline,
   Box,
@@ -167,7 +167,7 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component='nav'>
-            {mainListItems}
+            <MainListItems/>
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>

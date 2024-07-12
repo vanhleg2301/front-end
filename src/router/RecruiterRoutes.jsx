@@ -10,9 +10,8 @@ import CompanyDetail from "../recuiter/components/companyList/CompanyDetail";
 import JobDetail from "../recuiter/components/JobList/JobDetail";
 import ProfileRecruiter from "../recuiter/components/profile/ProfileRecruiter";
 import { SocketProvider } from "../context/socket";
-import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
-import Room from "../pages/MeetingPages/Room";
-import CheckRole13 from "./CheckRole13";
+import WaitActiveCompany from "../recuiter/components/companyList/WaitActiveCompany";
+import WaitingAccepted from "../pages/WaitingAccepted";
 
 export default function RecruiterRoutes() {
   return [
@@ -25,35 +24,24 @@ export default function RecruiterRoutes() {
       ),
       children: [
         { index: true, element: <RecruiterPage /> },
-        {
-          path: "companyregister",
-          element: <ChooseCompany />,
-        },
-        {
-          path: "createjob",
-          element: <CreateJob />,
-        },
-        {
-          path: "jobByRecruiter",
-          element: <JobList />,
-        },
-        {
-          path: "jobByRecruiter/:jobId",
-          element: <JobDetail />,
-        },
-        {
-          path: "companyByRecruiter",
-          element: <CompanyList />,
-        },
-        {
-          path: "companyByRecruiter/:companyId",
-          element: <CompanyDetail />,
-        },
-        {
-          path: "profile",
-          element: <ProfileRecruiter />,
-        },
+        { path: "companyregister", element: <ChooseCompany /> },
+        { path: "waiting", element: <WaitActiveCompany /> },
+        { path: "createjob", element: <CreateJob /> },
+        { path: "jobByRecruiter", element: <JobList /> },
+        { path: "jobByRecruiter/:jobId", element: <JobDetail /> },
+        { path: "companyByRecruiter", element: <CompanyList /> },
+        { path: "companyByRecruiter/:companyId", element: <CompanyDetail /> },
+        { path: "profile", element: <ProfileRecruiter /> },
       ],
+    },
+    {
+      path: "/waiting-accepted",
+      element: (
+        <SocketProvider>
+          <Outlet />
+        </SocketProvider>
+      ),
+      children: [{ index: true, element: <WaitingAccepted /> }],
     },
   ];
 }

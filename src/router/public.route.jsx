@@ -12,9 +12,7 @@ import CheckRole23 from "./CheckRole23";
 import React from "react";
 import { SocketProvider } from "../context/socket";
 import Room from "../pages/MeetingPages/Room";
-import CheckRole13 from "./CheckRole13";
 import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
-import WaitingAccepted from "../pages/WaitingAccepted";
 
 export default function publicRoutes() {
   return [
@@ -69,23 +67,14 @@ export default function publicRoutes() {
       ),
       children: [
         {
-          element: <CheckRole13 roles={[0]} />,
-          children: [
-            {
-              index: true,
-              element: <HomeMeeting />,
-            },
-            {
-              path: ":roomId",
-              element: <Room />,
-            },
-          ],
+          index: true,
+          element: <HomeMeeting />,
+        },
+        {
+          path: ":roomId",
+          element: <Room />,
         },
       ],
-    },
-    {
-      path: "/waiting-accepted",
-      element: <WaitingAccepted />,
     },
   ];
 }

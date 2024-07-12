@@ -91,13 +91,57 @@ const ChooseCompany = () => {
       if (response.ok) {
         console.log("response: ", response);
         alert("Create successful");
-        navigate("/recruiter/companyByRecruiter");
+        navigate("waiting");
+        // navigate("/recruiter/companyByRecruiter");
       } else {
         throw new Error("Create failed");
       }
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handlePatchCompany = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("companyId", selectedCompany?._id); // Thêm tên công ty vào FormData
+    formData.append("recruiterID", userLogin.user._id);
+    console.log("selectedCompany: ", formData);
+    try {
+      const response = await fetch("http://localhost:9999/company", {
+        method: "PATCH",
+        body: formData, // Gửi FormData chứa các trường và file
+      });
+      if (response.ok) {
+        console.log("response: ", response);
+        alert("Patch successful");
+        navigate("/recruiter/companyByRecruiter");
+      } else {
+        throw new Error("Patch failed");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedCompany(null);
+    setCompanyName("");
+    setNewAddress("");
+    setNewCommune("");
+    setNewDistrict("");
+    setNewProvince("");
+    setEmail("");
+    setPhoneNumber("");
+    setTaxNumber("");
+    setNumberOfEmployees("");
+    setLogoFile(null);
+    setBusinessLicenseFile(null);
+  };
+
+  const truncateFileName = (name, maxLength) => {
+    if (name.length <= maxLength) return name;
+    return name.substring(0, maxLength) + "...";
   };
 
   return (
@@ -126,7 +170,7 @@ const ChooseCompany = () => {
         </Grid>
 
         <Grid container hidden={Boolean(selectedCompany)}>
-          <Grid item xs={12}  hidden={Boolean(selectedCompany)}>
+          <Grid item xs={12} hidden={Boolean(selectedCompany)}>
             <Typography variant='h4' textAlign={"center"}>
               New Company
             </Typography>
@@ -138,7 +182,9 @@ const ChooseCompany = () => {
             className='padding-bot-10px padding-top-20px'
             hidden={Boolean(selectedCompany)}>
             <Typography>Format support: .png,.jpg,.jpeg</Typography>
-            <Typography>Selected file: {logoFile?.name}</Typography>
+            <Typography>
+              Selected file: {truncateFileName(logoFile?.name || "", 20)}
+            </Typography>
             <Button
               sx={{
                 whiteSpace: "nowrap",
@@ -165,7 +211,10 @@ const ChooseCompany = () => {
             className='padding-bot-10px padding-top-20px'
             hidden={Boolean(selectedCompany)}>
             <Typography>Format support: .pdf</Typography>
-            <Typography>Selected file: {businessLicenseFile?.name}</Typography>
+            <Typography>
+              Selected file:{" "}
+              {truncateFileName(businessLicenseFile?.name || "", 20)}
+            </Typography>
             <Button
               sx={{
                 whiteSpace: "nowrap",
@@ -315,10 +364,16 @@ const ChooseCompany = () => {
           xs={6}
           className='padding-topbot-10px padding-right-20px'
           align={"end"}>
-          <Button variant='outlined'>Hủy</Button>
+          <Button variant='outlined' onClick={handleCancel}>
+            Hủy
+          </Button>
         </Grid>
         <Grid item xs={6} className='padding-topbot-10px' align={"start"}>
-          <Button variant='contained' onClick={handleSubmit}>
+          <Button
+            variant='contained'
+            onClick={
+              Boolean(selectedCompany) ? handlePatchCompany : handleSubmit
+            }>
             Hoàn tất
           </Button>
         </Grid>

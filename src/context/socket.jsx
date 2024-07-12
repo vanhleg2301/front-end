@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
     let connection;
     try {
       connection = io(SOCKET_SERVER_URL);
-      console.log("socket connection", connection);
+      console.log("From context socket connection", connection);
       setSocket(connection);
     } catch (error) {
       console.error("Socket connection error:", error);
@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       if (connection) {
         connection.disconnect();
-        console.log("socket disconnected");
+        console.log("From context socket disconnected");
       }
     };
   }, []);

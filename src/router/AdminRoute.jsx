@@ -7,21 +7,24 @@ import CompanyManager from "../adminPage/Admin/AccountsManager/ManagerCompany";
 import AccountManagerRecuiter from "../adminPage/Admin/AccountsManager/AccountManagerRecuiter";
 import AccountsManagerApplicant from "../adminPage/Admin/AccountsManager/AccoutManagerApllicant";
 import AdminPage from "../adminPage/page/AdminPage";
+import { SocketProvider } from "../context/socket";
 
 export default function AdminRoute() {
   return {
     path: "/admin",
     element: (
-      <Layout>
-        <Outlet />
-      </Layout>
+      <SocketProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </SocketProvider>
     ),
     children: [
       { index: true, element: <AdminPage /> },
       { path: "managercv", element: <CVManage /> },
       { path: "managerjob", element: <ManageJob /> },
       { path: "managercompanies", element: <CompanyManager /> },
-      { path: "managerrecruiter", element: <AccountManagerRecuiter /> },
+      {path: "managerrecruiter",element: <AccountManagerRecuiter />},
       { path: "managerapplicant", element: <AccountsManagerApplicant /> },
       { path: "profile", element: <CVManage /> },
     ],

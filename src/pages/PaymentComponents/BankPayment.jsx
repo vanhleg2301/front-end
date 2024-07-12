@@ -30,6 +30,8 @@ const BankPayment = ({ props }) => {
   const navigate = useNavigate();
   const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
+  console.log(props)
+
   const handleCopyText = (textToCopy) => {
     toast.success("Copy thành công");
     navigator.clipboard.writeText(textToCopy);
@@ -91,16 +93,17 @@ const BankPayment = ({ props }) => {
               orderCode: props.orderCode,
             },
           });
-        }, 3000);
+        }, 10000);
       }
     });
 
     socket.emit("joinOrderRoom", props.orderCode);
 
+    // Gửi yêu cầu rời khỏi phòng orderId khi component bị hủy
     return () => {
       socket.emit("leaveOrderRoom", props.orderCode);
     };
-  }, []);
+  }, [props]);
 
   // Add conditional rendering based on props.qrCode existence
   if (!props || !props.qrCode) {
@@ -127,7 +130,7 @@ const BankPayment = ({ props }) => {
           fontWeight='bold'
           color='textPrimary'
           gutterBottom>
-          Thanh toán qua ngân hàng
+          Thanh toán qua ngân hàng 
         </Typography>
         <Box display='flex' flexDirection={{ xs: "column", md: "row" }} gap={2}>
           <Box display='flex' justifyContent='center' flex={1}>
@@ -181,7 +184,7 @@ const BankPayment = ({ props }) => {
                 <Box flex={1}>
                   <Typography color='textSecondary'>Số tiền :</Typography>
                   <Typography fontWeight='bold' color='textPrimary'>
-                    {props.price} vnd
+                    {props.amount} vnd
                   </Typography>
                 </Box>
                 <Button

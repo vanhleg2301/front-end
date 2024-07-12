@@ -25,7 +25,9 @@ export default function CompanyList() {
     const fetchData = async () => {
       try {
         const response = await RequestGet(`${APICOMPANY}/com/${recruiterID}`);
-        const sortedCompanies = response.sort(
+        const com = response
+        console.log(com)
+        const sortedCompanies = com.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         if (response) {

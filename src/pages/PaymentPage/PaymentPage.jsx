@@ -92,7 +92,7 @@ export default function PaymentPage() {
         cancelUrl: CANCEL_URL,
       });
       const response = await createPaymentLink(body);
-      console.log("response from payment page: ", response.data);
+      console.log("response from payment page: ", response);
 
       if (response.error != 0) throw new Error("Call Api failed: ");
       callbackFunction(response.data);
@@ -105,6 +105,7 @@ export default function PaymentPage() {
   };
 
   const redirectPaymentLink = async function (checkoutResponse) {
+    
     if (checkoutResponse) {
       let url = checkoutResponse.checkoutUrl;
       if (
