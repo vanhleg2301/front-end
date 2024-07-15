@@ -19,7 +19,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { RequestGet } from "../../util/request";
 import JobSavedChild from "./JobSavedChild";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { formatSalary } from "../../util/formatHelpers";
+import { formatDate, formatSalary } from "../../util/formatHelpers";
 import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import JobDetailCompany from "./JobDetailCompany";
@@ -69,6 +69,18 @@ export default function JobDetail() {
     checkIfApplied();
     fetchJobDetail();
   }, [jobId, userLogin.user._id]);
+
+  const formatJobDescription = (description) => {
+    return description.split("-").map(
+      (item, index) =>
+        item && (
+          <React.Fragment key={index}>
+            <span>&#8211; {item.trim()}</span>
+            <br />
+          </React.Fragment>
+        )
+    );
+  };
 
   if (!jobDetail) {
     return (
@@ -186,14 +198,15 @@ export default function JobDetail() {
         <Grid container spacing={0}>
           {/*left description*/}
           <Grid item xs={12} md={8}>
-            <Box sx={{ width: "100%", marginTop: -7 }} >
-              <Card sx={{p: 3, borderTop: "1px solid gray" }}>
+            <Box sx={{ width: "100%", marginTop: -7 }}>
+              <Card sx={{ p: 3, borderTop: "1px solid gray" }}>
                 <CardContent>
                   <Typography variant='h6' gutterBottom>
                     Job description
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    {jobDetail.description.JobDescription}
+                    
+                    {formatJobDescription(jobDetail.description.JobDescription)}
                     <br />
                   </Typography>
 
@@ -201,22 +214,22 @@ export default function JobDetail() {
                     Candidate Requirements
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    {jobDetail.description.CandidateRequirements}
+                    {formatJobDescription(jobDetail.description.CandidateRequirements)}
                   </Typography>
 
                   <Typography variant='h6' gutterBottom>
                     Benefit
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    {jobDetail.description.Benefit}
+                    {formatJobDescription(jobDetail.description.Benefit)}
                   </Typography>
 
                   <Typography variant='h6' gutterBottom>
                     Location working
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    - Hà Nội: PHÒNG KHÁM ĐA KHOA MIRAI: Tầng 2, Tòa 901B, Chung
-                    cư Starlake, Xuân Tảo, Bắc Từ Liêm
+                    - {jobDetail.location.address},{jobDetail.location.commune},
+                    {jobDetail.location.district},{jobDetail.location.province}
                     <br />
                   </Typography>
 
@@ -224,7 +237,8 @@ export default function JobDetail() {
                     Working time
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    - Thứ 2 - Thứ 7 (từ 08:00 đến 17:00)
+                    - {jobDetail.typeOfWork === 0 ? "Full-time" : "Part-time"}
+                    <br />- {formatDate(jobDetail.deadline)}
                     <br />
                     - Nghỉ 2 thứ 7 trong tháng
                     <br />

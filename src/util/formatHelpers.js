@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export const getRandomLetter = () => {
   const letters = "abcdefghijklmnopqrstuvwxyz";
   return letters[Math.floor(Math.random() * letters.length)];
-}
+};
 
 export const generateRoomId = () => {
   let roomId = uuidv4()
@@ -14,11 +14,12 @@ export const generateRoomId = () => {
 
   roomId = roomId.replace(/\d/g, getRandomLetter);
   return roomId;
-}
+};
 
 export const formatDate = (timestamp) => {
   return moment(timestamp).format("h:mm A, MMMM Do YYYY");
 };
+
 
 // format description
 export const formatDescription = (description) => {
@@ -38,8 +39,8 @@ export const formatSalary = (minSalary, maxSalary) => {
   if (isNaN(minSalary) || isNaN(maxSalary)) {
     return `${minSalary} - ${maxSalary}`;
   } else {
-    const millionMinSalary = minSalary / 1000;
-    const millionMaxSalary = maxSalary / 1000;
+    const millionMinSalary = minSalary;
+    const millionMaxSalary = maxSalary;
     return `${millionMinSalary} - ${millionMaxSalary} triệu`;
   }
 };

@@ -195,7 +195,7 @@ export default function Job() {
                               variant="body2"
                               color="text.secondary"
                               sx={{ fontWeight: "bold" }}>
-                              {item.title}
+                              {formatDescription(item.title)}
                             </Typography>
                           </Box>
                         </Grid>

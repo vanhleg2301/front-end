@@ -3,8 +3,10 @@ import {
   Button,
   Container,
   Grid,
+  InputLabel,
   MenuItem,
   Select,
+  TextareaAutosize,
   TextField,
   Typography,
 } from "@mui/material";
@@ -30,7 +32,7 @@ const CreateJob = () => {
   const [inputexperience, setInputExperience] = useState(0);
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
-  const [commune, setCommune] = useState("");
+  const [comune, setComune] = useState("");
   const [address, setAddress] = useState("");
   const [inputminSalary, setInputMinSalary] = useState(0);
   const [inputmaxSalary, setInputMaxSalary] = useState(0);
@@ -54,9 +56,9 @@ const CreateJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const recruitersID = userLogin.user._id;
-    const location = { address, district, province, commune };
+    const location = { address, district, province, comune };
     const description = { JobDescription, CandidateRequirements, Benefit };
-    const applicantNumber = parseInt(inputapplicantNumber);
+    const numberOfApplicants = parseInt(inputapplicantNumber);
     const experience = parseInt(inputexperience);
     const minSalary = parseInt(inputminSalary);
     const maxSalary = parseInt(inputmaxSalary);
@@ -69,6 +71,8 @@ const CreateJob = () => {
 
     if (inputgender === "Male") {
       setGender(true);
+    } else if (inputgender === "None") {
+      setGender(null);
     } else {
       setGender(false);
     }
@@ -97,7 +101,7 @@ const CreateJob = () => {
       description,
       industry,
       gender,
-      applicantNumber,
+      numberOfApplicants,
       typeOfWork,
       level,
       experience,
@@ -116,9 +120,8 @@ const CreateJob = () => {
       console.log(newJob);
       if (response.status === 403) {
         toast.error(
-          <Box sx={{cursor: 'pointer'}} onClick={() => (navigate("/upgrade"))}>
-          Your post limit has been reached. 
-          click here and go to upgrade now!
+          <Box sx={{ cursor: "pointer" }} onClick={() => navigate("/upgrade")}>
+            Your post limit has been reached. click here and go to upgrade now!
           </Box>,
           {
             autoClose: 5000, // Automatically close the toast after 5 seconds
@@ -182,13 +185,25 @@ const CreateJob = () => {
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={10} marginBottom={2}>
-            <TextField
-              variant='standard'
-              label='Mô tả công việc'
-              size='small'
+            <InputLabel shrink htmlFor='job-description'>
+              Mô tả công việc
+            </InputLabel>
+            <TextareaAutosize
+              aria-label='maximum height'
+              id='job-description'
               className='width100pc'
-              multiline
+              minRows={4}
               onChange={(e) => setJobDescription(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                fontFamily: "inherit",
+                fontSize: "inherit",
+                lineHeight: "inherit",
+                backgroundColor: "gray",
+                color: 'white',
+                border: "1px solid #ccc", // Optional: add a border for better visibility
+              }}
             />
           </Grid>
           <Grid item xs={1}></Grid>
@@ -310,6 +325,7 @@ const CreateJob = () => {
               value={inputgender}
               className='width100pc'
               onChange={(e) => setInputGender(e.target.value)}>
+              <MenuItem value={"None"}>None</MenuItem>
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>
             </Select>
@@ -359,7 +375,7 @@ const CreateJob = () => {
 
           <Grid item xs={1} />
           <Grid item xs={11} className='padding-bot-10px padding-top-20px'>
-            Mức lương <Typography color="error">{error}</Typography>
+            Mức lương <Typography color='error'>{error}</Typography>
           </Grid>
 
           <Grid item xs={1}></Grid>
@@ -445,9 +461,9 @@ const CreateJob = () => {
               label='Xã/phường'
               className='width100pc'
               size='small'
-              name='commune'
+              name='comune'
               onChange={(e) => {
-                setCommune(e.target.value);
+                setComune(e.target.value);
               }}
             />
           </Grid>

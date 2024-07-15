@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { APIJOB } from "../../../util/apiEndpoint";
 import { RequestGet } from "../../../util/request";
+import { formatSalary } from "../../../util/formatHelpers";
 
 export default function Detail() {
   const { jobId } = useParams(); // Get the jobId from the URL params
@@ -17,6 +18,18 @@ export default function Detail() {
 
     fetchJob();
   }, [jobId]); // Add jobId as a dependency
+
+  const formatJobDescription = (description) => {
+    return description.split("-").map(
+      (item, index) =>
+        item && (
+          <React.Fragment key={index}>
+            <span>&#8211; {item.trim()}</span>
+            <br />
+          </React.Fragment>
+        )
+    );
+  };
 
   if (!job) {
     return <Typography>Loading...</Typography>;
@@ -33,18 +46,19 @@ export default function Detail() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
-              {job.description.JobDescription}
+            <strong>Job description:</strong>
+              {formatJobDescription(job.description.JobDescription)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
               <strong>Candidate Requirements:</strong>
-              {job.description.CandidateRequirements}
+              {formatJobDescription(job.description.CandidateRequirements)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
-              <strong>Benefits:</strong> {job.description.Benefit}
+              <strong>Benefits:</strong> {formatJobDescription(job.description.Benefit)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -61,13 +75,13 @@ export default function Detail() {
           <Grid item xs={12}>
             <Typography variant='body2'>
               <strong>Location:</strong>
-              {`${job.location?.address}, ${job.location?.district}, ${job.location?.comune}, ${job.location?.province}`}
+              {`${job.location?.address}, ${job.location?.district}, ${job.location?.commune}, ${job.location?.province}`}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}> 
             <Typography variant='body2'>
               <strong>Salary Range:</strong>
-              {`${job.minSalary} - ${job.maxSalary}`}
+              {formatSalary(job.minSalary, job.maxSalary)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
