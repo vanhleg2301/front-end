@@ -64,7 +64,6 @@ export async function cancelOrder(orderId) {
     return error.response.data;
   }
 }
-
 export async function getTransactions() {
   try {
   } catch (error) {

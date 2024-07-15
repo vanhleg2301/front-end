@@ -43,7 +43,7 @@ function TableHeader() {
 
 export default function PaymentFieldsTableDemo({ data }) {
   let webhookData = null;
-  console.log("data: ", data);
+  // console.log("data: ", data);
   if (data) {
     webhookData = data;
     // xoa cac field khong co gia tri

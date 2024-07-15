@@ -12,7 +12,7 @@ import { formatDate } from "../../util/formatHelpers";
 import { Box } from "@mui/system";
 
 export default function Transactions({ data }) {
-  console.log("data: ", data);
+  // console.log("data: ", data);
   return (
     <Box
       sx={{

@@ -28,9 +28,11 @@ const BankPayment = ({ props }) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const [bank, setBank] = useState(null);
   const navigate = useNavigate();
-  const socket = io.connect(process.env.REACT_APP_ORDER_URL);
+  const socket = io.connect(process.env.REACT_APP_ORDER_URL); 
+  // const socket = useSocket();
 
-  console.log(props)
+  console.log("props: ", props);
+  console.log("signature: ", props.signature);
 
   const handleCopyText = (textToCopy) => {
     toast.success("Copy thành công");
@@ -41,7 +43,7 @@ const BankPayment = ({ props }) => {
     cancelOrder(props.orderCode).then((res) => {
       console.log(res);
     });
-    navigate("/payment/result", {
+    navigate(`/payment/result?orderCode=${props.orderCode}`, {
       state: {
         orderCode: props.orderCode,
       },
@@ -72,42 +74,49 @@ const BankPayment = ({ props }) => {
       });
   };
 
+  // Function to handle navigation to result page after payment success
+  const handlePaymentSuccess = () => {
+    setIsCheckout(true);
+    socket.emit("leaveOrderRoom", props.orderCode);
+
+    setTimeout(() => {
+      navigate(`/payment/result?orderCode=${props.orderCode}`, {
+        state: {
+          orderCode: props.orderCode,
+        },
+      });
+    }, 3000); // Adjust timeout as needed
+  };
+
   useEffect(() => {
     if (!props?.bin) return;
-    (async () => {
-      getListBank()
-        .then((res) => {
-          const bank = res.data.filter((bank) => bank.bin === props.bin);
-          setBank(bank[0]);
-        })
-        .catch((err) => console.log(err));
-    })();
-    socket.on("paymentUpdated", (data) => {
-      if (data.orderId === props.orderCode) {
-        setIsCheckout(true);
-        socket.emit("leaveOrderRoom", props.orderCode);
 
-        setTimeout(() => {
-          navigate("/payment/result", {
-            state: {
-              orderCode: props.orderCode,
-            },
-          });
-        }, 10000);
+    // Fetch bank information
+    getListBank()
+      .then((res) => {
+        const bank = res.data.filter((bank) => bank.bin === props.bin);
+        setBank(bank[0]);
+      })
+      .catch((err) => console.log(err));
+
+    // Socket event listeners
+    socket.on("paymentUpdated", (data) => {
+      console.log(data)
+      if (data.orderId === props.orderCode) {
+        handlePaymentSuccess();
       }
     });
 
     socket.emit("joinOrderRoom", props.orderCode);
 
-    // Gửi yêu cầu rời khỏi phòng orderId khi component bị hủy
     return () => {
       socket.emit("leaveOrderRoom", props.orderCode);
     };
-  }, [props]);
-
+  }, []);
   // Add conditional rendering based on props.qrCode existence
   if (!props || !props.qrCode) {
-    return <div>Loading...</div>; // or handle the loading state or error state
+    console.error("Missing or invalid QR Code props:", props);
+    return <div>Loading...</div>;
   }
 
   return (
@@ -130,7 +139,7 @@ const BankPayment = ({ props }) => {
           fontWeight='bold'
           color='textPrimary'
           gutterBottom>
-          Thanh toán qua ngân hàng 
+          Thanh toán qua ngân hàng
         </Typography>
         <Box display='flex' flexDirection={{ xs: "column", md: "row" }} gap={2}>
           <Box display='flex' justifyContent='center' flex={1}>
@@ -139,10 +148,10 @@ const BankPayment = ({ props }) => {
                 value={props.qrCode}
                 size={200} // Kích thước của mã QR
                 bgColor='#FFFFFF' // Màu nền của mã QR
-                fgColor='#25174E' // Màu của dữ liệu mã QR
+                fgColor='' // Màu của dữ liệu mã QR
                 level='M' // Mức độ sửa lỗi, có thể là L, M, Q, H
-                includeMargin={true} // Bao gồm lề xung quanh mã QR
-                renderAs='svg' // Định dạng đầu ra của mã QR
+                // includeMargin={true} // Bao gồm lề xung quanh mã QR
+                // renderAs='svg' // Định dạng đầu ra của mã QR
                 style={{ borderRadius: 10, width: "100%", height: "100%" }} // Tùy chỉnh CSS cho mã QR
               />
             </Button>

@@ -13,22 +13,26 @@ export default function Result() {
   const location = useLocation();
   let orderCode = null;
   let paramsValue = new URLSearchParams(location.search);
+
+  console.log("params: ", paramsValue);
   if (paramsValue.size === 0) {
     orderCode = location.state?.orderCode;
   }else{
     orderCode = paramsValue.get("orderCode")
   }
 
+  console.log("order: ", order);
+
   useEffect(() => {
     if (orderCode !== null) {
       getOrder(orderCode)
         .then(data => {
-          console.log(data);
           if (data.error == 0) {
             setOrder(data.data);
           } else if (data.error == -1) {
             toast.warning('Không tìm thấy đơn hàng');
           }
+          console.log(data);
           setLoading(false);
         })
         .catch(error => {
@@ -39,6 +43,8 @@ export default function Result() {
       setLoading(false);
     }
   }, []);
+
+  console.log("order2: ", order);
   return (
     <Box>
       <ToastContainer />
@@ -47,8 +53,8 @@ export default function Result() {
       ) : (
         <Box>
           <OrderTableDemo data={order} />
-          <PaymentFieldsTableDemo data={order} />
-          <Box><Transactions data={order}/></Box>
+          {/*<PaymentFieldsTableDemo data={order} />*/}
+          {/*<Box><Transactions data={order}/></Box>*/}
         </Box>
         
       )}

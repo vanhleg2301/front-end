@@ -7,7 +7,6 @@ import Payment from "../pages/PaymentPage/Payment";
 import Result from "../pages/PaymentPage/Result";
 import Subscription from "../pages/SubscriptionPage/Subscription";
 import { SocketProvider } from "../context/socket";
-import BankPayment from "../pages/PaymentComponents/BankPayment";
 import Transactions from "../pages/PaymentComponents/Transactions";
 
 export default function Public() {
@@ -28,7 +27,6 @@ export default function Public() {
         children: [
           { index: true, element: <PaymentPage /> },
           { path: "/payment/pay", element: <Payment /> },
-          { path: "/payment/qr", element: <BankPayment /> },
           { path: "/payment/result", element: <Result /> },
           { path: "/payment/transactions", element: <Transactions /> },
         ],

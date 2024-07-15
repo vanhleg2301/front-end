@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   TableBody,
   TableCell,
@@ -7,101 +7,103 @@ import {
   TableContainer,
   Table,
   Paper,
-  Toolbar,
   Typography,
   Box,
 } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-// import { useSelector } from "react-redux";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { capitalize } from "lodash"; // Example, if you're using lodash for capitalization
 
-function TableHeader() {
+const packageData = ["Bronze package", "Silver package", "Gold package"];
+
+function TableHeader({ data }) {
   return (
-    <Toolbar className='!flex-1 !justify-center'>
-      <Typography className='!font-semibold' component='h5' variant='h5'>
-        Mô tả đơn hàng
+    <Box sx={{ p: 2,}}>
+      <Typography variant="h5" >
+        Mô tả đơn hàng{" "}
+        {data?.status === "PAID" && (
+          <CheckCircleIcon sx={{ verticalAlign: "middle" }} color="success" />
+        )}
       </Typography>
-    </Toolbar>
-  );
-}
-
-export default function OrderTableDemo({ data }) {
-  console.log("data: ", data);
-  return (
-    <Box component={"div"}>
-      <CssBaseline />
-      <Box
-        sx={{ marginTop: "40px", marginBottom: "40px", textAlign: "center"}}
-        >
-        <Typography>
-          Đơn hàng <b>{data?.id ? `#${data.id}` : "không tìm thấy"}</b>
-          {data?.status
-            ? data.status == "PAID"
-              ? ` đã thanh toán thành công`
-              : ` chưa được thanh toán`
-            : ""}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          marginBottom: "40px",
-          display: "flex",
-          justifyContent: "center",
-        }}>
-        <Paper>
-          <TableHeader />
-          <TableContainer>
-            <Table size='small' className='md:min-w-[700px]'>
-              <TableBody>
-                {data ? (
-                  <>
-                    <TableRow key={"id"}>
-                      <TableCell align='left'>
-                        <Typography>Mã đơn hàng</Typography>
-                      </TableCell>
-                      <TableCell align='left'>
-                        <b>#{data["id"]}</b>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow key={"status"}>
-                      <TableCell align='left'>Trạng thái</TableCell>
-                      <TableCell align='left'>
-                        {data["status"] == "PAID"
-                          ? "Đã thanh toán"
-                          : "Chưa thanh toán"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow key={"items"}>
-                      <TableCell align='left'>Sản phẩm</TableCell>
-                      <TableCell align='left'>
-                        <ul>
-                          <li>{`Description: ${data["description"]}`}</li>
-                          <li>{`Amount: ${data["amount"]}`}</li>
-                          <li>{`Price: ${data["price"]} VNĐ`}</li>
-                        </ul>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow key={"amount"}>
-                      <TableCell align='left'>Tổng tiền</TableCell>
-                      <TableCell align='left'>
-                        {data["price"] * data["amount"]} VNĐ
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ) : (
-                  <TableRow
-                    key={0}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                    <TableCell align='center' colSpan={12}>
-                      Không có thông tin đơn hàng
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Box>
     </Box>
   );
 }
+
+function OrderTableDemo({ data }) {
+  const description =
+    data?.transactions?.[0].description || "No description available";
+
+  let packageName = "No package found";
+  for (let i = 0; i < packageData.length; i++) {
+    if (description.includes(packageData[i].toUpperCase())) {
+      packageName = packageData[i];
+      break;
+    }
+  }
+
+  return (
+    <Box sx={{ mt: 4, mb: 4, textAlign: "center" }}>
+      <Typography variant="h6">
+        Đơn hàng <b>{data?.id ? `#${data.id}` : "không tìm thấy"}</b>
+        {data?.status
+          ? data.status === "PAID"
+            ? ` đã thanh toán thành công`
+            : ` chưa được thanh toán`
+          : ""}
+      </Typography>
+
+      <Paper sx={{ mt: 4, mb: 4, maxWidth: 800, mx: "auto" }}>
+        <TableContainer>
+          <Table size="small">
+            <TableHeader data={data} />
+            <TableBody>
+              {data ? (
+                <>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      Mã đơn hàng
+                    </TableCell>
+                    <TableCell>{`#${data.id}`}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      Trạng thái
+                    </TableCell>
+                    <TableCell>
+                      {data.status === "PAID" ? "Đã thanh toán" : "Chưa thanh toán"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      Sản phẩm
+                    </TableCell>
+                    <TableCell>
+                      <ul>
+                        <li>{`Description: ${capitalize(packageName.toLowerCase())}`}</li>
+                        <li>{`Amount: ${data.amount}`}</li>
+                      </ul>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      Tổng tiền
+                    </TableCell>
+                    <TableCell>{`${data.amount} VNĐ`}</TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    Không có thông tin đơn hàng
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Box>
+  );
+}
+
+export default OrderTableDemo;

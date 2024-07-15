@@ -8,24 +8,37 @@ function createData(time, amount) {
   return { time, amount: amount ?? null };
 }
 
-const data = [
-  createData("00:00", 0),
-  createData("03:00", 300),
-  createData("06:00", 600),
-  createData("09:00", 800),
-  createData("12:00", 1500),
-  createData("15:00", 2000),
-  createData("18:00", 2400),
-  createData("21:00", 2400),
-  createData("24:00"),
-];
-
-export default function Chart() {
+export default function Chart({ transactions, time }) {
   const theme = useTheme();
+
+  // Function to format time to hours and minutes
+  const formatTime = (timeStr) => {
+    const date = new Date(timeStr);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const formatTimeToday = (timeStr) => {
+    const date = new Date(timeStr);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth()+1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().padStart(2, "0");
+    return `${day}-${month}-${year}`;
+  };
+
+  // Generate data for each transaction
+  const data = transactions.map((transaction) => ({
+    time: formatTime(transaction.when),
+    amount: transaction.amount ?? 0, // Assuming amount can be null or undefined
+  }));
+
+  // Ensure the data starts with a zero amount at the beginning
+  data.unshift(createData("00:00", 0));
 
   return (
     <React.Fragment>
-      <Typography>Today</Typography>
+      <Typography>Today: {formatTimeToday(time)}</Typography>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
           dataset={data}
@@ -45,14 +58,14 @@ export default function Chart() {
           ]}
           yAxis={[
             {
-              label: "Sales ($)",
+              label: "Sales (VND)",
               labelStyle: {
                 ...theme.typography.body1,
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              max: 2500,
-              tickNumber: 3,
+              tickValues: [0, 2000, 10000, 20000], // Đây là mốc đã định sẵn
+              tickNumber: 1,
             },
           ]}
           series={[

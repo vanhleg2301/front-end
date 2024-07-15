@@ -86,14 +86,16 @@ const Subscription = () => {
                   Number of update: {pkg.update}
                 </Typography>
                 <Typography variant='body1'>Price: ${pkg.price}</Typography>
+                <Box hidden>
                 <TextField
+                
                   type="number"
                   label="Quantity"
                   value={quantity[pkg.name]}
                   onChange={(event) => handleChangeQuantity(event, pkg)}
                   inputProps={{ min: 1 }} // Ensure quantity is positive
                   sx={{ marginTop: 2 }}
-                />
+                /></Box>
                 <Button
                   variant='contained'
                   color='primary'

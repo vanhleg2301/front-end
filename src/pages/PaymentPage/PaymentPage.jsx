@@ -96,6 +96,7 @@ export default function PaymentPage() {
 
       if (response.error != 0) throw new Error("Call Api failed: ");
       callbackFunction(response.data);
+      // console.log(response.data.signature)
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -110,15 +111,17 @@ export default function PaymentPage() {
       let url = checkoutResponse.checkoutUrl;
       if (
         checkoutResponse.checkoutUrl.startsWith(
-          "http://localhost:5173/payment/pay"
+          "https://dev.pay.payos.vn"
         )
       ) {
         url = checkoutResponse.checkoutUrl.replace(
-          "http://localhost:5173/payment/pay",
-          "http://localhost:5173/payment/pay"
+          "https://dev.pay.payos.vn",
+          "https://next.dev.pay.payos.vn"
         );
       }
-      navigate("pay", { state: { checkoutResponse } });
+      window.location.href = url;
+      // console.log("checkoutResponse: ", checkoutResponse);
+      // navigate("pay", { state: { checkoutResponse } });
     }
   };
 
@@ -128,12 +131,12 @@ export default function PaymentPage() {
       let url = checkoutResponse.checkoutUrl;
       if (
         checkoutResponse.checkoutUrl.startsWith(
-          "http://localhost:5173/payment/pay"
+          "https://dev.pay.payos.vn"
         )
       ) {
         url = checkoutResponse.checkoutUrl.replace(
-          "http://localhost:5173/payment/pay",
-          "http://localhost:5173/payment/pay"
+          "https://dev.pay.payos.vn",
+          "https://next.dev.pay.payos.vn"
         );
       }
       console.log("PayOSCheckout object: ", window.PayOSCheckout);
@@ -141,6 +144,7 @@ export default function PaymentPage() {
         "PayOSCheckout object: ",
         typeof window.PayOSCheckout.usePayOS
       );
+
       if (typeof window.PayOSCheckout.usePayOS === "function") {
         let { open } = window.PayOSCheckout.usePayOS({
           RETURN_URL: RETURN_URL,
