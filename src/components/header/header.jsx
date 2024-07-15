@@ -24,6 +24,7 @@ import Recruiter from "./subHeader/recruiter";
 import Admin from "./subHeader/admin";
 import "./header.css";
 import Notification from "./Notification";
+import NotificationRecruiter from "../../recruiter/components/layout/NotificationRecruiter";
 
 const logoStyle = {
   width: "30px",
@@ -70,7 +71,6 @@ function Header() {
   };
 
   const { login, userLogin } = React.useContext(AuthContext);
-
   const [role, setRole] = React.useState("");
   React.useEffect(() => {
     if (userLogin && userLogin.user) {
@@ -82,7 +82,7 @@ function Header() {
         setRole("applicant");
       }
     }
-  }, [userLogin]);
+  }, []);
 
   return (
     <AppBar
@@ -231,11 +231,15 @@ function Header() {
                       backgroundColor: "inherit", // Keeps the background color unchanged
                     },
                   }}>
-                  <Badge badgeContent={5} color='primary'>
+                  {/*<Badge badgeContent={5} color='primary'>
                     <MailIcon color='action' />
-                  </Badge>
+                  </Badge>*/}
                 </MenuItem>
-                <Notification/>
+                {role === "applicant" ? (
+                  <Notification />
+                ) : role === "recruiter" ? (
+                  <NotificationRecruiter />
+                ) : null}
                 {/* Avatar */}
                 <MenuItem
                   sx={{

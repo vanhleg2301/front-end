@@ -11,8 +11,9 @@ import Cookies from "js-cookie";
 import { AuthContext } from "../../../context/AuthProvider";
 
 export default function Recruiter() {
-  const { sethLogin } = React.useContext(AuthContext);
+  const { userLogin, sethLogin } = React.useContext(AuthContext);
 
+  const isActive = userLogin.user.isActive;
   const handleLogout = () => {
     Cookies.remove("accessToken");
     Cookies.remove("user");

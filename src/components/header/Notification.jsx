@@ -23,6 +23,7 @@ export default function Notification() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [countNotification, setCountNotification] = useState(0);
   const [notificationDetail, setNotificationDetail] = useState([]);
+const [meetTamp, setMeetTamp] = useState(null);
 
   const handleMouseEnter = (section) => {
     if (section === "notification") {
@@ -69,7 +70,7 @@ export default function Notification() {
       if (data.userId !== userLogin.user._id) {
         return;
       }
-
+      setMeetTamp(data.linkMeeting);
       const savedNotification = await getSaveNotification(data.userId);
       console.log("SavedNotification:", savedNotification);
 
@@ -141,7 +142,7 @@ export default function Notification() {
                         color='primary'
                         size='small'
                         component={Link}
-                        to={`/meet/${notification.linkMeeting}`}>
+                        to={`/meet/${meetTamp}`}>
                         Meet link
                       </Button>
                     </>

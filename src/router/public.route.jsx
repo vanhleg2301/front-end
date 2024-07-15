@@ -13,47 +13,52 @@ import React from "react";
 import { SocketProvider } from "../context/socket";
 import Room from "../pages/MeetingPages/Room";
 import HomeMeeting from "../pages/MeetingPages/HomeMeeting";
+import WaitingAccepted from "../pages/WaitingAccepted";
 
 export default function publicRoutes() {
   return [
     {
-      element: <CheckRole23 roles={[2, 3]} />,
-      children: [
-        {
-          path: "/",
-          element: (
-            <Layout>
-              <Outlet />
-            </Layout>
-          ),
+      path: "/waiting-accepted",
+      element: (
+        <SocketProvider>
+          <Outlet />
+        </SocketProvider>
+      ),
+      children: [{ index: true, element: <WaitingAccepted /> }],
+    },
+    {
+      path: "/",
+      element: (
+        <Layout>
+          <Outlet />
+        </Layout>
+      ),
 
+      children: [
+        { index: true, element: <Home /> },
+        {
+          path: "companies",
+          element: <CompanyPage />,
           children: [
-            { index: true, element: <Home /> },
+            { index: true, element: <CompanyList /> },
+            { path: ":companyID", element: <CompanyDetail /> },
+          ],
+        },
+        {
+          path: "jobs",
+          element: <JobPage />,
+          children: [
+            { index: true, element: <Job /> },
             {
-              path: "companies",
-              element: <CompanyPage />,
-              children: [
-                { index: true, element: <CompanyList /> },
-                { path: ":companyID", element: <CompanyDetail /> },
-              ],
+              path: ":jobId",
+              element: (
+                <SocketProvider>
+                  <Outlet />
+                </SocketProvider>
+              ),
+              children: [{ index: true, element: <JobDetail /> }],
             },
-            {
-              path: "jobs",
-              element: <JobPage />,
-              children: [
-                { index: true, element: <Job /> },
-                {
-                  path: ":jobId",
-                  element: (
-                    <SocketProvider>
-                      <Outlet />
-                    </SocketProvider>
-                  ),
-                  children: [{ index: true, element: <JobDetail /> }],
-                },
-                { path: "table", element: <JobList /> },
-              ],
-            },
+            { path: "table", element: <JobList /> },
           ],
         },
       ],

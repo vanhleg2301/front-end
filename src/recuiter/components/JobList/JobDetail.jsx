@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { RequestGet, RequestPost } from "../../../util/request";
+import { generateRoomId } from "../../../util/formatHelpers";
 import { APIJOB, NOTIFICATION } from "../../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
@@ -41,6 +42,14 @@ const JobDetail = () => {
     timeMeeting: "",
     linkMeeting: "",
   });
+
+  const handleGenerateRoomId = () => {
+    const newRoomId = generateRoomId();
+    setMeetingDetails((prevDetails) => ({
+      ...prevDetails,
+      linkMeeting: newRoomId,
+    }));
+  };
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -131,6 +140,7 @@ const JobDetail = () => {
       console.error("handleAccept fail:", error);
     }
   };
+  
 
   return (
     <Container>
@@ -241,7 +251,11 @@ const JobDetail = () => {
                 linkMeeting: e.target.value,
               })
             }
+            disabled
           />
+          <Button onClick={handleGenerateRoomId} variant='contained' color='secondary'>
+            Generate Room ID
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>

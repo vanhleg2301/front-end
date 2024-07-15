@@ -9,8 +9,8 @@ import CompanyList from "../recuiter/components/companyList/CompanyList";
 import CompanyDetail from "../recuiter/components/companyList/CompanyDetail";
 import JobDetail from "../recuiter/components/JobList/JobDetail";
 import ProfileRecruiter from "../recuiter/components/profile/ProfileRecruiter";
-import { SocketProvider } from "../context/socket";
 import WaitActiveCompany from "../recuiter/components/companyList/WaitActiveCompany";
+import { SocketProvider } from "../context/socket";
 import WaitingAccepted from "../pages/WaitingAccepted";
 
 export default function RecruiterRoutes() {
@@ -33,15 +33,6 @@ export default function RecruiterRoutes() {
         { path: "companyByRecruiter/:companyId", element: <CompanyDetail /> },
         { path: "profile", element: <ProfileRecruiter /> },
       ],
-    },
-    {
-      path: "/waiting-accepted",
-      element: (
-        <SocketProvider>
-          <Outlet />
-        </SocketProvider>
-      ),
-      children: [{ index: true, element: <WaitingAccepted /> }],
-    },
+    }
   ];
 }

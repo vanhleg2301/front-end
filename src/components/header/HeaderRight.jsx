@@ -20,7 +20,7 @@ import "./headerRight.css";
 export default function HeaderRight() {
   const [open, setOpen] = useState(false);
   const [expandJobsMenu, setExpandJobsMenu] = useState(false); // New state
-  const { login, userLogin } = useContext(AuthContext);
+  const { sethLogin, userLogin } = useContext(AuthContext);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -53,7 +53,7 @@ export default function HeaderRight() {
             flexGrow: 1,
           }}
         >
-          {login && (
+          {sethLogin && (
             <MenuItem
               sx={{
                 py: "6px",
@@ -61,7 +61,7 @@ export default function HeaderRight() {
               }}
             >
               <Avatar alt="User Avatar" src="" />
-              <Box sx={{ ml: 2 }}>{userLogin.user.fullName}</Box>
+              <Box sx={{ ml: 2 }}>{userLogin?.user?.fullName}</Box>
             </MenuItem>
           )}
           <MenuItem onClick={handleToggleJobsMenu}>
@@ -82,7 +82,7 @@ export default function HeaderRight() {
           <MenuItem>Tools</MenuItem>
           <MenuItem>FAQ</MenuItem>
           <Divider />
-          {!login && (
+          {!sethLogin && (
             <>
               <MenuItem>
                 <Button
