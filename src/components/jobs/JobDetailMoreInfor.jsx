@@ -10,7 +10,7 @@ import React from "react";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import ScaleIcon from "@mui/icons-material/Scale";
 
-export default function JobDetailMoreInfor() {
+export default function JobDetailMoreInfor({jobDetail}) {
   return (
     <>
       {/*right more information*/}
@@ -41,9 +41,9 @@ export default function JobDetailMoreInfor() {
                         <ScaleIcon />
                       </IconButton>
                       <Box ml={1}>
-                        <Typography variant='body1'>Job position</Typography>
+                        <Typography variant='body1'>Type of Work</Typography>
                         <Typography variant='body2' sx={{ fontWeight: "bold" }}>
-                          Job position
+                          {jobDetail.typeOfWork ? "Full-time" : "Part-time"}
                         </Typography>
                       </Box>
                     </Box>
@@ -54,18 +54,17 @@ export default function JobDetailMoreInfor() {
                       <Box ml={1}>
                         <Typography variant='body1'>Location</Typography>
                         <Typography
-                          title='Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh'
+                          title={jobDetail.location.province}
                           variant='body2'
                           style={{
                             fontWeight: "bold",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            maxWidth: "20%", // Adjust this value as needed
+                            
                           }}>
-                          Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho
-                          Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha
-                          Noi, Ho Chi Minh
+                          {jobDetail.location.address},
+                          {jobDetail.location.district}
                         </Typography>
                       </Box>
                     </Box>
@@ -83,7 +82,7 @@ export default function JobDetailMoreInfor() {
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                           }}>
-                          Exp
+                          {jobDetail.experience} Year
                         </Typography>
                       </Box>
                     </Box>
@@ -105,7 +104,7 @@ export default function JobDetailMoreInfor() {
                         </Typography>
                       </Box>
                     </Box>
-                    <Box display='flex' alignItems='center'>
+                    <Box display='flex' alignItems='center' mb={2}>
                       <IconButton>
                         <LocationSearchingIcon />
                       </IconButton>
@@ -119,7 +118,25 @@ export default function JobDetailMoreInfor() {
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                           }}>
-                          None
+                          {jobDetail.gender ? "Male" : 'Female'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box display='flex' alignItems='center'>
+                      <IconButton>
+                        <LocationSearchingIcon />
+                      </IconButton>
+                      <Box ml={1}>
+                        <Typography variant='body1'>Industry</Typography>
+                        <Typography
+                          variant='body2'
+                          style={{
+                            fontWeight: "bold",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}>
+                          {jobDetail.industry}
                         </Typography>
                       </Box>
                     </Box>

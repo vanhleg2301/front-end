@@ -19,6 +19,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { RequestGet } from "../../util/request";
 import { APIJOB } from "../../util/apiEndpoint";
+import { formatDescription } from "../../util/formatHelpers";
 
 export default function Act({ onSearch }) {
   // ------ Search bar
@@ -119,7 +120,7 @@ export default function Act({ onSearch }) {
   useEffect(() => {
     if (jobs && jobs.length > 0) {
       const uniqueLocations = [
-        ...new Set(jobs.map((job) => job.location.comune)),
+        ...new Set(jobs.map((job) => job.location.province)),
       ];
       setLocations(uniqueLocations);
     }
@@ -174,7 +175,7 @@ export default function Act({ onSearch }) {
             <Box>
               <Autocomplete
                 freeSolo
-                options={jobs.map((job) => job.title)}
+                options={jobs.map((job) =>formatDescription(job.title) )}
                 onChange={handleDropdownClick}
                 renderInput={(params) => (
                   <TextField

@@ -54,11 +54,12 @@ export default function JobDetail() {
     };
 
     const checkIfApplied = async () => {
+      if (!userLogin) return;
       try {
         const appliedJobs = await RequestGet(
           `${APIAPPLY}/${userLogin.user._id}`
         );
-        const applied = appliedJobs.some((job) => job.jobID?._id === jobId);
+        const applied = appliedJobs.some((job) => job.jobID._id === jobId);
 
         setIsApplied(applied);
       } catch (error) {
@@ -68,7 +69,7 @@ export default function JobDetail() {
 
     checkIfApplied();
     fetchJobDetail();
-  }, [jobId, userLogin.user._id]);
+  }, [jobId, userLogin]);
 
   const formatJobDescription = (description) => {
     return description.split("-").map(
@@ -125,7 +126,7 @@ export default function JobDetail() {
                       <LocationSearchingIcon />
                       <Typography variant='body1'>Location</Typography>
                       <Typography variant='body2' sx={{ fontWeight: "bold" }}>
-                        {jobDetail.location.comune},{" "}
+                        {jobDetail.location.comune},
                         {jobDetail.location.province}
                       </Typography>
                     </IconButton>
@@ -194,7 +195,7 @@ export default function JobDetail() {
             </Card>
           </Box>
         </Grid>
-        <JobDetailCompany />
+        <JobDetailCompany jobDetail={jobDetail}/>
         <Grid container spacing={0}>
           {/*left description*/}
           <Grid item xs={12} md={8}>
@@ -205,7 +206,6 @@ export default function JobDetail() {
                     Job description
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    
                     {formatJobDescription(jobDetail.description.JobDescription)}
                     <br />
                   </Typography>
@@ -214,7 +214,9 @@ export default function JobDetail() {
                     Candidate Requirements
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    {formatJobDescription(jobDetail.description.CandidateRequirements)}
+                    {formatJobDescription(
+                      jobDetail.description.CandidateRequirements
+                    )}
                   </Typography>
 
                   <Typography variant='h6' gutterBottom>
@@ -285,7 +287,7 @@ export default function JobDetail() {
               </Card>
             </Box>
           </Grid>
-          <JobDetailMoreInfor />
+          <JobDetailMoreInfor jobDetail={jobDetail} />
         </Grid>
       </Grid>
       <JobSavedChild

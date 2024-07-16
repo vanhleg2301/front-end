@@ -117,7 +117,7 @@ export default function FooterMeet({
         <RightItem sx={{ pr: 7 }}>
           <Tooltip title="People" sx={{ pr: 2 }}>
             <IconButton onClick={togglePeople}>
-              <Badge badgeContent={(peopleCount = 4)} color="default">
+              <Badge badgeContent={(peopleCount = 2)} color="default">
                 <PeopleOutlineIcon style={{ color: "" }} />
               </Badge>
             </IconButton>

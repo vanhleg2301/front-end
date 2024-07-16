@@ -1,7 +1,15 @@
 import React from "react";
 import { useSocket } from "../../../context/socket";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
+import {
+  Badge,
+  Card,
+  CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
 import { toast } from "react-toastify";
@@ -111,13 +119,20 @@ export default function NotificationRecruiter() {
                   ? notification.message.slice(0, 30) + "..."
                   : notification.message;
               return (
-                <MenuItem
-                  title={`${notification.message}`}
-                  key={index}
-                  sx={{ p: 3 }}
-                  component={Link}
-                  to={`jobByRecruiter/${notification.jobId}`}>
-                  {message} at {formatDate(notification.updatedAt)}
+                <MenuItem key={index} sx={{ p: 0 }}>
+                  <Card variant='outlined' sx={{ p: 2 }}>
+                    <CardContent>
+                      <Typography
+                      sx={{textDecoration: 'none'}}
+                      title={notification.message}
+                        color='white'
+                        variant='body2'
+                        component={Link}
+                        to={`jobByRecruiter/${notification.jobId}`}>
+                        {message} at {formatDate(notification.updatedAt)}
+                      </Typography>
+                    </CardContent>
+                  </Card>
                 </MenuItem>
               );
             })

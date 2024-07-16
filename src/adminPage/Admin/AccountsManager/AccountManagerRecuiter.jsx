@@ -15,6 +15,8 @@ import {
 import {} from "@mui/icons-material";
 import { useSocket } from "../../../context/socket";
 import { filter } from "lodash";
+import { APIUSER } from "../../../util/apiEndpoint";
+import { RequestPost } from "../../../util/request";
 
 const AccountManagerRecuiter = () => {
   const socket = useSocket();
@@ -64,6 +66,19 @@ const AccountManagerRecuiter = () => {
     }
   }, [recuiters]);
 
+  const sendmail = async (userId, message) => {
+    //sendmail to recruiter
+    try {
+      const response = await RequestPost(`${APIUSER}/sendMailFrame`, {
+        userId: userId,
+        message: message,
+      });
+      console.log("Send email for applicant successfully: ", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
   const handleDeactive = async (id) => {
     try {
       const response = await fetch(
@@ -77,6 +92,10 @@ const AccountManagerRecuiter = () => {
         setRecuiters((prev) =>
           prev.map((r) => (r._id === id ? { ...r, isActive: false } : r))
         );
+
+        const mess = "Your account has been deactive";
+        sendmail(id, mess)
+
         window.alert("Deactive successful");
       } else {
         window.alert("Failed to deactive item.");
@@ -100,6 +119,9 @@ const AccountManagerRecuiter = () => {
         id,
         isActive: true,
       });
+
+      const mess = "Your account has been activated";
+      sendmail(id, mess)
 
       window.alert("Active successful");
     } catch (error) {

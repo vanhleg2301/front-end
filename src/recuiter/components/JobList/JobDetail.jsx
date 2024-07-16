@@ -20,9 +20,19 @@ import {
   DialogActions,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { RequestGet, RequestPost } from "../../../util/request";
+import {
+  RequestGet,
+  RequestPatch,
+  RequestPost,
+  RequestPut,
+} from "../../../util/request";
 import { generateRoomId } from "../../../util/formatHelpers";
-import { APIJOB, NOTIFICATION } from "../../../util/apiEndpoint";
+import {
+  APIAPPLY,
+  APIJOB,
+  APIUSER,
+  NOTIFICATION,
+} from "../../../util/apiEndpoint";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
 import { useSocket } from "../../../context/socket";
@@ -87,17 +97,31 @@ const JobDetail = () => {
     setSelectedApplicant(null);
   };
 
-  const saveNotification = async (messAccept) => {
+  const saveNotification = async (messAccept, linkMeeting) => {
     try {
       const response = await RequestPost(
         `${NOTIFICATION}/${selectedApplicant}`,
         {
+          linkMeet: linkMeeting,
           message: messAccept,
         }
       );
       console.log("SaveNotification successfully:", response);
     } catch (error) {
       console.log("SaveNotification fail:", error);
+    }
+  };
+
+  const sendmail = async (userId, message) => {
+    //sendmail to recruiter
+    try {
+      const response = await RequestPost(`${APIUSER}/sendMailFrame`, {
+        userId: userId,
+        message: message,
+      });
+      console.log("Send email for applicant successfully: ", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
     }
   };
 
@@ -108,6 +132,10 @@ const JobDetail = () => {
     }
 
     try {
+      await RequestPatch(`${APIAPPLY}/status/${jobId}/${selectedApplicant}`, {
+        status: 0,
+      });
+
       socket.emit("accept_applied", {
         timeMeeting: meetingDetails.timeMeeting,
         linkMeeting: meetingDetails.linkMeeting,
@@ -115,32 +143,51 @@ const JobDetail = () => {
         message: `Recruiter accepted your cv in ${job.title}`,
       });
 
-      saveNotification(`Recruiter accepted your cv in ${job.title}`);
+      await saveNotification(
+        `Recruiter accepted your cv in ${job.title} at ${formatDate(
+          meetingDetails.timeMeeting
+        )}`,
+        meetingDetails.linkMeeting
+      );
+
+      const mess = `Recruiter accepted your cv in ${job.title}. Code meeting: "${
+        meetingDetails.linkMeeting
+      }" at ${formatDate(meetingDetails.timeMeeting)} ^.^`;
+
+      sendmail(selectedApplicant, mess);
+
       toast.success("Accepted successfully");
       setOpenDialog(false); // Close the dialog after accepting
     } catch (error) {
-      console.error("handleAccept fail:", error);
+      console.error("Failed to accept application:", error);
     }
   };
 
   const handleReject = async (applicant) => {
     try {
+      const hi = await RequestPatch(
+        `${APIAPPLY}/status/${jobId}/${applicant}`,
+        { status: 2 }
+      );
+
+      console.log(job.title, "met: ", meetingDetails.linkMeeting);
       socket.emit("reject_applied", {
-        rejected: true,
+        linkMeeting: "",
         userId: applicant,
         message: `Recruiter rejected your cv in ${job.title}`,
       });
 
-      saveNotification(`Recruiter rejected your cv in ${job.title}`);
-      toast.success("Rejected successfully");
-      console.log("Rejected successfully");
+      const mess = `Recruiter reject your cv in ${job.title}. Please try again next time! ^_^`;
 
+      sendmail(selectedApplicant, mess);
+
+      await saveNotification(`Recruiter rejected your cv in ${job.title}`, "");
+      toast.success("Rejected successfully");
       setReload(!reload); // Reload the data
     } catch (error) {
-      console.error("handleAccept fail:", error);
+      console.error("Failed to reject application:", error);
     }
   };
-  
 
   return (
     <Container>
@@ -183,20 +230,43 @@ const JobDetail = () => {
                           </Button>
                         </TableCell>
                         <TableCell>
-                          <Button
-                            color='primary'
-                            variant='contained'
-                            onClick={() => handleOpenDialog(j.applicantID._id)}>
-                            Accept
-                          </Button>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            color='error'
-                            variant='contained'
-                            onClick={() => handleReject(j.applicantID._id)}>
-                            Reject
-                          </Button>
+                          {j.status === 1 ? (
+                            <>
+                              <TableCell>
+                                <Button
+                                  color='primary'
+                                  variant='contained'
+                                  sx={{ marginRight: 2 }}
+                                  onClick={() =>
+                                    handleOpenDialog(j.applicantID._id)
+                                  }>
+                                  Accept
+                                </Button>
+                              </TableCell>
+                              <TableCell>
+                                <Button
+                                  color='error'
+                                  variant='contained'
+                                  onClick={() =>
+                                    handleReject(j.applicantID._id)
+                                  }>
+                                  Reject
+                                </Button>
+                              </TableCell>
+                            </>
+                          ) : j.status === 0 ? (
+                            <TableCell>
+                              <Button variant='outlined' disabled>
+                                Accepted
+                              </Button>
+                            </TableCell>
+                          ) : j.status === 2 ? (
+                            <TableCell>
+                              <Button variant='outlined' color='error' disabled>
+                                Rejected
+                              </Button>
+                            </TableCell>
+                          ) : null}
                         </TableCell>
                       </TableRow>
                     ))
@@ -253,7 +323,10 @@ const JobDetail = () => {
             }
             disabled
           />
-          <Button onClick={handleGenerateRoomId} variant='contained' color='secondary'>
+          <Button
+            onClick={handleGenerateRoomId}
+            variant='contained'
+            color='secondary'>
             Generate Room ID
           </Button>
         </DialogContent>

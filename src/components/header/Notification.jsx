@@ -4,6 +4,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
   Badge,
   Button,
+  Card,
+  CardContent,
   IconButton,
   Menu,
   MenuItem,
@@ -23,7 +25,7 @@ export default function Notification() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [countNotification, setCountNotification] = useState(0);
   const [notificationDetail, setNotificationDetail] = useState([]);
-const [meetTamp, setMeetTamp] = useState(null);
+  const [meetTamp, setMeetTamp] = useState(null);
 
   const handleMouseEnter = (section) => {
     if (section === "notification") {
@@ -44,9 +46,7 @@ const [meetTamp, setMeetTamp] = useState(null);
   };
 
   const getSaveNotification = async (userId) => {
-    const response = await RequestGet(
-      `${NOTIFICATION}/${userId}`
-    );
+    const response = await RequestGet(`${NOTIFICATION}/${userId}`);
     console.log("SavedNotification:", response);
     return response;
   };
@@ -81,7 +81,7 @@ const [meetTamp, setMeetTamp] = useState(null);
         setNotificationDetail((prevNotifications) => [
           ...prevNotifications,
           ...savedNotification, // Assuming the response contains an array of notifications
-        ]); 
+        ]);
       }
     };
 
@@ -91,6 +91,15 @@ const [meetTamp, setMeetTamp] = useState(null);
       socket.off("notification_for_applicant", handleNotificationApplicant);
     };
   }, [socket, userLogin.user._id]);
+
+  function getCharactersAfterAt(notification) {
+    const message = notification;
+    const position = message.indexOf("at");
+    if (position !== -1) {
+      return message.substring(position + 2); // +2 to skip "at"
+    }
+    return ""; // Return an empty string if "at" is not found
+  }
 
   return (
     <>
@@ -123,30 +132,45 @@ const [meetTamp, setMeetTamp] = useState(null);
                   : notification.message;
               return (
                 <MenuItem
-                  title={`${notification.message}`}
                   key={index}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
                   }}>
-                  <Typography variant='body2'>{message} </Typography>
-                  {!notification.rejected && (
-                    <>
-                      <Typography variant='body2'>
-                        And you have a meeting at:{" "}
-                        {formatDate(notification.timeMeeting)}
-                      </Typography>
-                      <Button
-                        variant='outlined'
-                        color='primary'
-                        size='small'
-                        component={Link}
-                        to={`/meet/${meetTamp}`}>
-                        Meet link
-                      </Button>
-                    </>
-                  )}
+                  <Card variant='outlined' sx={{ p: 2 }}>
+                    <CardContent>
+                      <Typography variant='body2'>{message}</Typography>
+                      {notification.linkMeeting !== "" ? (
+                        <>
+                          <Typography variant='body2'>
+                            And you have a meeting at:{" "}
+                            {getCharactersAfterAt(notification.message)}
+                          </Typography>
+                          <Typography variant='body2'>
+                            Check your email for the meeting link
+                          </Typography>
+                          {/* <Button
+                            variant='outlined'
+                            color='primary'
+                            size='small'
+                            component={Link}
+                            to={`/meet/${notification.linkMeet}`}>
+                            Meet link
+                          </Button> */}
+                        </>
+                      ) : (
+                        <>
+                          <Typography
+                            variant='body2'
+                            component={Link}
+                            to={`/jobs/${notification.jobId}`}>
+                            {getCharactersAfterAt(notification.message)}
+                          </Typography>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
                 </MenuItem>
               );
             })

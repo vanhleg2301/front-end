@@ -12,12 +12,10 @@ const WaitingAccepted = () => {
   const { sethLogin, userLogin, setUserLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const [active, setActive] = React.useState();
- console.log("user before updated:", userLogin);
+  console.log("user before updated:", userLogin);
   useEffect(() => {
     const checkActiveStatus = async () => {
       try {
-       
-
         const response = await RequestGet(
           `${APIUSER}/active/check/${userLogin.user._id}`
         );
@@ -91,7 +89,10 @@ const WaitingAccepted = () => {
         Logout
       </Button>
       <Typography variant='h5' style={{ margin: "16px" }}>
-        Waiting for acceptance from admin...
+        Waiting for acceptance from admin. Please check your email.
+      </Typography>
+      <Typography variant='h5' style={{ margin: "16px" }}>
+      We will reply as soon as possible.
       </Typography>
       <CircularProgress />
     </div>

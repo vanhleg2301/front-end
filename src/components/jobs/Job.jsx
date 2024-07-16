@@ -282,8 +282,8 @@ export default function Job() {
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
         />
-        {/* Render JobWish component */}
-        <JobSaved favoriteJobs={favoriteJobs} />
+        {/* Render JobWish component <JobSaved favoriteJobs={favoriteJobs} />*/}
+        
       </Container>
     </>
   );

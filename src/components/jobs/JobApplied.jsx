@@ -64,11 +64,10 @@ export default function JobApplied() {
               </Grid>
               <Grid item md={7}>
                 <Box sx={{ marginTop: 2 }}>
-                {}
                   <Typography
                     variant="h5"
                     component={Link}
-                    to={`/jobs/${job.jobID._id}`}
+                    to={userLogin ? `/jobs/${job.jobID._id}` : "/login"}
                     sx={{ textDecoration: "none", color: "black" }}>
                     {job.jobID?.title || "Title not available"}
                   </Typography>

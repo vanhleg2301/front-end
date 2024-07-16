@@ -10,9 +10,9 @@ const Home = () => {
   return (
     <Box sx={{ backgroundColor: "background.default" }}>
       <Box mt={15}></Box>
-      <Job />
-      <Divider />
       <Hero />
+      <Divider />
+      <Job />
       <Divider />
       <Company />
       <Divider />
@@ -22,6 +22,6 @@ const Home = () => {
       <Divider />
     </Box>
   );
-}
+};
 
 export default React.memo(Home);

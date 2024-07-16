@@ -11,7 +11,7 @@ import React from "react";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import ScaleIcon from "@mui/icons-material/Scale";
 
-export default function JobDetailCompany() {
+export default function JobDetailCompany({jobDetail}) {
   return (
     <>
       {/*right*/}

@@ -37,10 +37,11 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
     setTextDes(event.target.value);
   };
 
-  const saveNotification = async (messAccept, recruitersID) => {
+  const saveNotification = async (messAccept, recruitersID, jobId) => {
     const responseNoti = await RequestPost(
       `${NOTIFICATION}/${recruitersID}`,
       {
+        jobId: jobId,
         message: messAccept,
       }
     );
@@ -65,12 +66,12 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
 
         socket.emit("applied", {
           userId: userLogin.user._id,
-          jobId,
+          jobId: jobId,
           updatedAt: response.jobApplied.updatedAt,
           message: `${userLogin.user.email} has applied for some job.`,
         });
 
-        saveNotification(`${userLogin.user.email} has applied for some job.`, response.recruitersID);
+        saveNotification(`${userLogin.user.email} has applied for some job.`, response.recruitersID, jobId);
 
         // await sendmail(applicantId, jobId);
       } catch (error) {

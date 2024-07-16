@@ -22,14 +22,13 @@ export default function Hero() {
     slidesToScroll: 1,
   };
   return (
-    <Box id="hero">
+    <Box id="hero" >
       <Container
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: { xs: 14, sm: 20, md: 7  },
-          pb: { xs: 8, sm: 12 },
+          mb: 3
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: "100%", sm: "70%" } }}>
@@ -68,8 +67,8 @@ export default function Hero() {
             enhance your career journey.
           </Typography>
         </Stack>
-        <Box sx={{ width: "100%", mt: 4 }}>
-          <Ad pictures={pictures} />
+        <Box>
+         {/* <Ad pictures={pictures} />*/}
         </Box>
       </Container>
     </Box>
