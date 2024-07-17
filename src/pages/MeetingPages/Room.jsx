@@ -24,6 +24,8 @@ const Room = () => {
     setPlayers,
     playerHighlighted,
     nonHighlightedPlayers,
+    startSharing,
+    stopSharing,
     toggleAudio,
     toggleVideo,
     leaveRoom,
@@ -38,6 +40,23 @@ const Room = () => {
   const [isAudio, setIsAudio] = useState(true);
   const [isPresenting, setIsPresenting] = useState(false);
   const [isCopySectionVisible, setIsCopySectionVisible] = useState(true);
+
+  const handleStartSharing = async () => {
+    try {
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      setIsPresenting(true);
+      startSharing(screenStream);
+    } catch (error) {
+      console.error("Error starting screen share:", error);
+    }
+  };
+
+  const handleStopSharing = () => {
+    setIsPresenting(false);
+    stopSharing();
+  };
 
   const toggleMessenger = () => {
     setIsMessengerVisible(!isMessengerVisible);
@@ -112,6 +131,24 @@ const Room = () => {
       });
     };
 
+    const handleStartSharing = (userId) => {
+      console.log(`user with id ${userId} started sharing`);
+      setPlayers((prev) => {
+        const copy = cloneDeep(prev);
+        copy[userId].sharing = true;
+        return { ...copy };
+      });
+    };
+
+    const handleStopSharing = (userId) => {
+      console.log(`user with id ${userId} stopped sharing`);
+      setPlayers((prev) => {
+        const copy = cloneDeep(prev);
+        copy[userId].sharing = false;
+        return { ...copy };
+      });
+    };
+
     const handleUserLeave = (userId) => {
       console.log(`user ${userId} is leaving the room`);
       users[userId]?.close();
@@ -122,11 +159,15 @@ const Room = () => {
 
     socket.on("user-toggle-audio", handleToggleAudio);
     socket.on("user-toggle-video", handleToggleVideo);
+    socket.on("user-start-sharing", handleStartSharing);
+    socket.on("user-stop-sharing", handleStopSharing);
     socket.on("user-leave", handleUserLeave);
 
     return () => {
       socket.off("user-toggle-audio", handleToggleAudio);
       socket.off("user-toggle-video", handleToggleVideo);
+      socket.off("user-start-sharing", handleStartSharing);
+      socket.off("user-stop-sharing", handleStopSharing);
       socket.off("user-leave", handleUserLeave);
     };
   }, [players, setPlayers, socket, users]);
@@ -189,31 +230,53 @@ const Room = () => {
               boxShadow: 3,
               borderRadius: 2,
             }}>
-            <Box className={styles.activePlayerContainer}>
-              {playerHighlighted && (
-                <Player
-                  url={playerHighlighted.url}
-                  muted={playerHighlighted.muted}
-                  playing={playerHighlighted.playing}
-                  isActive
-                />
-              )}
-            </Box>
+            <Grid container spacing={2}>
+              {/* Trình chiếu hiện tại */}
+              <Grid item xs={12} sm={8}>
+                <Box className={styles.activePlayerContainer}>
+                  {playerHighlighted && (
+                    <Player
+                      url={playerHighlighted.url}
+                      muted={playerHighlighted.muted}
+                      playing={playerHighlighted.playing}
+                      isActive
+                    />
+                  )}
+                </Box>
+              </Grid>
 
-            <Box className={styles.inActivePlayerContainer}>
-              {Object.keys(nonHighlightedPlayers).map((playerId) => {
-                const { url, muted, playing } = nonHighlightedPlayers[playerId];
-                return (
-                  <Player
-                    key={playerId}
-                    url={url}
-                    muted={muted}
-                    playing={playing}
-                    isActive={false}
-                  />
-                );
-              })}
-            </Box>
+              {/* Trình chiếu chia sẻ màn hình */}
+              {isPresenting && (
+                <Grid item xs={12} sm={4}>
+                  <Box className={styles.screenShareContainer}>
+                    <Player
+                      url={players[myId].url} // Sử dụng luồng của người dùng hiện tại
+                      muted={true} // Tắt âm thanh cho chia sẻ màn hình
+                      playing={isPresenting}
+                      isSharing // Đánh dấu là chia sẻ màn hình
+                    />
+                    <Box className={styles.screenShareOverlay}>
+                      <span>Screen sharing by {myId}</span>
+                    </Box>
+                  </Box>
+                </Grid>
+              )}
+
+              {/* Các trình chiếu khác */}
+              <Grid item xs={12}>
+                <Box className={styles.inActivePlayerContainer}>
+                  {Object.keys(nonHighlightedPlayers).map((playerId) => (
+                    <Player
+                      key={playerId}
+                      url={nonHighlightedPlayers[playerId].url}
+                      muted={nonHighlightedPlayers[playerId].muted}
+                      playing={nonHighlightedPlayers[playerId].playing}
+                      isActive={false}
+                    />
+                  ))}
+                </Box>
+              </Grid>
+            </Grid>
             {isCopySectionVisible && <CopySection roomId={roomId} />}
           </Box>
         </Box>
@@ -222,6 +285,10 @@ const Room = () => {
           playing={playerHighlighted?.playing}
           toggleAudio={toggleAudio}
           toggleVideo={toggleVideo}
+          isPresenting={isPresenting}
+          togglePresenting={
+            isPresenting ? handleStopSharing : handleStartSharing
+          }
           leaveRoom={leaveRoom}
           toggleMessenger={toggleMessenger}
           togglePeople={togglePeople}

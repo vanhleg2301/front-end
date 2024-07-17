@@ -61,6 +61,7 @@ export default function FooterMeet(props) {
     toggleAudio,
     toggleVideo,
     togglePresenting,
+    toggleStop,
     isPresenting,
     leaveRoom,
   } = props;

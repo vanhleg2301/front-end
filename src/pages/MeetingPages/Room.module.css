@@ -1,3 +1,26 @@
+.screenShareContainer {
+  position: relative;
+  flex: 1;
+  max-width: 40%; /* Adjust width to fit your layout */
+  margin: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.screenShareOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .activePlayerContainer {
   @apply absolute w-9/12 left-0 right-0 mx-auto;
   top: 20px;
