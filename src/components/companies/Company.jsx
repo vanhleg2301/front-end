@@ -62,17 +62,18 @@ export default function Company() {
                     },
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    style={{
-                      width: "100%",
-                      
-                      objectFit: "contain",
-                    }}
-                    image={`http://localhost:9999/${company.logo}`}
-                    alt={`${company.name} logo`}
-                  />
+                <CardMedia
+                component="img"
+                height="140"
+                style={{
+                  width: "100%",
+                  height: "140px",
+                  objectFit: "contain",
+                }}
+                image={`${company.logo}`}
+                alt={`${company.name} logo`}
+              />
+              
                   <CardContent sx={{ textAlign: "center" }}>
                     <Typography variant="h6" component="div">
                       {company.name}

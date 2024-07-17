@@ -72,9 +72,13 @@ export default function ForgotPassword() {
                 flexDirection: "column",
                 alignItems: "center",
               }}>
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
+              <Box sx={{ background: 'white' }}>
+                <img
+                  src={"logo.png"}
+                  alt='logo'
+                  style={{ width: "100%", height: "100px" }}
+                />
+              </Box>
               <Typography component='h1' variant='h5'>
                 Forgot Password
               </Typography>

@@ -239,7 +239,7 @@ export default function Job() {
                                 {formatSalary(item.minSalary, item.maxSalary)}
                               </Box>
                               <Box
-                                title={item.location.comune}
+                                title={item.location.province}
                                 sx={{
                                   paddingLeft: "10px",
                                   paddingRight: "10px",
@@ -250,7 +250,7 @@ export default function Job() {
                                   whiteSpace: "nowrap",
                                   textOverflow: "ellipsis",
                                 }}>
-                                {formatLocation(item.location.comune)}
+                                {formatLocation(item.location.province)}
                               </Box>
                               <Box className="icon">
                                 <IconButton

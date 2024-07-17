@@ -50,6 +50,20 @@ export default function JobSavedChild({ open, handleClose, setIsApplied }) {
 
   const handleApply = async () => {
     const applicantId = userLogin.user._id;
+
+    if(userLogin?.user?.roleID === 2) {
+      toast.error("Recruiter not allowed to apply for job");
+      return;
+    } else if (userLogin?.user?.roleID === 3){
+      toast.error("Admin not allowed to apply for job");
+      return;
+    }
+
+    if(!selectedFile) {
+      toast.error("Please select a fileCv to apply");
+      return;
+    }
+
     if (applicantId) {
       try {
         const response = await RequestPostFile(`${APIAPPLY}/apply`, {

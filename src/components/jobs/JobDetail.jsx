@@ -126,7 +126,6 @@ export default function JobDetail() {
                       <LocationSearchingIcon />
                       <Typography variant='body1'>Location</Typography>
                       <Typography variant='body2' sx={{ fontWeight: "bold" }}>
-                        {jobDetail.location.comune},
                         {jobDetail.location.province}
                       </Typography>
                     </IconButton>
@@ -230,7 +229,7 @@ export default function JobDetail() {
                     Location working
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    - {jobDetail.location.address},{jobDetail.location.commune},
+                    - {jobDetail.location.address}{jobDetail.location.commune},
                     {jobDetail.location.district},{jobDetail.location.province}
                     <br />
                   </Typography>

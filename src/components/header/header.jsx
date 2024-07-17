@@ -25,12 +25,8 @@ import Admin from "./subHeader/admin";
 import "./header.css";
 import Notification from "./Notification";
 import NotificationRecruiter from "../../recruiter/components/layout/NotificationRecruiter";
+import { logoStyle, logoText } from "../hero/logo";
 
-const logoStyle = {
-  width: "30px",
-  height: "auto",
-  cursor: "pointer",
-};
 
 function Header() {
   // Open
@@ -119,10 +115,19 @@ function Header() {
               px: 0,
             }}>
             <Box
-              sx={{ ml: 2, textDecoration: "none", color: "blue" }}
+              sx={{
+                ml: 2,
+                textDecoration: "none",
+                color: "blue",
+                display: "flex",
+                alignItems: "center",
+              }}
               component={Link}
               to='/'>
-              <img src={"mon.png"} style={logoStyle} alt='logo' />
+              <img src={"logo.png"} style={logoStyle} alt='logo' />
+              <Typography variant='h5' sx={logoText}>
+                ACE INTERVIEW
+              </Typography>
             </Box>
 
             <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>

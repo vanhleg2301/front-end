@@ -25,8 +25,8 @@ export default function CompanyList() {
     const fetchData = async () => {
       try {
         const response = await RequestGet(`${APICOMPANY}/com/${recruiterID}`);
-        const com = response
-        console.log(com)
+        const com = response;
+        // console.log(com);
         const sortedCompanies = com.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -41,6 +41,11 @@ export default function CompanyList() {
     fetchData();
   }, []);
 
+  const handleOpenFile = (fileURL) => {
+    console.log("decodedURL:", fileURL);
+    window.open(fileURL, "_blank");
+  };
+
   return (
     <Container>
       <h2>List company of Recruiter</h2>
@@ -51,7 +56,6 @@ export default function CompanyList() {
               <TableCell>No.</TableCell>
               <TableCell>Logo</TableCell>
               <TableCell>companyName</TableCell>
-              <TableCell>location</TableCell>
               <TableCell>taxNumber</TableCell>
               <TableCell>NumberOfEmployees</TableCell>
               <TableCell>Business License</TableCell>
@@ -62,16 +66,26 @@ export default function CompanyList() {
             {companies.map((company, index) => (
               <TableRow hover key={index}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{company.logo}</TableCell>
+                <TableCell>
+                  <img
+                    src={company.logo}
+                    alt='Company Logo'
+                    style={{ maxWidth: "100px" }}
+                  />
+                </TableCell>
                 <TableCell>
                   <Link style={{ textDecoration: "none" }} to={company._id}>
                     {company.companyName}
                   </Link>
                 </TableCell>
-                <TableCell>{company.location}</TableCell>
                 <TableCell>{company.taxNumber}</TableCell>
-                <TableCell>{parseInt(company.NumberOfEmployees)}</TableCell>
-                <TableCell>{company.businessLicense}</TableCell>
+                <TableCell>{parseInt(company.numberOfEmployees)}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => handleOpenFile(company.businessLicense)}>
+                    businessLicense
+                  </Button>
+                </TableCell>
                 <TableCell>
                   <Button color='primary' variant='contained'>
                     Update

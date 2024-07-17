@@ -20,12 +20,12 @@ import Cookies from "js-cookie";
 function Copyright(props) {
   return (
     <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
+      variant='body2'
+      color='text.secondary'
+      align='center'
       {...props}>
       {"Copyright © "}
-      <Typography color="inherit" component={Link} to="/">
+      <Typography color='inherit' component={Link} to='/'>
         Ace Interview
       </Typography>
       {new Date().getFullYear()}
@@ -75,9 +75,12 @@ export default function Login() {
           navigate("/");
         }
         if (response.user.roleID === 2) {
-          if(response.user.isActive === true){navigate("/recruiter");}
-          if(response.user.isActive === false){navigate("/waiting-accepted");}
-          
+          if (response.user.isActive === true) {
+            navigate("/recruiter");
+          }
+          if (response.user.isActive === false) {
+            navigate("/waiting-accepted");
+          }
         }
         if (response.user.roleID === 3) {
           navigate("/admin");
@@ -103,7 +106,7 @@ export default function Login() {
   return (
     <Grid container>
       <Grid item md={12}>
-        <Container component="main" maxWidth="md">
+        <Container component='main' maxWidth='md'>
           <CssBaseline />
           <Box
             sx={{
@@ -113,58 +116,62 @@ export default function Login() {
               flexDirection: "column",
               alignItems: "center",
             }}>
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
+            <Box sx={{ background: "white" }}>
+              <img
+                src={"logo.png"}
+                alt='logo'
+                style={{ width: "100%", height: "100px" }}
+              />
+            </Box>
+            <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
             <Box
-              component="form"
+              component='form'
               onSubmit={handleSubmit}
               noValidate
               sx={{ mt: 1 }}>
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                id="identifier"
-                label="Email or Username"
-                name="identifier"
-                autoComplete="identifier"
+                id='identifier'
+                label='Email or Username'
+                name='identifier'
+                autoComplete='identifier'
                 autoFocus
                 error={!!errors.identifier}
                 helperText={errors.identifier}
               />
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
                 error={!!errors.password}
                 helperText={errors.password}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                control={<Checkbox value='remember' color='primary' />}
+                label='Remember me'
               />
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
+                variant='contained'
                 sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2"></Link>
+                  <Link href='#' variant='body2'></Link>
                 </Grid>
                 <Grid item>
-                  <Link to="/forgot" variant="body2">
+                  <Link to='/forgot' variant='body2'>
                     Forgot password?
                   </Link>
                 </Grid>
@@ -179,7 +186,7 @@ export default function Login() {
           <Copyright sx={{ mt: 4, mb: 4 }} />
           <Grid container sx={{ mb: 6 }}>
             <Grid item md={12} sx={{ textAlign: "center" }}>
-              <Typography component={Link} to="/register" variant="body2">
+              <Typography component={Link} to='/register' variant='body2'>
                 {"Don't have an account? Sign Up"}
               </Typography>
             </Grid>

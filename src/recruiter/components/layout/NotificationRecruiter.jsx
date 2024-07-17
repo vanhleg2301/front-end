@@ -10,11 +10,12 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../util/formatHelpers";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/AuthProvider";
-import { RequestGet } from "../../../util/request";
+import { RequestDelete, RequestGet } from "../../../util/request";
 import { NOTIFICATION } from "../../../util/apiEndpoint";
 
 export default function NotificationRecruiter() {
@@ -90,6 +91,22 @@ export default function NotificationRecruiter() {
     };
   }, [socket, userLogin.user._id]);
 
+  const deleteNotification = async (notificationId) => {
+    try {
+      await RequestDelete(`${NOTIFICATION}/${notificationId}`);
+      setNotificationDetail((prevNotifications) =>
+        prevNotifications.filter(
+          (notification) => notification._id !== notificationId
+        )
+      );
+      setCountNotification((prevCount) => prevCount - 1);
+      toast.success("Notification deleted successfully", { autoClose: 3000 });
+    } catch (error) {
+      console.log("DeleteNotification fail:", error);
+      toast.error("Failed to delete notification", { autoClose: 3000 });
+    }
+  };
+
   return (
     <>
       <IconButton
@@ -120,18 +137,23 @@ export default function NotificationRecruiter() {
                   : notification.message;
               return (
                 <MenuItem key={index} sx={{ p: 0 }}>
-                  <Card variant='outlined' sx={{ p: 2 }}>
-                    <CardContent>
+                  <Card variant='outlined' sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
                       <Typography
-                      sx={{textDecoration: 'none'}}
-                      title={notification.message}
+                        sx={{ textDecoration: "none" }}
+                        title={notification.message}
                         color='white'
                         variant='body2'
                         component={Link}
-                        to={`jobByRecruiter/${notification.jobId}`}>
+                        to={`/recruiter/jobByRecruiter/${notification.jobId}`}>
                         {message} at {formatDate(notification.updatedAt)}
                       </Typography>
                     </CardContent>
+                    <IconButton
+                      color='inherit'
+                      onClick={() => deleteNotification(notification._id)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </Card>
                 </MenuItem>
               );

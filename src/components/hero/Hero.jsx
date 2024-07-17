@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Ad from "./Ad";
+import { logoText } from "./logo";
 
 const pictures = [
   {
@@ -42,19 +43,12 @@ export default function Hero() {
               fontSize: "clamp(3.5rem, 10vw, 4rem)",
             }}
           >
-            Ace&nbsp;
             <Typography
               component="span"
               variant="h1"
-              sx={{
-                fontSize: "clamp(3rem, 10vw, 4rem)",
-                color: (theme) =>
-                  theme.palette.mode === "light"
-                    ? "primary.main"
-                    : "primary.light",
-              }}
+              sx={logoText}
             >
-              Interview
+             Ace Interview
             </Typography>
           </Typography>
           <Typography

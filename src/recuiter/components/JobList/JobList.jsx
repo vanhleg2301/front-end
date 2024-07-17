@@ -97,7 +97,7 @@ const JobList = () => {
               <TableRow hover key={j._id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
-                  <Link style={{ textDecoration: "none" }} to={j._id}>
+                  <Link style={{ textDecoration: "none", color: 'white' }} to={j._id}>
                     {truncateTitle(j.title)}
                   </Link>
                 </TableCell>

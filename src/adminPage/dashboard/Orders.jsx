@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
-import { TRANSACTIONS } from "../../util/constants";
+import { BANKS, TRANSACTIONS } from "../../util/constants";
 
 // Generate Order Data
 function createData(id, date, name, paymentMethod, amount) {
@@ -17,6 +17,7 @@ const packageName = ["Bronze package", "Silver package", "Gold package"];
 
 export default function Orders({ setTotalAmount, setTime, setTransaction }) {
   const [transactions, setTransactions] = React.useState([]);
+  const [banks, setBanks] = React.useState([]);
   const [showAll, setShowAll] = React.useState(false);
 
   React.useEffect(() => {
@@ -33,9 +34,12 @@ export default function Orders({ setTotalAmount, setTime, setTransaction }) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        const dataSort = data.data.records.sort((a, b) => new Date(b.when) - new Date(a.when))
+        const dataSort = data.data.records.sort(
+          (a, b) => new Date(b.when) - new Date(a.when)
+        );
         setTransactions(dataSort);
         setTransaction(dataSort);
+        console.log(data);
         setShowAll(data.data.records.length > 5); // Show more if transactions > 5
       } catch (error) {
         console.error("Error fetching transactions:", error.message);
@@ -43,6 +47,28 @@ export default function Orders({ setTotalAmount, setTime, setTransaction }) {
       }
     };
 
+    const getBank = async () => {
+      try {
+        const response = await fetch(`${BANKS}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Apikey AK_CS.ce65abe0413011ef90c3c9ff66e60f20.aXIXXch3XSkZRZxMbbGw8SEXsAl9oW1BG6KkZjNBsnxGiJGS2wExBhmQL3VxYUrOXfDEja4Z`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBanks(data.data.bankAccs);
+        // console.log(data.data.bankAccs);
+      } catch (error) {
+        console.error("Error fetching transactions:", error.message);
+        // Handle error state or retry logic if needed
+      }
+    };
+
+    getBank();
     getTransactions();
   }, []);
 
@@ -91,7 +117,7 @@ export default function Orders({ setTotalAmount, setTime, setTransaction }) {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{transaction.when}</TableCell>
                 <TableCell>{getPackageName(transaction.description)}</TableCell>
-                <TableCell>Banking</TableCell>
+                <TableCell>{banks[0].bank?.fullName} - {banks[0].bankSubAccId}</TableCell>
                 <TableCell align='right'>{`${transaction.amount} VND`}</TableCell>
               </TableRow>
             ))}

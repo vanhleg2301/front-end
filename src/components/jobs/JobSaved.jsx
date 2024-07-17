@@ -23,7 +23,7 @@ export default function JobSaved({ favoriteJobs }) {
           Job Saved
         </Typography>
       </Box>
-      {favoriteJobs.map((favoriteJob) => (
+      {favoriteJobs?.map((favoriteJob) => (
         <Card variant="outlined">
           <CardContent>
             <Grid container spacing={2}>

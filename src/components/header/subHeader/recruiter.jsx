@@ -29,6 +29,12 @@ export default function Recruiter() {
         transform: "translateX(-85%)",
       }}
     >
+      <Link to="/recruiter" className="dropdown-item">
+        <IconButton>
+          <ManageAccountsIcon />
+        </IconButton>
+        Work
+      </Link>
       <Link to="/upgrade" className="dropdown-item">
         <IconButton>
           <ManageAccountsIcon />

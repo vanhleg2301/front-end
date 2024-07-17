@@ -32,34 +32,35 @@ export default function CompanyDetail() {
       }
     })();
   }, [companyID]);
-  
-  console.log(detailCom.logo);
-  console.log(detailCom.numberOfEmployees);
+
+  const handleOpenFile = (fileURL) => {
+    console.log("decodedURL:", fileURL);
+    window.open(fileURL, "_blank");
+  };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth='lg'>
       <Card>
         <CardContent>
           {/* Company Information */}
           <Box>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant='h4' align='center' gutterBottom>
               {detailCom.companyName}
             </Typography>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={2} alignItems='center'>
               <Grid item xs={12} md={12}>
-                <Typography variant="body1" align="center" gutterBottom>
-                  {detailCom.numberOfEmployees}
+                <Typography variant='body1' align='center' gutterBottom>
+                  Number of employees:s {detailCom.numberOfEmployees}
                 </Typography>
               </Grid>
             </Grid>
-            <Box textAlign="center" my={2}>
+            <Box textAlign='center' my={2}>
               <img
                 src={detailCom.logo}
-                alt="Company Logo"
+                alt='Company Logo'
                 style={{ maxWidth: "200px", maxHeight: "100px" }}
               />
             </Box>
-            
           </Box>
 
           {/* Grid for Company Introduction and Contact Information */}
@@ -69,23 +70,15 @@ export default function CompanyDetail() {
                 {/* Introduce company */}
                 <Card>
                   <CardContent>
-                    <Typography variant="h6">Giới thiệu công ty</Typography>
-                    <Typography variant="body1">
-                      Tập đoàn Transcosmos chính thức thành lập Công ty TNHH
-                      Transcosmos Việt Nam vào tháng 3 năm 2014 với trụ sở chính
-                      tại Hà Nội, Việt Nam; Đại diện: Yohei Komura. Khai trương
-                      Trung tâm Hồ Chí Minh số 1 vào tháng 10 năm 2015, tiếp
-                      theo là Trung tâm Hồ Chí Minh số 2 vào tháng 3 năm 2017 và
-                      Trung tâm Hồ Chí Minh số 3 vào tháng 6 năm 2019. Cùng với
-                      việc khai trương Trung tâm mới tại Lâm Đồng, Transcosmos
-                      Việt Nam có kế hoạch tuyển dụng 500 nhân sự mới trước năm
-                      2022.
+                    <Typography variant='h6'>Giới thiệu công ty</Typography>
+                    <Typography variant='body1'>
+                      Text number: {detailCom.taxNumber}
                     </Typography>
                     {!showMore && (
                       <Typography
                         onClick={handleShowMore}
                         sx={{ cursor: "pointer", color: "blue" }}>
-                        Xem thêm
+                        Show more
                       </Typography>
                     )}
                   </CardContent>
@@ -95,15 +88,19 @@ export default function CompanyDetail() {
                 {/* Information connect */}
                 <Card>
                   <CardContent>
-                    <Typography variant="h6">Thông tin liên hệ</Typography>
-                    <Typography variant="body1">
-                     {detailCom.email}
+                    <Typography variant='h6'>Thông tin liên hệ</Typography>
+
+                    <Typography
+                      color='primary'
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => handleOpenFile(detailCom.email)}>
+                      Website: {detailCom.email}
                     </Typography>
-                    <Typography variant="body1">
-                     {detailCom.phoneNumber}
+                    <Typography variant='body1'>
+                      Hotline: {detailCom.phoneNumber}
                     </Typography>
-                    <Typography variant="body1">
-                     {detailCom.location}
+                    <Typography variant='body1'>
+                      Location: {detailCom.location}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -112,7 +109,7 @@ export default function CompanyDetail() {
           </Box>
           {/* Related work */}
           <Box mt={4}>
-            <Typography variant="h4" color="textPrimary" gutterBottom>
+            <Typography variant='h4' color='textPrimary' gutterBottom>
               Related work
             </Typography>
             <Box>

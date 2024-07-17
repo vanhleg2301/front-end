@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
-import { Typography } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -10,6 +10,10 @@ function createData(time, amount) {
 
 export default function Chart({ transactions, time }) {
   const theme = useTheme();
+
+  // Pagination state
+  const [page, setPage] = React.useState(0);
+  const itemsPerPage = 10; // Number of transactions per page
 
   // Function to format time to hours and minutes
   const formatTime = (timeStr) => {
@@ -27,10 +31,19 @@ export default function Chart({ transactions, time }) {
     return `${day}-${month}-${year}`;
   };
 
+  // Filter transactions from the last 5 days
+  const fiveDaysAgo = new Date(time);
+  fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+
+  const filteredTransactions = transactions.filter(transaction => new Date(transaction.when) >= fiveDaysAgo);
+
+  // Paginate transactions
+  const paginatedTransactions = filteredTransactions.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
   // Generate data for each transaction
-  const data = transactions.map((transaction) => ({
+  const data = paginatedTransactions.map((transaction) => ({
     time: formatTime(transaction.when),
-    amount: transaction.amount ?? 0, // Assuming amount can be null or undefined
+    amount: transaction.amount ?? 0,
   }));
 
   // Ensure the data starts with a zero amount at the beginning
@@ -64,7 +77,7 @@ export default function Chart({ transactions, time }) {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              tickValues: [0, 2000, 10000, 20000], // Đây là mốc đã định sẵn
+              tickValues: [0, 2000, 10000, 20000], // Custom tick values
               tickNumber: 1,
             },
           ]}
@@ -88,6 +101,22 @@ export default function Chart({ transactions, time }) {
           }}
         />
       </div>
+      <Box mt={2} display="flex" justifyContent="space-between">
+        <Button
+          variant="contained"
+          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+          disabled={page === 0}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setPage((prev) => prev + 1)}
+          disabled={(page + 1) * itemsPerPage >= filteredTransactions.length}
+        >
+          Next
+        </Button>
+      </Box>
     </React.Fragment>
   );
 }

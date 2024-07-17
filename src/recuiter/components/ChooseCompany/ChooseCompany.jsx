@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../../context/AuthProvider";
+import { toast, ToastContainer } from "react-toastify";
 
 const ChooseCompany = () => {
   const { userLogin } = useContext(AuthContext);
@@ -90,13 +91,15 @@ const ChooseCompany = () => {
       });
       if (response.ok) {
         console.log("response: ", response);
+        toast.success("Create successful");
         alert("Create successful");
-        navigate("waiting");
+        navigate("/recruiter/companyByRecruiter");
         // navigate("/recruiter/companyByRecruiter");
       } else {
         throw new Error("Create failed");
       }
     } catch (error) {
+      toast.error(error.message);
       console.log(error.message);
     }
   };
@@ -106,6 +109,7 @@ const ChooseCompany = () => {
     const formData = new FormData();
     formData.append("companyId", selectedCompany?._id); // Thêm tên công ty vào FormData
     formData.append("recruiterID", userLogin.user._id);
+
     console.log("selectedCompany: ", formData);
     try {
       const response = await fetch("http://localhost:9999/company", {
@@ -114,9 +118,10 @@ const ChooseCompany = () => {
       });
       if (response.ok) {
         console.log("response: ", response);
-        alert("Patch successful");
+        alert("Select successful");
         navigate("/recruiter/companyByRecruiter");
       } else {
+        toast.error("Select failed");
         throw new Error("Patch failed");
       }
     } catch (error) {
@@ -146,6 +151,7 @@ const ChooseCompany = () => {
 
   return (
     <Container>
+      <ToastContainer />
       <Grid container>
         <Grid item xs={12} className='part' textAlign={"center"}>
           <Box>
@@ -184,7 +190,19 @@ const ChooseCompany = () => {
             <Typography>Format support: .png,.jpg,.jpeg</Typography>
             <Typography>
               Selected file: {truncateFileName(logoFile?.name || "", 20)}
+              {logoFile && (
+                <img
+                  src={URL.createObjectURL(logoFile)}
+                  alt='Selected File'
+                  style={{
+                    maxWidth: "100px",
+                    maxHeight: "100px",
+                    marginTop: "10px",
+                  }}
+                />
+              )}
             </Typography>
+
             <Button
               sx={{
                 whiteSpace: "nowrap",
@@ -261,7 +279,7 @@ const ChooseCompany = () => {
               </Grid>
 
               <Grid item xs={3} className='padding-top-20px'>
-                Email
+                Website
               </Grid>
               <Grid item xs={9} className='padding-top-20px'>
                 <TextField

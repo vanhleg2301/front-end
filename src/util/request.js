@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ENDPOINT } from "./constants";
 import Cookies from "js-cookie";
+import { APIUSER } from "./apiEndpoint";
 
 // Helper function to get the access token from localStorage
 const getAccessToken = () => Cookies.get("accessToken");
@@ -130,5 +131,17 @@ export const RequestDelete = async (uri) => {
   } catch (error) {
     console.error("Error in request:", error);
     throw error;
+  }
+};
+
+export const sendmail = async (payload) => {
+  //sendmail to recruiter
+  try {
+    const response = await RequestPost(`${APIUSER}/sendMailFrame`, {
+      payload
+    });
+    console.log("Send email for applicant successfully: ", response);
+  } catch (error) {
+    console.error("Error sending email:", error);
   }
 };

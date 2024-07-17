@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validatePhone } from "../../../util/Validation";
+import { toast, ToastContainer } from "react-toastify";
 
 const RecuiterRegister = () => {
   const navigate = useNavigate();
@@ -68,9 +69,11 @@ const RecuiterRegister = () => {
         }
       );
       if (response.ok) {
+        toast.success("Create successful");
         alert("Create successful");
         navigate("/login");
       } else {
+        toast.error("Create failed");
         throw new Error("Create failed");
       }
     } catch (error) {
@@ -96,6 +99,7 @@ const RecuiterRegister = () => {
 
   return (
     <Container align={"center"}>
+    <ToastContainer  />s
       <h3>Register for Recruiter</h3>
       <Grid container >
         <Grid item md={12}align={"center"}>

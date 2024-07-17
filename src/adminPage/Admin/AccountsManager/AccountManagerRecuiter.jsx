@@ -93,8 +93,8 @@ const AccountManagerRecuiter = () => {
           prev.map((r) => (r._id === id ? { ...r, isActive: false } : r))
         );
 
-        const mess = "Your account has been deactive";
-        sendmail(id, mess)
+        const mess = "Your account has been deactived";
+        sendmail(id, mess);
 
         window.alert("Deactive successful");
       } else {
@@ -121,7 +121,7 @@ const AccountManagerRecuiter = () => {
       });
 
       const mess = "Your account has been activated";
-      sendmail(id, mess)
+      sendmail(id, mess);
 
       window.alert("Active successful");
     } catch (error) {
@@ -141,7 +141,9 @@ const AccountManagerRecuiter = () => {
               <TableCell style={{ fontWeight: "bold" }}>Name</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Active</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Company</TableCell>
-              <TableCell style={{ fontWeight: "bold" }} colSpan={2}>
+              <TableCell
+                style={{ fontWeight: "bold", textAlign: "center" }}
+                colSpan={2}>
                 Action
               </TableCell>
               <TableCell></TableCell>
@@ -161,22 +163,28 @@ const AccountManagerRecuiter = () => {
                 <TableCell>{r.isActive ? "Active" : "Inactive"}</TableCell>
                 <TableCell>{companies[r._id]}</TableCell>
                 <TableCell>
-                  <Button
-                    color='success'
-                    variant='contained'
-                    onClick={(e) => handleActive(e.target.value)}
-                    value={r._id}>
-                    Active
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    color='error'
-                    variant='contained'
-                    onClick={(e) => handleDeactive(e.target.value)}
-                    value={r._id}>
-                    Deactive
-                  </Button>
+                  {r.isActive ? (
+                    <Button variant='outlined'>Active</Button>
+                  ) : (
+                    <>
+                      <Button
+                        color='success'
+                        variant='contained'
+                        onClick={(e) => handleActive(e.target.value)}
+                        value={r._id}>
+                        Active
+                      </Button>
+
+                      <Button
+                      sx={{ marginLeft: 3 }}
+                        color='error'
+                        variant='contained'
+                        onClick={(e) => handleDeactive(e.target.value)}
+                        value={r._id}>
+                        Deactive
+                      </Button>
+                    </>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

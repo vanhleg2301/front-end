@@ -26,7 +26,7 @@ export const formatDescription = (description) => {
   if (!description || typeof description !== "string") {
     return "";
   }
-  const maxLength = 30;
+  const maxLength = 40;
   const truncatedDescription =
     description.length > maxLength
       ? `${description.substring(0, maxLength)}...`

@@ -28,9 +28,11 @@ const Player = ({ playerId, url, muted, playing, isActive }) => {
       </div>
       <div className={styles.playerInfo}>
         <span className={styles.playerName}>Player {playerId}</span>
-        <span className={styles.micIcon}>
-          {muted ? <MicOff /> : <Mic />}
-        </span>
+        {!isActive && (
+          <span className={styles.micIcon}>
+            {muted ? <MicOff /> : <Mic />}
+          </span>
+        )}
       </div>
     </div>
   );

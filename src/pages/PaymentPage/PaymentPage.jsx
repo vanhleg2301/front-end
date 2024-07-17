@@ -83,6 +83,7 @@ export default function PaymentPage() {
     setLoading(true);
     try {
       const body = JSON.stringify({
+        userId: userLogin.user._id,
         buyerName: buyerName,
         description: descriptionPackage,
         productName: packageName,

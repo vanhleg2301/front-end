@@ -64,9 +64,21 @@ export async function cancelOrder(orderId) {
     return error.response.data;
   }
 }
-export async function getTransactions() {
+
+export async function amountPaid(userId, amountPaid) {
   try {
+    const res = await axios.patch(
+      `${process.env.REACT_APP_ORDER_URL}/order/upgrade/${userId}`,
+      { amountPaid },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("res: ", res);
+    return res.data;
   } catch (error) {
-    return error;
+    return console.log(error);
   }
 }

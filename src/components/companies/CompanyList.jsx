@@ -57,7 +57,7 @@ export default function CompanyList() {
                   <CardMedia
                     component="img"
                     height="200"
-                    image={company.cover}
+                    image={company.logo}
                     alt={company.companyName}
                   />
                   <CardContent>

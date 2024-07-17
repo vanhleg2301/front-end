@@ -7,9 +7,9 @@ const packages = [
   {
     name: "Bronze",
     description: "Bronze package",
-    create: 3,
-    update: 3,
-    price: "2000",
+    create: 2,
+    update: 2,
+    price: "3000",
   },
   {
     name: "Silver",
@@ -21,8 +21,8 @@ const packages = [
   {
     name: "Gold",
     description: "Gold package",
-    create: 9,
-    update: 9,
+    create: 7,
+    update: 7,
     price: "9000",
   },
 ];
