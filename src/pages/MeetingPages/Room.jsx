@@ -265,12 +265,12 @@ const Room = () => {
               {/* Các trình chiếu khác */}
               <Grid item xs={12}>
                 <Box className={styles.inActivePlayerContainer}>
-                  {Object.keys(nonHighlightedPlayers).map((playerId) => (
+                  {Object.keys(nonHighlightedPlayers)?.map((playerId) => (
                     <Player
                       key={playerId}
-                      url={nonHighlightedPlayers[playerId].url}
-                      muted={nonHighlightedPlayers[playerId].muted}
-                      playing={nonHighlightedPlayers[playerId].playing}
+                      url={nonHighlightedPlayers[playerId]?.url}
+                      muted={nonHighlightedPlayers[playerId]?.muted}
+                      playing={nonHighlightedPlayers[playerId]?.playing}
                       isActive={false}
                     />
                   ))}

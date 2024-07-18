@@ -133,14 +133,14 @@ export default function Job() {
          {/* <FilterJob /> */}
         {/* content list job */}
         <Grid container spacing={2}>
-          {paginatedData.length === 0 ? (
+          {paginatedData?.length === 0 ? (
             <Grid item xs={12} sm={12} md={12}>
               <Typography variant="body1" textAlign={"center"}>
                 Don't have this job
               </Typography>
             </Grid>
           ) : (
-            paginatedData.map((item) => (
+            paginatedData?.map((item) => (
               <Grid
                 item
                 xs={12}
