@@ -18,7 +18,7 @@ export default function CompanyList() {
   // const { recuiterId } = useParams();
   const { userLogin } = useContext(AuthContext);
 
-  const recruiterID = userLogin.user._id; // 611c9c198208053c147edc79
+  const recruiterID = userLogin?.user?._id; // 611c9c198208053c147edc79
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
@@ -63,26 +63,26 @@ export default function CompanyList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {companies.map((company, index) => (
+            {companies?.map((company, index) => (
               <TableRow hover key={index}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
                   <img
-                    src={company.logo}
+                    src={company?.logo}
                     alt='Company Logo'
                     style={{ maxWidth: "100px" }}
                   />
                 </TableCell>
                 <TableCell>
-                  <Link style={{ textDecoration: "none" }} to={company._id}>
-                    {company.companyName}
+                  <Link style={{ textDecoration: "none" }} to={company?._id}>
+                    {company?.companyName}
                   </Link>
                 </TableCell>
-                <TableCell>{company.taxNumber}</TableCell>
-                <TableCell>{parseInt(company.numberOfEmployees)}</TableCell>
+                <TableCell>{company?.taxNumber}</TableCell>
+                <TableCell>{parseInt(company?.numberOfEmployees)}</TableCell>
                 <TableCell>
                   <Button
-                    onClick={() => handleOpenFile(company.businessLicense)}>
+                    onClick={() => handleOpenFile(company?.businessLicense)}>
                     businessLicense
                   </Button>
                 </TableCell>

@@ -8,14 +8,13 @@ import {
   TableContainer,
   Container,
   Table,
-  Link,
-  Grid,
-  TextField,
+  Typography,
 } from "@mui/material";
-import {} from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const AccountsManagerApplicant = () => {
   const [applicants, setApplicants] = useState([]);
+  const [cvs, setCVs] = useState({});
 
   useEffect(() => {
     fetch("http://localhost:9999/user/user")
@@ -27,7 +26,34 @@ const AccountsManagerApplicant = () => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    const getAmountCv = async () => {
+      try {
+        const cvsData = {};
+        for (let applicant of applicants) {
+          const res = await fetch(`http://localhost:9999/cv/${applicant._id}`);
+          const data = await res.json();
+          cvsData[applicant._id] = data.length;
+        }
+        setCVs(cvsData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (applicants.length > 0) {
+      getAmountCv();
+    }
+  }, [applicants]);
+
   const handleDeactive = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to deactivate this item?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:9999/user/${id}/deactive`,
@@ -37,15 +63,17 @@ const AccountsManagerApplicant = () => {
       );
 
       if (response.ok) {
-        window.alert("deactive successful");
+        window.alert("Deactivation successful");
+        setApplicants((prev) => prev.filter((a) => a._id !== id));
       } else {
-        window.alert("Failed to deactive item.");
+        window.alert("Failed to deactivate item.");
       }
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("Error deactivating item:", error);
       alert("An error occurred");
     }
   };
+
   const handleActive = async (id) => {
     try {
       const response = await fetch(`http://localhost:9999/user/${id}/active`, {
@@ -53,61 +81,61 @@ const AccountsManagerApplicant = () => {
       });
 
       if (response.ok) {
-        window.alert("Active successful");
+        window.alert("Activation successful");
+        setApplicants((prev) =>
+          prev.map((a) => (a._id === id ? { ...a, active: true } : a))
+        );
       } else {
-        window.alert("Failed to active item.");
+        window.alert("Failed to activate item.");
       }
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("Error activating item:", error);
       alert("An error occurred");
     }
   };
+
   return (
-    <Container className="text-align-center">
-      <h3>Applicant</h3>
+    <Container className='text-align-center'>
+      <h3>Applicants</h3>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Account ID</TableCell>
+              <TableCell>No.</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
-              <TableCell colSpan={2}>Action</TableCell>
-              <TableCell></TableCell>
+              <TableCell>CVs</TableCell>
+              <TableCell colSpan={2} align='center'>
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {applicants.map((a) => (
-              <TableRow hover key={a._id}>
+            {applicants?.map((a, index) => (
+              <TableRow hover key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{a?.fullName}</TableCell>
+                <TableCell>{a?.email}</TableCell>
+                <TableCell>{a?.phoneNumber}</TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    to={"applicant/" + a._id}
-                  >
-                    {a._id}
-                  </Link>
+                  <Button component={Link} to={`${a?._id}`}>
+                    {cvs[a?._id] || 0} cv
+                  </Button>
                 </TableCell>
-                <TableCell>{a.fullName}</TableCell>
-                <TableCell>{a.email}</TableCell>
-                <TableCell>{a.phoneNumber}</TableCell>
                 <TableCell>
                   <Button
-                    color="success"
-                    variant="contained"
-                    onClick={(e) => handleActive(e.target.value)}
-                    value={a._id}
-                  >
+                    color='success'
+                    variant='contained'
+                    onClick={() => handleActive(a?._id)}>
                     Active
                   </Button>
                 </TableCell>
                 <TableCell>
                   <Button
-                    color="error"
-                    variant="contained"
-                    onClick={(e) => handleDeactive(e.target.value)}
-                    value={a._id}
-                  >
+                    color='error'
+                    variant='contained'
+                    onClick={() => handleDeactive(a?._id)}>
                     Deactive
                   </Button>
                 </TableCell>

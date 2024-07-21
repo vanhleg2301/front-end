@@ -4,8 +4,8 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
-import FacebookIcon from "@mui/icons-material/GitHub";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import Git from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/X";
 import { Link } from "@mui/material";
@@ -17,9 +17,15 @@ const logoStyle = {
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" mt={1}>
+    <Typography variant='body2' color='text.secondary' mt={1}>
       {"Copyright © "}
-      <Link to="/">AceInterview&nbsp;</Link>
+      <Typography
+        color='text.secondary'
+        sx={{ textDecoration: "none" }}
+        component={Link}
+        to='/'>
+        AceInterview&nbsp;
+      </Typography>
       {new Date().getFullYear()}
     </Typography>
   );
@@ -52,22 +58,22 @@ export default function Footer() {
           }}>
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
             <Box sx={{ ml: "-15px" }}>
-              <img src={""} style={logoStyle} alt="logo of AceInterview" />
+              <img src={""} style={logoStyle} alt='logo of AceInterview' />
             </Box>
 
             <Typography
-              variant="body2"
-              color="text.secondary"
+              variant='body2'
+              color='text.secondary'
               mb={2}
               sx={{ mt: 5 }}>
               Go to Ace Interview.
             </Typography>
-            <Stack direction="column" spacing={1} useFlexGap sx={{ mt: 5 }}>
-              <Typography color="text.secondary">
+            <Stack direction='column' spacing={1} useFlexGap sx={{ mt: 5 }}>
+              <Typography color='text.secondary'>
                 Hotline:
                 <span style={{ fontWeight: "bold" }}> 0975662339</span>
               </Typography>
-              <Typography color="text.secondary">
+              <Typography color='text.secondary'>
                 Email:
                 <span style={{ fontWeight: "bold" }}>
                   {" "}
@@ -83,22 +89,22 @@ export default function Footer() {
             flexDirection: "column",
             gap: 1,
           }}>
-          <Typography variant="body2" fontWeight={600}>
+          <Typography variant='body2' fontWeight={600}>
             About Ace Interview
           </Typography>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Features
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Testimonials
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Highlights
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Pricing
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             FAQs
           </Link>
         </Box>
@@ -108,16 +114,16 @@ export default function Footer() {
             flexDirection: "column",
             gap: 1,
           }}>
-          <Typography variant="body2" fontWeight={600}>
+          <Typography variant='body2' fontWeight={600}>
             Company
           </Typography>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             About us
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Careers
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Press
           </Link>
         </Box>
@@ -127,16 +133,16 @@ export default function Footer() {
             flexDirection: "column",
             gap: 1,
           }}>
-          <Typography variant="body2" fontWeight={600}>
+          <Typography variant='body2' fontWeight={600}>
             Legal
           </Typography>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Terms
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Privacy
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Contact
           </Link>
         </Box>
@@ -151,45 +157,45 @@ export default function Footer() {
           borderColor: "divider",
         }}>
         <div>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Privacy Policy
           </Link>
-          <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>
+          <Typography display='inline' sx={{ mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
-          <Link color="text.secondary" href="#">
+          <Link color='text.secondary' href='#'>
             Terms of Service
           </Link>
           <Copyright />
         </div>
         <Stack
-          direction="row"
-          justifyContent="left"
+          direction='row'
+          justifyContent='left'
           spacing={1}
           useFlexGap
           sx={{
             color: "text.secondary",
           }}>
           <IconButton
-            color="inherit"
-            href="https://github.com/mui"
-            aria-label="GitHub"
+            color='inherit'
+            href='https://github.com/TanHE176226/AceInterview/tree/Tan'
+            aria-label='GitHub'
             sx={{ alignSelf: "center" }}>
-            <FacebookIcon />
+            <Git />
           </IconButton>
           <IconButton
-            color="inherit"
-            href="https://twitter.com/MaterialUI"
-            aria-label="X"
+            color='inherit'
+            href='https://x.com/home?lang=en'
+            aria-label='X'
             sx={{ alignSelf: "center" }}>
             <TwitterIcon />
           </IconButton>
           <IconButton
-            color="inherit"
-            href="https://www.linkedin.com/company/mui/"
-            aria-label="LinkedIn"
+            color='inherit'
+            href='https://www.facebook.com/'
+            aria-label='LinkedIn'
             sx={{ alignSelf: "center" }}>
-            <LinkedInIcon />
+            <FacebookIcon />
           </IconButton>
         </Stack>
       </Box>

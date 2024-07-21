@@ -7,11 +7,29 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import ScaleIcon from "@mui/icons-material/Scale";
+import { Link, useParams } from "react-router-dom";
+import { RequestGet } from "../../util/request";
 
-export default function JobDetailCompany({jobDetail}) {
+export default function JobDetailCompany({ jobDetail }) {
+  const { jobId } = useParams();
+  const [company, setCompany] = React.useState([]);
+  useEffect(() => {
+    const getCompanyId = async () => {
+      try {
+        const companyId = await RequestGet(`job/com/${jobId}`);
+        setCompany(companyId);
+      } catch (error) {
+        console.error("Error companyId:", error);
+      }
+    };
+
+    getCompanyId();
+  }, [jobDetail._id]);
+
+  
   return (
     <>
       {/*right*/}
@@ -22,7 +40,7 @@ export default function JobDetailCompany({jobDetail}) {
               <Grid item md={4}>
                 <Box>
                   <img
-                    src='https://cdn-new.topcv.vn/unsafe/200x/https://static.topcv.vn/company_logos/iposvn-61a6eab341dba.jpg'
+                    src={company?.logo}
                     alt='Company Logo'
                     style={{ width: "100%", height: "auto" }}
                   />
@@ -30,16 +48,14 @@ export default function JobDetailCompany({jobDetail}) {
               </Grid>
               <Grid item md={8} display='flex'>
                 <Typography
-                  title='CompanyCompanyCompanyCompanyCompanyCompany
-                        CompanyCompanyCompanyCompanyCompanyCompany'
+                  title={company?.companyName}
                   variant='h6'
                   style={{
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                   }}>
-                  CompanyCompanyCompanyCompanyCompanyCompany
-                  CompanyCompanyCompanyCompanyCompanyCompany
+                  {company?.companyName}
                 </Typography>
               </Grid>
 
@@ -56,7 +72,7 @@ export default function JobDetailCompany({jobDetail}) {
                       <Box ml={1}>
                         <Typography variant='body1'>Scale</Typography>
                         <Typography variant='body2' sx={{ fontWeight: "bold" }}>
-                          100 - 200
+                          {company?.numberOfEmployees}
                         </Typography>
                       </Box>
                     </Box>
@@ -74,11 +90,9 @@ export default function JobDetailCompany({jobDetail}) {
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            maxWidth: "20%", // Adjust this value as needed
+                            maxWidth: "80%", // Adjust this value as needed
                           }}>
-                          Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho
-                          Chi Minh, Ha Noi, Ho Chi Minh, Ha Noi, Ho Chi Minh, Ha
-                          Noi, Ho Chi Minh
+                         {company?.location}
                         </Typography>
                       </Box>
                     </Box>
@@ -86,7 +100,7 @@ export default function JobDetailCompany({jobDetail}) {
                 </CardContent>
               </Grid>
               <Grid item md={12} textAlign={"center"}>
-                <Button>View company</Button>
+                <Button component={Link} to={`/companies/${company?._id}`}>View company</Button>
               </Grid>
             </Grid>
           </Card>

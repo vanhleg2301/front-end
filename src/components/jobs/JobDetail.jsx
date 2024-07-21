@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
@@ -24,6 +24,8 @@ import { APIAPPLY } from "../../util/apiEndpoint";
 import { AuthContext } from "../../context/AuthProvider";
 import JobDetailCompany from "./JobDetailCompany";
 import JobDetailMoreInfor from "./JobDetailMoreInfor";
+import LoginDialog from "../login/LoginDialog";
+import { toast } from "react-toastify";
 
 export default function JobDetail() {
   // Job detail
@@ -31,12 +33,27 @@ export default function JobDetail() {
   const { jobId } = useParams();
   const [jobDetail, setJobDetail] = useState();
   const [isApplied, setIsApplied] = useState();
+  const navigate = useNavigate();
 
   // apply here
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog
 
+  // login
+  const [openLogin, setOpenLogin] = useState(false);
+
   const handleApply = async () => {
-    setOpenDialog(true); // Open the dialog
+    console.log(userLogin)
+    if (!userLogin || Object.keys(userLogin).length === 0) {
+      toast.info("you must login before apply this");
+      setOpenLogin(true);
+    } else {
+      setOpenDialog(true); // Open the dialog
+    }
+    
+  };
+
+  const handleCloseLogin = () => {
+    setOpenLogin(false); // Close the dialog login
   };
 
   const handleCloseDialog = () => {
@@ -54,10 +71,10 @@ export default function JobDetail() {
     };
 
     const checkIfApplied = async () => {
-      if (!userLogin) return;
+      if (!userLogin || Object.keys(userLogin).length === 0) return;
       try {
         const appliedJobs = await RequestGet(
-          `${APIAPPLY}/${userLogin.user._id}`
+          `${APIAPPLY}/${userLogin?.user?._id}`
         );
         const applied = appliedJobs.some((job) => job.jobID._id === jobId);
 
@@ -67,8 +84,8 @@ export default function JobDetail() {
       }
     };
 
-    checkIfApplied();
     fetchJobDetail();
+    checkIfApplied();
   }, [jobId, userLogin]);
 
   const formatJobDescription = (description) => {
@@ -194,7 +211,7 @@ export default function JobDetail() {
             </Card>
           </Box>
         </Grid>
-        <JobDetailCompany jobDetail={jobDetail}/>
+        <JobDetailCompany jobDetail={jobDetail} />
         <Grid container spacing={0}>
           {/*left description*/}
           <Grid item xs={12} md={8}>
@@ -229,8 +246,9 @@ export default function JobDetail() {
                     Location working
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
-                    - {jobDetail.location.address}{jobDetail.location.commune},
-                    {jobDetail.location.district},{jobDetail.location.province}
+                    - {jobDetail.location.address}
+                    {jobDetail.location.commune},{jobDetail.location.district},
+                    {jobDetail.location.province}
                     <br />
                   </Typography>
 
@@ -289,6 +307,8 @@ export default function JobDetail() {
           <JobDetailMoreInfor jobDetail={jobDetail} />
         </Grid>
       </Grid>
+
+      <LoginDialog open={openLogin} handleClose={handleCloseLogin} />
       <JobSavedChild
         open={openDialog}
         handleClose={handleCloseDialog}

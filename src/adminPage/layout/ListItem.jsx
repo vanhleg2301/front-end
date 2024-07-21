@@ -20,12 +20,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton component={Link} to="managercv">
+    {/*<ListItemButton component={Link} to="managercv">
       <ListItemIcon>
         <AddIcon />
       </ListItemIcon>
       <ListItemText primary="Manager cv" />
-    </ListItemButton>
+    </ListItemButton>*/}
     <ListItemButton component={Link} to="managerjob">
       <ListItemIcon>
         <AppRegistrationIcon />

@@ -8,8 +8,7 @@ import Industries from "../components/industries/Industries";
 
 const Home = () => {
   return (
-    <Box sx={{ backgroundColor: "background.default" }}>
-      <Box mt={15}></Box>
+    <Box >
       <Hero />
       <Divider />
       <Job />

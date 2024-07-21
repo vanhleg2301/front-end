@@ -108,14 +108,14 @@ export default function ForgotPassword() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link to='/login' variant='body2'>
+                    <Typography component={Link} to='/login' variant='body2' color={"inherit"}>
                       Sign In
-                    </Link>
+                    </Typography>
                   </Grid>
                   <Grid item>
-                    <Link to='/register' variant='body2'>
+                    <Typography component={Link} to='/register' variant='body2' color={"inherit"}>
                       Sign Up
-                    </Link>
+                    </Typography>
                   </Grid>
                 </Grid>
               </Box>
@@ -125,7 +125,7 @@ export default function ForgotPassword() {
             <Copyright sx={{ mt: 4, mb: 4 }} />
             <Grid container sx={{ mb: 6 }}>
               <Grid item md={12} sx={{ textAlign: "center" }}>
-                <Typography component={Link} to='/register' variant='body2'>
+                <Typography component={Link} to='/register' variant='body2' color={"inherit"}>
                   {"Don't have an account? Sign Up"}
                 </Typography>
               </Grid>

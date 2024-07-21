@@ -13,8 +13,10 @@ import {
   MenuItem,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import {} from "@mui/icons-material";
+import { handleOpenFile } from "../../../util/handleOpenFile";
 const CompanyManager = () => {
   const [companies, setCompanies] = useState([]);
 
@@ -50,14 +52,14 @@ const CompanyManager = () => {
   };
 
   return (
-    <Container className="text-align-center">
+    <Container className='text-align-center'>
       <Grid container justifyContent={"end"}>
         <Grid item xs={4}>
           <TextField
-            variant="outlined"
-            label="Search Company by Name"
+            variant='outlined'
+            label='Search Company by Name'
             fullWidth
-            size="small"
+            size='small'
           />
         </Grid>
       </Grid>
@@ -66,41 +68,47 @@ const CompanyManager = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Company ID</TableCell>
+              <TableCell>No.</TableCell>
+              <TableCell>Logo</TableCell>
               <TableCell>Company Name</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell colSpan={2} align="center" className="width30">
+              <TableCell>Tax number</TableCell>
+              <TableCell>Business License</TableCell>
+              <TableCell colSpan={2} align='center' className='width30'>
                 Action
               </TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {companies.map((c) => (
-              <TableRow hover>
-                <TableCell>{c._id}</TableCell>
-                <TableCell>{c.companyName}</TableCell>
+            {companies.map((c, index) => (
+              <TableRow hover key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell><img
+                src={c?.logo}
+                alt='Company Logo'
+                style={{ maxWidth: "50px", marginBottom: "10px" }}
+              /></TableCell>
+                <TableCell>{c?.companyName}</TableCell>
+                <TableCell>{c?.taxNumber}</TableCell>
                 <TableCell>
-                  <Select value={c.companyStatus}>
-                    <MenuItem value={1}>Bronze</MenuItem>
-                    <MenuItem value={2}>Silver</MenuItem>
-                    <MenuItem value={3}>Gold</MenuItem>
-                    <MenuItem value={4}>Platinum</MenuItem>
-                    <MenuItem value={5}>Diamond</MenuItem>
-                  </Select>
+                  <Typography
+                    color='primary'
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => handleOpenFile(c?.businessLicense)}>
+                    Business license
+                  </Typography>
                 </TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" color="info">
-                    View Detail
+                <TableCell align='right'>
+                  <Button variant='contained' color='info'>
+                      Detail
                   </Button>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align='left'>
                   <Button
-                    variant="contained"
-                    color="error"
+                    variant='contained'
+                    color='error'
                     onClick={(e) => handleDeactive(e.target.value)}
-                    value={c._id}
-                  >
+                    value={c?._id}>
                     Deactive
                   </Button>
                 </TableCell>

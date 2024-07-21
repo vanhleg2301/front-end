@@ -116,7 +116,7 @@ export default function Login() {
               flexDirection: "column",
               alignItems: "center",
             }}>
-            <Box sx={{ background: "white" }}>
+            <Box>
               <img
                 src={"logo.png"}
                 alt='logo'
@@ -171,9 +171,9 @@ export default function Login() {
                   <Link href='#' variant='body2'></Link>
                 </Grid>
                 <Grid item>
-                  <Link to='/forgot' variant='body2'>
+                  <Typography component={Link} to='/forgot' variant='body2' color={"inherit"}>
                     Forgot password?
-                  </Link>
+                  </Typography>
                 </Grid>
               </Grid>
             </Box>
@@ -186,7 +186,7 @@ export default function Login() {
           <Copyright sx={{ mt: 4, mb: 4 }} />
           <Grid container sx={{ mb: 6 }}>
             <Grid item md={12} sx={{ textAlign: "center" }}>
-              <Typography component={Link} to='/register' variant='body2'>
+              <Typography component={Link} to='/register' variant='body2' color={"inherit"}> 
                 {"Don't have an account? Sign Up"}
               </Typography>
             </Grid>

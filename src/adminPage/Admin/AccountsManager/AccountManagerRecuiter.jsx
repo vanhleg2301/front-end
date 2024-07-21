@@ -80,6 +80,13 @@ const AccountManagerRecuiter = () => {
   };
 
   const handleDeactive = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to deactivate this item?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:9999/user/${id}/deactive`,
@@ -137,7 +144,7 @@ const AccountManagerRecuiter = () => {
         <Table size='small'>
           <TableHead>
             <TableRow>
-              <TableCell style={{ fontWeight: "bold" }}>Account ID</TableCell>
+              <TableCell style={{ fontWeight: "bold" }}>No.</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Name</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Active</TableCell>
               <TableCell style={{ fontWeight: "bold" }}>Company</TableCell>
@@ -150,20 +157,18 @@ const AccountManagerRecuiter = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {recuiters.map((r) => (
-              <TableRow hover key={r._id}>
-                <TableCell>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    to={"recuiter/" + r._id}>
-                    {r._id}
-                  </Link>
+            {recuiters?.map((r, index) => (
+              <TableRow hover key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell
+                  style={{ textDecoration: "none" }}
+                  to={"recruiter/" + r?._id}>
+                  {r?.fullName}
                 </TableCell>
-                <TableCell>{r.fullName}</TableCell>
-                <TableCell>{r.isActive ? "Active" : "Inactive"}</TableCell>
-                <TableCell>{companies[r._id]}</TableCell>
+                <TableCell>{r?.isActive ? "Active" : "Inactive"}</TableCell>
+                <TableCell>{companies[r?._id]}</TableCell>
                 <TableCell>
-                  {r.isActive ? (
+                  {r?.isActive ? (
                     <Button variant='outlined'>Active</Button>
                   ) : (
                     <>
@@ -171,16 +176,16 @@ const AccountManagerRecuiter = () => {
                         color='success'
                         variant='contained'
                         onClick={(e) => handleActive(e.target.value)}
-                        value={r._id}>
+                        value={r?._id}>
                         Active
                       </Button>
 
                       <Button
-                      sx={{ marginLeft: 3 }}
+                        sx={{ marginLeft: 3 }}
                         color='error'
                         variant='contained'
                         onClick={(e) => handleDeactive(e.target.value)}
-                        value={r._id}>
+                        value={r?._id}>
                         Deactive
                       </Button>
                     </>

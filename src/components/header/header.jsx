@@ -27,7 +27,6 @@ import Notification from "./Notification";
 import NotificationRecruiter from "../../recruiter/components/layout/NotificationRecruiter";
 import { logoStyle, logoText } from "../hero/logo";
 
-
 function Header() {
   // Open
   const [isOpen, setIsOpen] = React.useState(false);
@@ -121,6 +120,7 @@ function Header() {
                 color: "blue",
                 display: "flex",
                 alignItems: "center",
+                width: '45%', 
               }}
               component={Link}
               to='/'>
@@ -130,7 +130,14 @@ function Header() {
               </Typography>
             </Box>
 
-            <Box sx={{ display: { xs: "none", md: "flex" }, ml: 7 }}>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                ml: 7,
+                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
               {/*Job*/}
               <MenuItem
                 onMouseEnter={() => handleMouseEnter("jobs")}

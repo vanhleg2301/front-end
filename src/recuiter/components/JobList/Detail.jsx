@@ -41,81 +41,81 @@ export default function Detail() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant='h4' gutterBottom>
-              {job.title}
+              {job?.title}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
             <strong>Job description:</strong>
-              {formatJobDescription(job.description.JobDescription)}
+              {formatJobDescription(job?.description?.JobDescription)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
               <strong>Candidate Requirements:</strong>
-              {formatJobDescription(job.description.CandidateRequirements)}
+              {formatJobDescription(job?.description?.CandidateRequirements)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body1' paragraph>
-              <strong>Benefits:</strong> {formatJobDescription(job.description.Benefit)}
+              <strong>Benefits:</strong> {formatJobDescription(job?.description?.Benefit)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
-              <strong>Industry:</strong> {job.industry}
+              <strong>Industry:</strong> {job?.industry}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
               <strong>Type of Work:</strong>
-              {job.typeOfWork === 0 ? "Full-time" : "Part-time"}
+              {job?.typeOfWork === 0 ? "Full-time" : "Part-time"}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body2'>
               <strong>Location:</strong>
-              {`${job.location?.address}, ${job.location?.district}, ${job.location?.commune}, ${job.location?.province}`}
+              {`${job?.location?.address}, ${job?.location?.district}, ${job?.location?.commune}, ${job?.location?.province}`}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}> 
             <Typography variant='body2'>
               <strong>Salary Range:</strong>
-              {formatSalary(job.minSalary, job.maxSalary)}
+              {formatSalary(job?.minSalary, job?.maxSalary)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
-              <strong>Experience Required:</strong> {`${job.experience} years`}
+              <strong>Experience Required:</strong> {`${job?.experience} years`}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
               <strong>Deadline:</strong>
-              {new Date(job.deadline).toLocaleDateString()}
+              {new Date(job?.deadline).toLocaleDateString()}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
-              <strong>Number of Applicants:</strong> {job.numberOfApplicants}
+              <strong>Number of Applicants:</strong> {job?.numberOfApplicants}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
               <strong>Status:</strong>
-              {job.status === 0 ? "Active" : "Inactive"}
+              {job?.status === 0 ? "Active" : "Inactive"}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
               <strong>Created At:</strong>
-              {new Date(job.createdAt).toLocaleDateString()}
+              {new Date(job?.createdAt).toLocaleDateString()}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant='body2'>
               <strong>Last Updated:</strong>
-              {new Date(job.updatedAt).toLocaleDateString()}
+              {new Date(job?.updatedAt).toLocaleDateString()}
             </Typography>
           </Grid>
         </Grid>

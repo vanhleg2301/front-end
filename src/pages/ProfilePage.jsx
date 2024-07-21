@@ -24,8 +24,7 @@ export default function ProfilePage() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        pt: { xs: 14, sm: 20 },
-        pb: { xs: 8, sm: 12 },
+        mb: 4,
       }}
     >
       <Grid container spacing={4}>

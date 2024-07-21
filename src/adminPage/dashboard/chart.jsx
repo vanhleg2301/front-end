@@ -11,9 +11,8 @@ function createData(time, amount) {
 export default function Chart({ transactions, time }) {
   const theme = useTheme();
 
-  // Pagination state
-  const [page, setPage] = React.useState(0);
-  const itemsPerPage = 10; // Number of transactions per page
+  // State for selected date
+  const [selectedDate, setSelectedDate] = React.useState(new Date(time));
 
   // Function to format time to hours and minutes
   const formatTime = (timeStr) => {
@@ -23,35 +22,48 @@ export default function Chart({ transactions, time }) {
     return `${hours}:${minutes}`;
   };
 
-  const formatTimeToday = (timeStr) => {
-    const date = new Date(timeStr);
+  const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth()+1).toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear().toString().padStart(2, "0");
     return `${day}-${month}-${year}`;
   };
 
-  // Filter transactions from the last 5 days
-  const fiveDaysAgo = new Date(time);
-  fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+  // Filter transactions for the selected date
+  const startOfDay = new Date(selectedDate);
+  startOfDay.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(selectedDate);
+  endOfDay.setHours(23, 59, 59, 999);
 
-  const filteredTransactions = transactions.filter(transaction => new Date(transaction.when) >= fiveDaysAgo);
-
-  // Paginate transactions
-  const paginatedTransactions = filteredTransactions.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+  const filteredTransactions = transactions.filter(transaction =>
+    new Date(transaction.when) >= startOfDay && new Date(transaction.when) <= endOfDay
+  );
 
   // Generate data for each transaction
-  const data = paginatedTransactions.map((transaction) => ({
+  const data = filteredTransactions.map((transaction) => ({
     time: formatTime(transaction.when),
     amount: transaction.amount ?? 0,
   }));
 
   // Ensure the data starts with a zero amount at the beginning
-  data.unshift(createData("00:00", 0));
+  data?.unshift(createData("00:00", 0));
+
+  // Handle date navigation
+  const handlePrevious = () => {
+    const previousDate = new Date(selectedDate);
+    previousDate.setDate(previousDate.getDate() - 1);
+    setSelectedDate(previousDate);
+  };
+
+  const handleNext = () => {
+    const nextDate = new Date(selectedDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+    setSelectedDate(nextDate);
+  };
 
   return (
     <React.Fragment>
-      <Typography>Today: {formatTimeToday(time)}</Typography>
+      <Typography>Selected Date: {formatDate(selectedDate)}</Typography>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
           dataset={data}
@@ -104,15 +116,13 @@ export default function Chart({ transactions, time }) {
       <Box mt={2} display="flex" justifyContent="space-between">
         <Button
           variant="contained"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0}
+          onClick={handlePrevious}
         >
           Previous
         </Button>
         <Button
           variant="contained"
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={(page + 1) * itemsPerPage >= filteredTransactions.length}
+          onClick={handleNext}
         >
           Next
         </Button>

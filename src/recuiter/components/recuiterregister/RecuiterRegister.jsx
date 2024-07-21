@@ -28,6 +28,10 @@ const RecuiterRegister = () => {
   const [Unchecked, setUnchecked] = useState(true);
   const [checkErr, setCheckErr] = useState("");
   const [error, setError] = useState(null);
+  const [userNameCheck, setUserNameCheck]= useState("");
+  const [emailCheck, setEmailCheck]= useState("");
+  const [fullNameCheck, setFullNameCheck]= useState("");
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,21 +43,57 @@ const RecuiterRegister = () => {
       phone,
     };
     console.log(newRecuiter);
-    if (repassword !== password) {
-      setPasswordErr("Re-password need same Password");
+
+    if(!username){
+      setUserNameCheck("username is required")
+      toast.error("username is required");
+      return;
+    } else {
+      setUserNameCheck("")
+    }
+
+    if(!email){
+      setEmailCheck("Email is required")
+      toast.error("Email is required");
+      return;
+    } else {
+      setEmailCheck("")
+    }
+
+    if(!password) {
+      setPasswordErr("Password is required");
+      toast.error("Password is required");
       return;
     } else {
       setPasswordErr("");
     }
 
+    if (repassword !== password) {
+      setPasswordErr("Re-password need same Password");
+      toast.error("Re-password need same Password");
+      return;
+    } else {
+      setPasswordErr("");
+    }
+
+    if(!fullName){
+      setFullNameCheck("Full name is required")
+      toast.error("Full name is required");
+      return;
+    } else {
+      setFullNameCheck("")
+    }
+
     if (validatePhone(phone)) {
-      console.log(validatePhone(phone));
-      setError("Phone number is invalid")
+      // console.log(validatePhone(phone));
+      setError(validatePhone(phone))
+      toast.error(validatePhone(phone));
       return;
     }
 
     if (Unchecked) {
       setCheckErr("You need to agree with the terms of service");
+      toast.error("You need to agree with the terms of service");
       return;
     } else {
       setCheckErr("");
@@ -99,7 +139,7 @@ const RecuiterRegister = () => {
 
   return (
     <Container align={"center"}>
-    <ToastContainer  />s
+    <ToastContainer  />
       <h3>Register for Recruiter</h3>
       <Grid container >
         <Grid item md={12}align={"center"}>

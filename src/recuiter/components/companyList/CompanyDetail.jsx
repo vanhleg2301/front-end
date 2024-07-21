@@ -32,34 +32,39 @@ export default function CompanyDetail() {
         Company Detail
       </Typography>
       <Typography variant='h4' gutterBottom>
-        Company Name: {company.companyName}
+        Company Name: {company?.companyName}
       </Typography>
       <img
-        src={company.logo}
+        src={company?.logo}
         alt='Company Logo'
         style={{ maxWidth: "200px", marginBottom: "10px" }}
       />
       <Typography variant='body1' gutterBottom>
-      <Typography color="primary" sx={{ cursor: 'pointer' }} onClick={() => handleOpenFile(company.email)}>
-      Website: {company.email}
-    </Typography>
-    
+        <Typography
+          color='primary'
+          sx={{ cursor: "pointer" }}
+          onClick={() => handleOpenFile(company?.email)}>
+          Website: {company?.email}
+        </Typography>
       </Typography>
       <Typography variant='body1' gutterBottom>
-        Phone Number:{company.phoneNumber}
+        Phone Number:{company?.phoneNumber}
       </Typography>
       <Typography variant='body1' gutterBottom>
-        Location:{company.location}
+        Location:{company?.location}
       </Typography>
       <Typography variant='body1' gutterBottom>
-        Tax Number:{company.taxNumber}
+        Tax Number:{company?.taxNumber}
       </Typography>
       <Typography variant='body1' gutterBottom>
-        Number of Employees:{company.numberOfEmployees}
+        Number of Employees:{company?.numberOfEmployees}
       </Typography>
-      <Typography color="primary" sx={{ cursor: 'pointer' }} onClick={() => handleOpenFile(company.businessLicense)}>
-       View business license
-    </Typography>
+      <Typography
+        color='primary'
+        sx={{ cursor: "pointer" }}
+        onClick={() => handleOpenFile(company?.businessLicense)}>
+        View business license
+      </Typography>
     </Container>
   );
 }

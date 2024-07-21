@@ -8,6 +8,8 @@ import AccountManagerRecuiter from "../adminPage/Admin/AccountsManager/AccountMa
 import AccountsManagerApplicant from "../adminPage/Admin/AccountsManager/AccoutManagerApllicant";
 import AdminPage from "../adminPage/page/AdminPage";
 import { SocketProvider } from "../context/socket";
+import ProfileAdmin from "../adminPage/page/ProfileAdmin";
+import AmountApplicantCv from "../adminPage/Admin/Detail/AmountApplicantCv";
 
 export default function AdminRoute() {
   return {
@@ -24,9 +26,19 @@ export default function AdminRoute() {
       { path: "managercv", element: <CVManage /> },
       { path: "managerjob", element: <ManageJob /> },
       { path: "managercompanies", element: <CompanyManager /> },
-      {path: "managerrecruiter",element: <AccountManagerRecuiter />},
-      { path: "managerapplicant", element: <AccountsManagerApplicant /> },
-      { path: "profile", element: <CVManage /> },
+      { path: "managerrecruiter", element: <AccountManagerRecuiter /> },
+      {
+        path: "managerapplicant",
+        children: [
+          { index: true, element: <AccountsManagerApplicant /> },
+          { path: ":applicantId", element: <AmountApplicantCv /> },
+        ],
+      },
+      {
+        path: "managerapplicant/:applicantId",
+        element: <AccountsManagerApplicant />,
+      },
+      { path: "profile", element: <ProfileAdmin /> },
     ],
   };
 }

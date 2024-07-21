@@ -218,19 +218,19 @@ const JobDetail = () => {
                 </TableHead>
                 <TableBody>
                   {dataJob ? (
-                    dataJob.map((j, index) => (
+                    dataJob?.map((j, index) => (
                       <TableRow hover key={index}>
                         <TableCell>{index + 1}</TableCell>
-                        <TableCell>{formatDate(j.updatedAt)}</TableCell>
-                        <TableCell>{j.applicantID.fullName}</TableCell>
-                        <TableCell>{j.applicantID.email}</TableCell>
-                        <TableCell onClick={() => handleOpenFile(j.fileURL)}>
+                        <TableCell>{formatDate(j?.updatedAt)}</TableCell>
+                        <TableCell>{j?.applicantID?.fullName}</TableCell>
+                        <TableCell>{j?.applicantID?.email}</TableCell>
+                        <TableCell onClick={() => handleOpenFile(j?.fileURL)}>
                           <Button color='primary' variant='contained'>
                             View Cv
                           </Button>
                         </TableCell>
                         <TableCell>
-                          {j.status === 1 ? (
+                          {j?.status === 1 ? (
                             <>
                               <TableCell>
                                 <Button
@@ -238,7 +238,7 @@ const JobDetail = () => {
                                   variant='contained'
                                   sx={{ marginRight: 2 }}
                                   onClick={() =>
-                                    handleOpenDialog(j.applicantID._id)
+                                    handleOpenDialog(j?.applicantID._id)
                                   }>
                                   Accept
                                 </Button>
@@ -248,19 +248,19 @@ const JobDetail = () => {
                                   color='error'
                                   variant='contained'
                                   onClick={() =>
-                                    handleReject(j.applicantID._id)
+                                    handleReject(j?.applicantID._id)
                                   }>
                                   Reject
                                 </Button>
                               </TableCell>
                             </>
-                          ) : j.status === 0 ? (
+                          ) : j?.status === 0 ? (
                             <TableCell>
                               <Button variant='outlined' disabled>
                                 Accepted
                               </Button>
                             </TableCell>
-                          ) : j.status === 2 ? (
+                          ) : j?.status === 2 ? (
                             <TableCell>
                               <Button variant='outlined' color='error' disabled>
                                 Rejected
@@ -296,7 +296,7 @@ const JobDetail = () => {
             type='datetime-local'
             fullWidth
             variant='standard'
-            value={meetingDetails.timeMeeting}
+            value={meetingDetails?.timeMeeting}
             onChange={(e) =>
               setMeetingDetails({
                 ...meetingDetails,
@@ -314,7 +314,7 @@ const JobDetail = () => {
             type='text'
             fullWidth
             variant='standard'
-            value={meetingDetails.linkMeeting}
+            value={meetingDetails?.linkMeeting}
             onChange={(e) =>
               setMeetingDetails({
                 ...meetingDetails,

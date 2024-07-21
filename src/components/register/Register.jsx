@@ -25,9 +25,9 @@ function Copyright(props) {
       align="center"
       {...props}>
       {"Copyright © "}
-      <Link color="inherit" to="/">
+      <Typography color="inherit" component={Link} to='/'>
         Ace Interview
-      </Link>{" "}
+      </Typography>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -125,7 +125,7 @@ export default function Register() {
   };
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="md" >
       <CssBaseline />
       <Box
         sx={{
@@ -244,7 +244,7 @@ export default function Register() {
       <Copyright sx={{ mt: 5 }} />
       <Grid container justifyContent="center" sx={{ mb: 6, mt: 2 }}>
         <Grid item>
-          <Typography component={Link} to="/login" variant="body2">
+          <Typography component={Link} to="/login" variant="body2" color={"inherit"}>
             Already have an account? Sign in
           </Typography>
         </Grid>

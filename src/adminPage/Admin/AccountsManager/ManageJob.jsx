@@ -27,6 +27,7 @@ const ManageJob = () => {
         console.log(err);
       });
   }, []);
+
   const handleReject = async (id) => {
     try {
       const response = await fetch(`http://localhost:9999/job/${id}/reject`, {
@@ -35,6 +36,7 @@ const ManageJob = () => {
 
       if (response.ok) {
         window.alert("Reject successful");
+        window.location.reload();
       } else {
         window.alert("Failed to Reject job");
       }
@@ -52,6 +54,7 @@ const ManageJob = () => {
 
       if (response.ok) {
         window.alert("Approve successful");
+        window.location.reload();
       } else {
         window.alert("Failed to Approve job");
       }
@@ -61,13 +64,13 @@ const ManageJob = () => {
     }
   };
   return (
-    <Container className="text-align-center">
+    <Container className='text-align-center'>
       <h2>Manage Jobs</h2>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Job ID</TableCell>
+              <TableCell>No.</TableCell>
               <TableCell>Job Title</TableCell>
               <TableCell>Min Salary</TableCell>
               <TableCell>Max Salary</TableCell>
@@ -76,33 +79,36 @@ const ManageJob = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {jobs.map((j) => (
+            {jobs?.map((j, index) => (
               <TableRow hover>
+                <TableCell key={index}>{index + 1}</TableCell>
+                <TableCell>{j?.title}</TableCell>
+                <TableCell>{j?.minSalary}</TableCell>
+                <TableCell>{j?.maxSalary}</TableCell>
                 <TableCell>
-                  <Link style={{ textDecoration: "none" }} to={`job/${j._id}`}>
-                    {j._id}
-                  </Link>
+                  {j?.status === 1
+                    ? "Approve"
+                    : j?.status === 2
+                    ? "Pending"
+                    : j?.status === 0
+                    ? "Reject"
+                    : null}
                 </TableCell>
-                <TableCell>{j.title}</TableCell>
-                <TableCell>{j.minSalary}</TableCell>
-                <TableCell>{j.maxSalary}</TableCell>
                 <TableCell>
                   <Button
-                    variant="contained"
-                    color="success"
+                    variant='contained'
+                    color='success'
                     onClick={(e) => handleApprove(e.target.value)}
-                    value={j._id}
-                  >
+                    value={j?._id}>
                     Approve
                   </Button>
                 </TableCell>
                 <TableCell>
                   <Button
-                    variant="contained"
-                    color="error"
+                    variant='contained'
+                    color='error'
                     onClick={(e) => handleReject(e.target.value)}
-                    value={j._id}
-                  >
+                    value={j?._id}>
                     Reject
                   </Button>
                 </TableCell>

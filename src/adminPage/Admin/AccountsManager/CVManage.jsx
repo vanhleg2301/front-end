@@ -16,7 +16,7 @@ const CVManage = () => {
   const [applicants, setApplicants] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9999/user")
+    fetch("http://localhost:9999/user/user")
       .then((resp) => resp.json())
       .then((data) => {
         setApplicants(data.filter((a) => a.roleID === 1));
@@ -36,6 +36,7 @@ const CVManage = () => {
         console.log(err);
       });
   }, []);
+  
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
@@ -57,12 +58,10 @@ const CVManage = () => {
   };
 
   const getApplicantName = (applicantId) => {
-    console.log(applicantId);
     const applicant = applicants.find((a) => a._id === applicantId);
-    console.log(applicants);
-    console.log(applicant);
     return applicant ? applicant.fullName : "Unknown";
   };
+
   return (
     <Container className="text-align-center">
       <h3>CV List</h3>
@@ -76,14 +75,14 @@ const CVManage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cvs.map((c) => (
-              <TableRow hover>
-                <TableCell>{c._id}</TableCell>
-                <TableCell>{getApplicantName(c.applicantID._id)}</TableCell>
+            {cvs?.map((c, index) => (
+              <TableRow hover key={index}>
+                <TableCell>{index+1}</TableCell>
+                <TableCell>{getApplicantName(c?.applicantID._id)}</TableCell>
                 <TableCell>
                   <Button
                     onClick={(e) => handleDelete(e.target.value)}
-                    value={c._id}
+                    value={c?._id}
                     variant="contained"
                     color="error"
                   >

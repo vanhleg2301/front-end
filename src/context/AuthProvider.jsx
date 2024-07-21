@@ -37,7 +37,7 @@ export default function AuthProvider({ children }) {
         logged();
       };
     }
-  }, [accessToken, login, userObject]);
+  }, [accessToken, login, userObject, setUserLogin]);
 
   useEffect(() => {
     if (login) {

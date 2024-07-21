@@ -9,17 +9,19 @@ import {
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { RequestPut } from "../../util/request";
+import { RequestPatch } from "../../util/request";
 import { ENDPOINT } from "../../util/constants";
 import { APIUSER } from "../../util/apiEndpoint";
+import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 export default function Info() {
   const { userLogin, setUserLogin } = useContext(AuthContext);
-  const [fullName, setFullName] = useState(userLogin.user.fullName || "");
-  const [phone, setPhone] = useState(userLogin.user.phoneNumber || "");
+  const [fullName, setFullName] = useState(userLogin?.user?.fullName || "");
+  const [phone, setPhone] = useState(userLogin?.user?.phoneNumber || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const userId = userLogin.user._id;
+  const id = userLogin.user._id;
   const phoneNumber = phone;
 
   // fix lỗi chưa sửa được profile vì front-end lấy dữ liệu từ cookies nến khi 
@@ -30,35 +32,38 @@ export default function Info() {
     setError(null);
 
     try {
-      const response = await RequestPut(`$/${APIUSER}/${userId}`, {
-        fullName,
-        phoneNumber,
+      const response = await RequestPatch(`${APIUSER}/${id}`, {
+        fullName: fullName,
+        phoneNumber: phone,
       });
       setLoading(false);
       console.log("response", response.message);
       if (response && response.message === "Profile updated successfully") {
-        alert("phoneNumber saved successfully");
-        // Update the user context with new data
-        setUserLogin({
+        toast.success("Saved successfully");
+        const updatedUser = {
           ...userLogin,
           user: {
             ...userLogin.user,
             fullName,
             phoneNumber,
           },
-        });
+        };
+        setUserLogin(updatedUser);
+        Cookies.set("user", JSON.stringify(updatedUser));
+        window.location.reload();
       } else {
-        alert("Failed to save phone number");
+        toast.error("Failed to save profile");
       }
     } catch (error) {
       setLoading(false);
-      console.error("Error updating phone number:", error);
-      setError("An error occurred while saving the phone number");
+      toast.error("Error updating profile");
+      setError("An error occurred while saving your profile");
     }
   };
 
   return (
     <Box>
+    <ToastContainer/>
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
@@ -83,7 +88,7 @@ export default function Info() {
           <TextField
             fullWidth
             label="Email"
-            defaultValue={userLogin.user.email}
+            defaultValue={userLogin?.user?.email}
             margin="normal"
             InputProps={{
               readOnly: true,

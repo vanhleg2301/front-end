@@ -29,7 +29,7 @@ const itemsPerPage = 9;
 
 export default function Job() {
   const [jobs, setJobs] = useState([]);
-
+  const [companyName, setCompanyName] = useState([]);
   // search
   const [searchedJobs, setSearchedJobs] = useState([]);
   const [searched, setSearched] = useState(false);
@@ -105,6 +105,8 @@ export default function Job() {
     ? Math.ceil(searchedJobs.length / itemsPerPage)
     : Math.ceil(jobs.length / itemsPerPage);
 
+  // console.log(paginatedData.map((item) => item.recruitersID))
+
   return (
     <>
       <Container>
@@ -122,7 +124,7 @@ export default function Job() {
       {alertMessage && (
         <Alert
           // variant="outlined"
-          severity="success"
+          severity='success'
           sx={{ position: "fixed", bottom: "0", left: "0" }}>
           {alertMessage}
         </Alert>
@@ -130,12 +132,12 @@ export default function Job() {
 
       <Container sx={{ mt: 2, mb: 2 }}>
         {/*Filter*/}
-         {/* <FilterJob /> */}
+        {/* <FilterJob /> */}
         {/* content list job */}
         <Grid container spacing={2}>
           {paginatedData?.length === 0 ? (
             <Grid item xs={12} sm={12} md={12}>
-              <Typography variant="body1" textAlign={"center"}>
+              <Typography variant='body1' textAlign={"center"}>
                 Don't have this job
               </Typography>
             </Grid>
@@ -172,7 +174,9 @@ export default function Job() {
                         height: "100%",
                         objectFit: "contain",
                       }}
-                      src={"https://www.topcv.vn/v4/image/normal-company/logo_default.png"}
+                      src={
+                        "https://www.topcv.vn/v4/image/normal-company/logo_default.png"
+                      }
                       alt={`Logo ${item._id}`}
                     />
                   </Box>
@@ -189,11 +193,12 @@ export default function Job() {
                         <Grid item xs={12} md={12}>
                           <Box
                             sx={{ textDecoration: "none" }}
+                            title={item.description.title}
                             component={Link}
                             to={`/jobs/${item._id}`}>
                             <Typography
-                              variant="body2"
-                              color="text.secondary"
+                              variant='body2'
+                              color='text.secondary'
                               sx={{ fontWeight: "bold" }}>
                               {formatDescription(item.title)}
                             </Typography>
@@ -201,11 +206,11 @@ export default function Job() {
                         </Grid>
 
                         <Typography
-                          variant="body2"
-                          color="text.secondary"
+                          variant='body2'
+                          color='text.secondary'
                           title={item.description.JobDescription}
-                          component={Link}
-                          to={`/companies/${item._id}`}
+                          // component={Link}
+                          // to={`/companies/${item.description.JobDescription}`}
                           sx={{ textDecoration: "none" }}>
                           {formatDescription(item.description.JobDescription)}
                         </Typography>
@@ -218,7 +223,7 @@ export default function Job() {
                               alignItems: "center",
                             }}>
                             <Box
-                              className="salaryLocation"
+                              className='salaryLocation'
                               sx={{
                                 display: "flex",
                                 height: "24px",
@@ -252,9 +257,9 @@ export default function Job() {
                                 }}>
                                 {formatLocation(item.location.province)}
                               </Box>
-                              <Box className="icon">
+                              <Box className='icon'>
                                 <IconButton
-                                  aria-label="favorite"
+                                  aria-label='favorite'
                                   onClick={() =>
                                     toggleFavorite(item._id, item)
                                   }>
@@ -283,7 +288,6 @@ export default function Job() {
           onPageChange={(page) => setCurrentPage(page)}
         />
         {/* Render JobWish component <JobSaved favoriteJobs={favoriteJobs} />*/}
-        
       </Container>
     </>
   );

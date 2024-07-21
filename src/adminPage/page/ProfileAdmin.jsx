@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/AuthProvider";
-import { RequestGet, RequestPatch } from "../../../util/request";
-import { APIUSER } from "../../../util/apiEndpoint";
+import { RequestGet, RequestPatch } from "../../util/request";
+import { APIUSER } from "../../util/apiEndpoint";
+import { AuthContext } from "../../context/AuthProvider";
 import { Button, TextField, Typography, Box } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 
-export default function ProfileRecruiter() {
+export default function ProfileAdmin() {
   const { userLogin, setUserLogin } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState({});
   const [fullName, setFullName] = useState("");
@@ -95,15 +95,6 @@ export default function ProfileRecruiter() {
               readOnly: true,
             }}
           />
-          <Box sx={{ m: 2 }}>
-            <Typography variant='h6'>
-              Your level: {userProfile?.recruiterLevel}
-            </Typography>
-            <Typography variant='h6'>
-              Allow post: {userProfile?.jobPostingLimit}
-            </Typography>
-          </Box>
-
           <Button
             variant='contained'
             color='primary'
