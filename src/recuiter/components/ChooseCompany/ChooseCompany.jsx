@@ -13,9 +13,10 @@ import { Box } from "@mui/system";
 import { UploadFile } from "@mui/icons-material";
 import { AuthContext } from "../../../context/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 const ChooseCompany = () => {
-  const { userLogin } = useContext(AuthContext);
+  const { userLogin, setUserLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null); // Tách biến company thành selectedCompany
@@ -89,12 +90,23 @@ const ChooseCompany = () => {
         method: "POST",
         body: formData, // Gửi FormData chứa các trường và file
       });
+
+      const result = await response.json();
+      console.log("result: ", result);
       if (response.ok) {
-        console.log("response: ", response);
-        toast.success("Create successful");
+        const companyID = result?._id;
+        const updatedUser = {
+          ...userLogin,
+          user: {
+            ...userLogin?.user,
+            companyID,
+          },
+        };
+        setUserLogin(updatedUser);
+        Cookies.set("user", JSON.stringify(updatedUser));
+
         alert("Create successful");
         navigate("/recruiter/companyByRecruiter");
-        // navigate("/recruiter/companyByRecruiter");
       } else {
         throw new Error("Create failed");
       }
@@ -118,6 +130,18 @@ const ChooseCompany = () => {
       });
       if (response.ok) {
         console.log("response: ", response);
+
+        const updatedUser = {
+          ...userLogin,
+          user: {
+            ...userLogin?.user,
+            companyID: selectedCompany?._id,
+          },
+        };
+        setUserLogin(updatedUser);
+        Cookies.set("user", JSON.stringify(updatedUser));
+        window.location.reload();
+
         alert("Select successful");
         navigate("/recruiter/companyByRecruiter");
       } else {
@@ -154,11 +178,9 @@ const ChooseCompany = () => {
       <ToastContainer />
       <Grid container>
         <Grid item xs={12} className='part' textAlign={"center"}>
-          <Box>
+          <Box hidden={Boolean(companyName || logoFile || businessLicenseFile)}>
             <Typography variant='h4'>Existed Company</Typography>
-
             <Autocomplete
-              disabled={Boolean(companyName)}
               value={selectedCompany}
               onChange={(_, newValue) => setSelectedCompany(newValue)}
               options={companies}

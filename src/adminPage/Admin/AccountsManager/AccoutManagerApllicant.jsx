@@ -106,6 +106,7 @@ const AccountsManagerApplicant = () => {
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>CVs</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell colSpan={2} align='center'>
                 Action
               </TableCell>
@@ -123,6 +124,7 @@ const AccountsManagerApplicant = () => {
                     {cvs[a?._id] || 0} cv
                   </Button>
                 </TableCell>
+                <TableCell>{a?.isActive ? "Active" : "Inactive"}</TableCell>
                 <TableCell>
                   <Button
                     color='success'

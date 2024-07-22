@@ -59,7 +59,7 @@ export default function CompanyList() {
               <TableCell>taxNumber</TableCell>
               <TableCell>NumberOfEmployees</TableCell>
               <TableCell>Business License</TableCell>
-              <TableCell>Function</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -87,9 +87,11 @@ export default function CompanyList() {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button color='primary' variant='contained'>
-                    Update
-                  </Button>
+                  {company?.companyStatus === 1
+                    ? "Pending"
+                    : company?.companyStatus === 0
+                    ? "Accepted"
+                    : "Rejected"}
                 </TableCell>
               </TableRow>
             ))}

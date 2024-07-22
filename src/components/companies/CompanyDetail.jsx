@@ -40,7 +40,7 @@ export default function CompanyDetail() {
 
   return (
     <Container maxWidth='lg'>
-      <Card>
+      <Card sx={{ backgroundColor: "#F0F0F0", margin: -1, paddingTop: -4 }}>
         <CardContent>
           {/* Company Information */}
           <Box>
@@ -107,17 +107,17 @@ export default function CompanyDetail() {
               </Grid>
             </Grid>
           </Box>
-          {/* Related work */}
-          <Box mt={4}>
-            <Typography variant='h4' color='textPrimary' gutterBottom>
-              Related work
-            </Typography>
-            <Box>
-              <Job />
-            </Box>
-          </Box>
         </CardContent>
       </Card>
+      {/* Related work */}
+      <Box mt={4}>
+        <Typography variant='h4' color='textPrimary' gutterBottom>
+          Related work
+        </Typography>
+        <Box>
+          <Job />
+        </Box>
+      </Box>
     </Container>
   );
 }

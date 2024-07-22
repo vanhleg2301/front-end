@@ -25,10 +25,10 @@ export const clearAuthCookies = () => {
   const expiresIn = 30 * 60; 
   // const GMT7 = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
   const expirationDate = new Date(Date.now() + expiresIn * 1000);
-  console.log("expirationDate: ", expirationDate);
+  // console.log("expirationDate: ", expirationDate);
 
    const remainingTime = expirationDate.getTime() - Date.now();
-  console.log("timeRemaining: ", remainingTime);
+  // console.log("timeRemaining: ", remainingTime);
 
   setTimeout(() => {
       Cookies.remove('accessToken');

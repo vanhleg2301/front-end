@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSocket } from "../../../context/socket";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
@@ -19,8 +19,8 @@ import { RequestDelete, RequestGet } from "../../../util/request";
 import { NOTIFICATION } from "../../../util/apiEndpoint";
 
 export default function NotificationRecruiter() {
-  const { userLogin } = React.useContext(AuthContext);
-  const [isOpentNotification, setIsOpenNotification] = React.useState(false);
+  const { userLogin } = useContext(AuthContext);
+  const [isOpenNotification, setIsOpenNotification] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [countNotification, setCountNotification] = React.useState(0);
   const [notificationDetail, setNotificationDetail] = React.useState([]);

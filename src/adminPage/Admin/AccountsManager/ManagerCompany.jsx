@@ -31,10 +31,31 @@ const CompanyManager = () => {
       });
   }, []);
 
+  const handleActive = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9999/company/${id}/active`,
+        {
+          method: "PATCH",
+        }
+      );
+
+      if (response.ok) {
+        window.alert("Active successful");
+        window.location.reload();
+      } else {
+        window.alert("Failed to Active item.");
+      }
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("An error occurred");
+    }
+  };
+
   const handleDeactive = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:9999/companies/${id}/deactive`,
+        `http://localhost:9999/company/${id}/deactive`,
         {
           method: "PATCH",
         }
@@ -42,6 +63,7 @@ const CompanyManager = () => {
 
       if (response.ok) {
         window.alert("deactive successful");
+        window.location.reload();
       } else {
         window.alert("Failed to deactive item.");
       }
@@ -73,6 +95,7 @@ const CompanyManager = () => {
               <TableCell>Company Name</TableCell>
               <TableCell>Tax number</TableCell>
               <TableCell>Business License</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell colSpan={2} align='center' className='width30'>
                 Action
               </TableCell>
@@ -83,11 +106,13 @@ const CompanyManager = () => {
             {companies.map((c, index) => (
               <TableRow hover key={index}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell><img
-                src={c?.logo}
-                alt='Company Logo'
-                style={{ maxWidth: "50px", marginBottom: "10px" }}
-              /></TableCell>
+                <TableCell>
+                  <img
+                    src={c?.logo}
+                    alt='Company Logo'
+                    style={{ maxWidth: "50px", marginBottom: "10px" }}
+                  />
+                </TableCell>
                 <TableCell>{c?.companyName}</TableCell>
                 <TableCell>{c?.taxNumber}</TableCell>
                 <TableCell>
@@ -99,8 +124,19 @@ const CompanyManager = () => {
                   </Typography>
                 </TableCell>
                 <TableCell align='right'>
-                  <Button variant='contained' color='info'>
-                      Detail
+                  {c?.companyStatus === 1
+                    ? "Pending"
+                    : c?.companyStatus === 0
+                    ? "Accepted"
+                    : "Rejected"}
+                </TableCell>
+                <TableCell align='right'>
+                  <Button
+                    variant='contained'
+                    color='info'
+                    onClick={(e) => handleActive(e.target.value)}
+                    value={c?._id}>
+                    ACTIVE
                   </Button>
                 </TableCell>
                 <TableCell align='left'>

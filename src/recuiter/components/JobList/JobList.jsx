@@ -22,8 +22,9 @@ const JobList = () => {
   const recruiterID = userLogin.user._id;
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  useEffect(() => {
+  const [amountCv, setAmountCv] = useState({});
 
+  useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await fetch(
@@ -47,8 +48,29 @@ const JobList = () => {
     setSearchTerm(e.target.value);
   };
 
+  useEffect(() => {
+    const getAmountCv = async () => {
+      try {
+        const cvsData = {};
+        for (let job of jobs) {
+          const res = await fetch(`http://localhost:9999/job/jobCv/${job._id}`);
+          const data = await res?.json();
+          cvsData[job?._id] = data?.length;
+        }
+        console.log(amountCv);
+        setAmountCv(cvsData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (jobs.length > 0) {
+      getAmountCv();
+    }
+  }, [jobs]);
+
+
   const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+    job?.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const truncateTitle = (title) => {
@@ -61,7 +83,7 @@ const JobList = () => {
     try {
       if(!comfirmDelete) return;
       await RequestDelete(`${APIJOB}/${id}`);
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
+      setJobs((prevJobs) => prevJobs.filter((job) => job?._id !== id));
     } catch (error) {
       console.error("Failed to delete the job:", error);
     }
@@ -93,17 +115,17 @@ const JobList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredJobs.map((j, index) => (
-              <TableRow hover key={j._id}>
+            {filteredJobs?.map((j, index) => (
+              <TableRow hover key={j?._id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
-                  <Link style={{ textDecoration: "none", color: 'white' }} to={j._id}>
-                    {truncateTitle(j.title)}
+                  <Link style={{ textDecoration: "none", color: 'white' }} to={j?._id}>
+                    {truncateTitle(j?.title)}
                   </Link>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>{j.minSalary} - {j.maxSalary}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{j?.minSalary} - {j?.maxSalary}</TableCell>
                 <TableCell>{formatDate(j.deadline)}</TableCell>
-                <TableCell>{2}</TableCell>
+                <TableCell>{amountCv[j?._id] || 0}</TableCell>
                 <TableCell>
                   <Button color="primary" variant="contained">
                     Update
@@ -113,7 +135,7 @@ const JobList = () => {
                   <Button
                     color="error"
                     variant="contained"
-                    onClick={() => handleDelete(j._id)}>
+                    onClick={() => handleDelete(j?._id)}>
                     Delete
                   </Button>
                 </TableCell>

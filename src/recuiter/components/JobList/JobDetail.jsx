@@ -40,6 +40,7 @@ import { useSocket } from "../../../context/socket";
 import { AuthContext } from "../../../context/AuthProvider";
 import Detail from "./Detail";
 import { toast, ToastContainer } from "react-toastify";
+import { Stack } from "@mui/system";
 
 const JobDetail = () => {
   const { userLogin } = useContext(AuthContext);
@@ -62,8 +63,6 @@ const JobDetail = () => {
       linkMeeting: newRoomId,
     }));
     setIsRoomIdGenerated(true); // Set the flag to true once the room ID is generated
-
-    
   };
 
   useEffect(() => {
@@ -137,7 +136,6 @@ const JobDetail = () => {
     }
 
     try {
-
       await RequestPost(`${APIROOM}/${userLogin?.user?._id}`, {
         roomId: meetingDetails.linkMeeting,
       });
@@ -160,11 +158,11 @@ const JobDetail = () => {
         meetingDetails.linkMeeting
       );
 
-
-
-      const mess = `Recruiter accepted your cv in ${job.title}. Code meeting: "${
-        meetingDetails.linkMeeting
-      }" at ${formatDate(meetingDetails.timeMeeting)} ^.^`;
+      const mess = `Recruiter accepted your cv in ${
+        job.title
+      }. Code meeting: "${meetingDetails.linkMeeting}" at ${formatDate(
+        meetingDetails.timeMeeting
+      )} ^.^`;
 
       sendmail(selectedApplicant, mess);
 
@@ -202,7 +200,7 @@ const JobDetail = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ borderTop: "1px solid #ddd" }}>
       <ToastContainer />
       {/*Job List*/}
       <Detail />
@@ -212,6 +210,9 @@ const JobDetail = () => {
         <IconButton size='small' aria-label='reload' onClick={handleReload}>
           <RefreshIcon />
         </IconButton>
+        <Typography>
+          This job have <span>{dataJob?.length}</span> apply for
+        </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TableContainer>
@@ -244,7 +245,7 @@ const JobDetail = () => {
                         <TableCell>
                           {j?.status === 1 ? (
                             <>
-                              <TableCell>
+                              <Stack direction='row' spacing={2}>
                                 <Button
                                   color='primary'
                                   variant='contained'
@@ -254,8 +255,6 @@ const JobDetail = () => {
                                   }>
                                   Accept
                                 </Button>
-                              </TableCell>
-                              <TableCell>
                                 <Button
                                   color='error'
                                   variant='contained'
@@ -264,7 +263,7 @@ const JobDetail = () => {
                                   }>
                                   Reject
                                 </Button>
-                              </TableCell>
+                              </Stack>
                             </>
                           ) : j?.status === 0 ? (
                             <TableCell>

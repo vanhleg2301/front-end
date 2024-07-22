@@ -18,12 +18,14 @@ export default function Company() {
     const fetchCompanies = async () => {
       try {
         const response = await RequestGet(`company`);
-        setCompanies(response);
+        const filteredCompanies = response.filter(
+          (company) => company.companyStatus === 0
+        );
+        setCompanies(filteredCompanies);
       } catch (error) {
         console.error("Error fetching companies:", error);
       }
     };
-    
 
     fetchCompanies();
   }, []);
@@ -34,14 +36,12 @@ export default function Company() {
           mt: 5,
           textAlign: "left",
           mb: 6,
-        }}
-      >
+        }}>
         <Typography
-          component="h2"
-          variant="h4"
-          color="text.primary"
-          gutterBottom
-        >
+          component='h2'
+          variant='h4'
+          color='text.primary'
+          gutterBottom>
           Top Companies
         </Typography>
         <Grid container spacing={3}>
@@ -49,8 +49,7 @@ export default function Company() {
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Link
                 to={`/companies/${company._id}`}
-                style={{ textDecoration: "none" }}
-              >
+                style={{ textDecoration: "none" }}>
                 <Card
                   sx={{
                     textDecoration: "none",
@@ -60,22 +59,21 @@ export default function Company() {
                       boxShadow: 6,
                       border: "1px solid blue",
                     },
-                  }}
-                >
-                <CardMedia
-                component="img"
-                height="140"
-                style={{
-                  width: "100%",
-                  height: "140px",
-                  objectFit: "contain",
-                }}
-                image={`${company.logo}`}
-                alt={`${company.name} logo`}
-              />
-              
+                  }}>
+                  <CardMedia
+                    component='img'
+                    height='140'
+                    style={{
+                      width: "100%",
+                      height: "140px",
+                      objectFit: "contain",
+                    }}
+                    image={`${company.logo}`}
+                    alt={`${company.name} logo`}
+                  />
+
                   <CardContent sx={{ textAlign: "center" }}>
-                    <Typography variant="h6" component="div">
+                    <Typography variant='h6' component='div'>
                       {company.name}
                     </Typography>
                   </CardContent>

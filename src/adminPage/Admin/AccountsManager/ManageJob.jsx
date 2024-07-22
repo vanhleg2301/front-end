@@ -86,11 +86,11 @@ const ManageJob = () => {
                 <TableCell>{j?.minSalary}</TableCell>
                 <TableCell>{j?.maxSalary}</TableCell>
                 <TableCell>
-                  {j?.status === 1
+                  {j?.status === 0
                     ? "Approve"
-                    : j?.status === 2
+                    : j?.status === 1
                     ? "Pending"
-                    : j?.status === 0
+                    : j?.status === 2
                     ? "Reject"
                     : null}
                 </TableCell>

@@ -20,7 +20,7 @@ export default function MainListItems() {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary='Dashboard' />
+        <ListItemText primary='Home' />
       </ListItemButton>
       <ListItemButton component={Link} to='createjob'>
         <ListItemIcon>

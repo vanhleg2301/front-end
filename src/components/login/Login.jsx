@@ -75,12 +75,7 @@ export default function Login() {
           navigate("/");
         }
         if (response.user.roleID === 2) {
-          if (response.user.isActive === true) {
-            navigate("/recruiter");
-          }
-          if (response.user.isActive === false) {
-            navigate("/waiting-accepted");
-          }
+          navigate("/recruiter");
         }
         if (response.user.roleID === 3) {
           navigate("/admin");
@@ -171,7 +166,11 @@ export default function Login() {
                   <Link href='#' variant='body2'></Link>
                 </Grid>
                 <Grid item>
-                  <Typography component={Link} to='/forgot' variant='body2' color={"inherit"}>
+                  <Typography
+                    component={Link}
+                    to='/forgot'
+                    variant='body2'
+                    color={"inherit"}>
                     Forgot password?
                   </Typography>
                 </Grid>
@@ -186,7 +185,11 @@ export default function Login() {
           <Copyright sx={{ mt: 4, mb: 4 }} />
           <Grid container sx={{ mb: 6 }}>
             <Grid item md={12} sx={{ textAlign: "center" }}>
-              <Typography component={Link} to='/register' variant='body2' color={"inherit"}> 
+              <Typography
+                component={Link}
+                to='/register'
+                variant='body2'
+                color={"inherit"}>
                 {"Don't have an account? Sign Up"}
               </Typography>
             </Grid>

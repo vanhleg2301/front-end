@@ -21,7 +21,10 @@ export default function CompanyList() {
     const fetchCompanies = async () => {
       try {
         const response = await RequestGet(`company`);
-        setCompanies(response);
+        const filteredCompanies = response.filter(
+          (company) => company.companyStatus === 0
+        );
+        setCompanies(filteredCompanies);
       } catch (error) {
         console.error("Error fetching companies:", error);
       }
