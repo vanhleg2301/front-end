@@ -42,7 +42,6 @@ export default function JobDetail() {
   const [openLogin, setOpenLogin] = useState(false);
 
   const handleApply = async () => {
-    console.log(userLogin)
     if (!userLogin || Object.keys(userLogin).length === 0) {
       toast.info("you must login before apply this");
       setOpenLogin(true);
@@ -107,6 +106,7 @@ export default function JobDetail() {
       </Box>
     );
   }
+
   return (
     <Container>
       <Grid container spacing={0} sx={{ mb: 5, mt: -5 }}>

@@ -80,6 +80,20 @@ export const RequestPost = async (uri, payload) => {
   }
 };
 
+export const RequestGetPayLoad = async (uri, payload) => {
+  try {
+    const res = await axios.get(
+      `${ENDPOINT}/${uri}`,
+      { headers: getHeaders() },
+      JSON.stringify(payload) // Pass payload as query parameters
+    );
+    return handleResponse(res);
+  } catch (error) {
+    console.error("Error in request:", error);
+    throw error;
+  }
+};
+
 // GET request function
 export const RequestGet = async (uri) => {
   try {
@@ -138,7 +152,7 @@ export const sendmail = async (payload) => {
   //sendmail to recruiter
   try {
     const response = await RequestPost(`${APIUSER}/sendMailFrame`, {
-      payload
+      payload,
     });
     console.log("Send email for applicant successfully: ", response);
   } catch (error) {

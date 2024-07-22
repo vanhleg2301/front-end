@@ -4,5 +4,6 @@ export const APIUSER = "user";
 export const APIINDUSTRY = "industry";
 export const APICV = "cv";
 export const APIMEET = "meeting";
+export const APIROOM = "room";
 export const APIAPPLY = "appliedjobs";
 export const NOTIFICATION = "notification";

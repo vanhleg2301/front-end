@@ -179,7 +179,7 @@ export default function Dashboard() {
               onClick={handleNotificationClick}
               onMouseEnter={() => handleMouseEnter("notification")}
               onMouseLeave={handleMouseLeave}>
-              <Badge badgeContent={4} color='secondary'>
+              <Badge color='secondary'>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -192,7 +192,7 @@ export default function Dashboard() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
               <MenuItem sx={{ p: 3 }}>
-                Notification 4
+                Notification
               </MenuItem>
             </Menu>
             <MenuItem

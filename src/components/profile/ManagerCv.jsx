@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../util/formatHelpers";
 
-export default function ManagerCv() {
+export default function ManagerCv({ onChooseCv, open }) {
   const { userLogin } = useContext(AuthContext);
   const [cvList, setCvList] = useState([]);
   const nagivation = useNavigate();
@@ -59,8 +59,9 @@ export default function ManagerCv() {
   };
 
   const getFileExtension = (fileURL) => {
+    const decodedURL = decodeURIComponent(fileURL);
     // Lấy phần cuối cùng của URL bằng cách tách theo dấu /
-    const fileNameWithParams = fileURL.split("/").pop();
+    const fileNameWithParams = decodedURL.split("/").pop();
 
     // Lấy tên file từ phần cuối cùng của URL bằng cách tách theo dấu .
     const fileName = fileNameWithParams.split(".").slice(0, -1).join(".");
@@ -70,7 +71,11 @@ export default function ManagerCv() {
 
   const handleOpenPdf = (fileURL) => {
     console.log("decodedURL:", fileURL);
-    window.open(fileURL, '_blank');
+    window.open(fileURL, "_blank");
+  };
+
+  const handleChooseCv = (cv) => {
+    onChooseCv(cv);
   };
 
   return (
@@ -176,6 +181,9 @@ export default function ManagerCv() {
                   </Box>
                 </CardContent>
               </Card>
+              {open && (
+                <Button onClick={() => handleChooseCv(cv)}>Choose cv</Button>
+              )}
             </Grid>
           ))}
         </Grid>

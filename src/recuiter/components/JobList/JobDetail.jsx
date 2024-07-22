@@ -30,6 +30,7 @@ import { generateRoomId } from "../../../util/formatHelpers";
 import {
   APIAPPLY,
   APIJOB,
+  APIROOM,
   APIUSER,
   NOTIFICATION,
 } from "../../../util/apiEndpoint";
@@ -52,6 +53,7 @@ const JobDetail = () => {
     timeMeeting: "",
     linkMeeting: "",
   });
+  const [isRoomIdGenerated, setIsRoomIdGenerated] = useState(false); // State to track if room ID has been generated
 
   const handleGenerateRoomId = () => {
     const newRoomId = generateRoomId();
@@ -59,6 +61,9 @@ const JobDetail = () => {
       ...prevDetails,
       linkMeeting: newRoomId,
     }));
+    setIsRoomIdGenerated(true); // Set the flag to true once the room ID is generated
+
+    
   };
 
   useEffect(() => {
@@ -132,6 +137,11 @@ const JobDetail = () => {
     }
 
     try {
+
+      await RequestPost(`${APIROOM}/${userLogin?.user?._id}`, {
+        roomId: meetingDetails.linkMeeting,
+      });
+
       await RequestPatch(`${APIAPPLY}/status/${jobId}/${selectedApplicant}`, {
         status: 0,
       });
@@ -149,6 +159,8 @@ const JobDetail = () => {
         )}`,
         meetingDetails.linkMeeting
       );
+
+
 
       const mess = `Recruiter accepted your cv in ${job.title}. Code meeting: "${
         meetingDetails.linkMeeting
@@ -170,18 +182,18 @@ const JobDetail = () => {
         { status: 2 }
       );
 
-      console.log(job.title, "met: ", meetingDetails.linkMeeting);
+      console.log(job?.title, "met: ", meetingDetails.linkMeeting);
       socket.emit("reject_applied", {
         linkMeeting: "",
         userId: applicant,
-        message: `Recruiter rejected your cv in ${job.title}`,
+        message: `Recruiter rejected your cv in ${job?.title}`,
       });
 
-      const mess = `Recruiter reject your cv in ${job.title}. Please try again next time! ^_^`;
+      const mess = `Recruiter reject your cv in ${job?.title}. Please try again next time! ^_^`;
 
       sendmail(selectedApplicant, mess);
 
-      await saveNotification(`Recruiter rejected your cv in ${job.title}`, "");
+      await saveNotification(`Recruiter rejected your cv in ${job?.title}`, "");
       toast.success("Rejected successfully");
       setReload(!reload); // Reload the data
     } catch (error) {
@@ -326,7 +338,8 @@ const JobDetail = () => {
           <Button
             onClick={handleGenerateRoomId}
             variant='contained'
-            color='secondary'>
+            color='secondary'
+            disabled={isRoomIdGenerated}>
             Generate Room ID
           </Button>
         </DialogContent>
