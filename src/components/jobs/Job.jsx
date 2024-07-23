@@ -30,6 +30,7 @@ const itemsPerPage = 9;
 export default function Job() {
   const [jobs, setJobs] = useState([]);
   const [companyName, setCompanyName] = useState([]);
+  const [companyLogos, setCompanyLogos] = useState({});
   // search
   const [searchedJobs, setSearchedJobs] = useState([]);
   const [searched, setSearched] = useState(false);
@@ -50,8 +51,33 @@ export default function Job() {
         console.error("Error fetching jobs:", error);
       }
     };
+
     fetchJob();
   }, []);
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+        const logos = {};
+        await Promise.all(
+          jobs.map(async (job) => {
+            if (!logos[job?._id]) {
+              const response = await RequestGet(`${APIJOB}/job/${job?._id}/logo`);
+              logos[job?._id] = response?.logo;
+            }
+          })  
+        );
+        setCompanyLogos(logos);
+      } catch (error) {
+        console.error("Error fetching logos:", error);
+      }
+    };
+
+    if (jobs.length > 0) {
+      fetchLogos();
+    }
+  }, [jobs]);
+
 
   // Heart
   const [isFavoriteList, setIsFavoriteList] = useState({});
@@ -149,7 +175,7 @@ export default function Job() {
                 sm={6}
                 md={4}
                 sx={{ display: "flex" }}
-                key={item._id}>
+                key={item?._id}>
                 <Card
                   sx={{
                     display: "flex",
@@ -166,7 +192,7 @@ export default function Job() {
                   }}>
                   <Box
                     component={Link}
-                    to={`/jobs/${item._id}`}
+                    to={`/jobs/${item?._id}`}
                     sx={{ display: "flex", width: "30%", height: "auto" }}>
                     <img
                       style={{
@@ -175,10 +201,12 @@ export default function Job() {
                         objectFit: "contain",
                       }}
                       src={
+                        companyLogos[item?._id] ||
                         "https://www.topcv.vn/v4/image/normal-company/logo_default.png"
                       }
-                      alt={`Logo ${item._id}`}
+                      alt={`Logo`}
                     />
+                    
                   </Box>
                   <Box
                     sx={{
@@ -193,14 +221,14 @@ export default function Job() {
                         <Grid item xs={12} md={12}>
                           <Box
                             sx={{ textDecoration: "none" }}
-                            title={item.description.title}
+                            title={item?.description.title}
                             component={Link}
-                            to={`/jobs/${item._id}`}>
+                            to={`/jobs/${item?._id}`}>
                             <Typography
                               variant='body2'
                               color='text.secondary'
                               sx={{ fontWeight: "bold" }}>
-                              {formatDescription(item.title)}
+                              {formatDescription(item?.title)}
                             </Typography>
                           </Box>
                         </Grid>
@@ -208,11 +236,11 @@ export default function Job() {
                         <Typography
                           variant='body2'
                           color='text.secondary'
-                          title={item.description.JobDescription}
+                          title={item?.description?.JobDescription}
                           // component={Link}
-                          // to={`/companies/${item.description.JobDescription}`}
+                          // to={`/companies/${item?.description?.JobDescription}`}
                           sx={{ textDecoration: "none" }}>
-                          {formatDescription(item.description.JobDescription)}
+                          {formatDescription(item?.description?.JobDescription)}
                         </Typography>
 
                         <Grid item xs={12} md={12} sx={{ mt: 1 }}>
@@ -241,10 +269,10 @@ export default function Job() {
                                   whiteSpace: "nowrap", // co dãn ngang
                                   textOverflow: "ellipsis",
                                 }}>
-                                {formatSalary(item.minSalary, item.maxSalary)}
+                                {formatSalary(item?.minSalary, item?.maxSalary)}
                               </Box>
                               <Box
-                                title={item.location.province}
+                                title={item?.location?.province}
                                 sx={{
                                   paddingLeft: "10px",
                                   paddingRight: "10px",
@@ -255,15 +283,15 @@ export default function Job() {
                                   whiteSpace: "nowrap",
                                   textOverflow: "ellipsis",
                                 }}>
-                                {formatLocation(item.location.province)}
+                                {formatLocation(item?.location?.province)}
                               </Box>
                               <Box className='icon'>
                                 <IconButton
                                   aria-label='favorite'
                                   onClick={() =>
-                                    toggleFavorite(item._id, item)
+                                    toggleFavorite(item?._id, item)
                                   }>
-                                  {isFavoriteList[item._id] ? (
+                                  {isFavoriteList[item?._id] ? (
                                     <FavoriteIcon />
                                   ) : (
                                     <FavoriteBorderIcon />

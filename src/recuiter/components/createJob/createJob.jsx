@@ -43,14 +43,7 @@ const CreateJob = () => {
   const [deadline, setDeadline] = useState(null);
   const [error, setError] = useState(null);
 
-  const [checkCompanyId, setCheckCompanyId] = useState(false);
-
-  useEffect(() => {
-    if (userLogin?.user?.companyID) {
-      setCheckCompanyId(true);
-      return;
-    }
-  }, []);
+  const checkCompanyId = userLogin?.user?.companyID
 
   useEffect(() => {
     fetch("http://localhost:9999/industry")
